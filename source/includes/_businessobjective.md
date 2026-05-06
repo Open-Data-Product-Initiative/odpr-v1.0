@@ -18,7 +18,8 @@ businessObjective:
   name:
     en: Improve Urban Mobility Efficiency
   description:
-    en: Reduce travel delays and improve movement across the city through better data-driven planning and operations.
+    en: Reduce travel delays and improve movement across the city 
+        through better data-driven planning and operations.
 ```
 
 | Element             | Type   | Options                           | Description                                                                       |
@@ -41,7 +42,8 @@ businessObjective:
   name:
     en: Improve Urban Mobility Efficiency
   description:
-    en: Reduce travel delays and improve movement across the city through better data-driven planning and operations.
+    en: Reduce travel delays and improve movement across the city 
+        through better data-driven planning and operations.
   strategicAlignment:
     - en: Smart City Vision 2030
     - en: Transport Digital Transformation Program
