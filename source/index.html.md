@@ -117,6 +117,24 @@ This keeps each specification focused. ODPC should not redefine the full structu
 
 ## Main ODPC objects
 
+> Example of ProductReference:
+
+```yml
+productReference:
+  id: DP-001
+  productID: urbanpulse-events
+  productVersion: "1.0.0"
+  name:
+    en: UrbanPulse Events Data Product
+  description:
+    en: Data product providing event information for urban analytics and citizen services.
+  productModel:
+    standard: ODPS
+    version: "4.1"
+    format: yaml
+    uri: https://example.org/products/urbanpulse-events/odps.yaml
+```
+
 The first version of ODPC focuses on these objects:
 
 * ProductReference
@@ -135,27 +153,3 @@ ProductReference is the bridge between ODPC and the actual source product defini
 
 It can point to an ODPS file, a DPDS descriptor, an internal product model, a vendor catalog asset, or another metadata source.
 
-> Example of ProductReference:
-
-```yml
-productReference:
-  id: DP-001
-  name:
-    en: UrbanPulse Events Data Product
-  description:
-    en: Data product providing event information for urban analytics and citizen services.
-  domain: smart-city
-  owner:
-    organization: Example Organization
-    role: Data Product Owner
-  productModel:
-    standard: ODPS
-    version: 4.1
-    format: yaml
-  uri: https://example.org/products/urbanpulse-events/odps.yaml
-  status: active
-  tags:
-    - events
-    - smart-city
-    - mobility
-```
