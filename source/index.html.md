@@ -13,7 +13,6 @@ includes:
 - productreference
 - usecase
 - businessobjective
-- KPI
 - signal
 - catalog
 - contributors
@@ -159,3 +158,4 @@ productReference:
     - events
     - smart-city
     - mobility
+```
