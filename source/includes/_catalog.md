@@ -10,7 +10,7 @@ By defining catalogs as machine-readable objects, ODPC supports interoperability
 
 ## Mandatory attributes and options
 
-> Example of productReference object usage:
+> Example of catalog object usage:
 
 ```yml
 catalog:
@@ -34,7 +34,7 @@ catalog:
 
 ## Optional attributes and options
 
-> Example of productReference object usage:
+> Example of catalog object usage:
 
 ```yml
 catalog:
