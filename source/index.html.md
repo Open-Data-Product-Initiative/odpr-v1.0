@@ -119,7 +119,7 @@ ODPC should also not define graph traversal, graph analytics, or relationship se
 > Example of catalog use:
 
 ```yml
-schema: https://opendataproducts.org/odpc-v1.0/schema/catalog.yaml
+schema: https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml
 version: "1.0"
 catalog:
   id: CAT-001
