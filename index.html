@@ -419,6 +419,9 @@
               </ul>
           </li>
           <li>
+            <a href="#specification-extensions" class="toc-h1 toc-link" data-title="Specification extensions">Specification extensions</a>
+          </li>
+          <li>
             <a href="#editors-and-contributors" class="toc-h1 toc-link" data-title="Editors and contributors">Editors and contributors</a>
           </li>
           <li>
@@ -2017,6 +2020,46 @@ ODPC should also not define graph traversal, graph analytics, or relationship se
 <td>array of strings</td>
 <td style="text-align: right"></td>
 <td>Keywords used to classify, search, or filter the signal.</td>
+</tr>
+</tbody></table>
+<h1 id='specification-extensions'>Specification extensions</h1>
+<p>While the Open Data Product Catalog Specification defines the core catalog objects and attributes, organizations may need to add implementation-specific metadata for local tools, internal workflows, or platform-specific requirements.</p>
+
+<p>Extension properties are implemented as patterned fields that are always prefixed with <code>x-</code>. These fields may appear in ODPC objects such as <code>Catalog</code>, <code>ProductReference</code>, <code>UseCase</code>, <code>BusinessObjective</code>, and <code>Signal</code>.</p>
+
+<p>Extensions are not part of the official ODPC object model unless they are later adopted into the specification. Tooling may ignore extension fields unless explicit support has been added.</p>
+
+<p>Extensions should not be used to redefine core ODPC semantics. They should be used only for additional metadata that does not fit the standard attributes.</p>
+
+<p>Useful and widely adopted extensions may become candidates for future versions of the standard. To propose useful extensions, raise an issue in GitHub:</p>
+
+<p><a href="https://github.com/Open-Data-Product-Initiative/dev/issues">Open Data Product Initiative GitHub issues</a></p>
+
+<blockquote>
+<p>Example of extension usage:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight yaml"><code><span class="na">catalog</span><span class="pi">:</span>
+  <span class="na">id</span><span class="pi">:</span> <span class="s">CAT-001</span>
+  <span class="na">name</span><span class="pi">:</span>
+    <span class="na">en</span><span class="pi">:</span> <span class="s">Urban Mobility Data Product Catalog</span>
+  <span class="na">description</span><span class="pi">:</span>
+    <span class="na">en</span><span class="pi">:</span> <span class="s">Catalog of reusable portfolio objects related to urban mobility.</span>
+  <span class="na">x-internal-id</span><span class="pi">:</span> <span class="s">foobar123</span>
+  <span class="na">x-source-system</span><span class="pi">:</span> <span class="s">internal-catalog-platform</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th><div style="width:150px">Element name</div></th>
+<th>Type</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>^x-</strong></td>
+<td>any</td>
+<td></td>
+<td>Allows extensions to the Open Data Catalogs Schema. The field name MUST begin with x-, for example, x-internal-id. The value can be null, a primitive, an array or an object.</td>
 </tr>
 </tbody></table>
 <h1 id='editors-and-contributors'>Editors and contributors</h1>
