@@ -2,6 +2,8 @@
 
 The `ProductReference` object defines a lightweight catalog reference to a data product. It identifies the product, provides the key information needed for catalog discovery, and points to the authoritative product definition through `productModel`.
 
+<img src="/images/productreference.png" width="500">
+
 In ODPC, a `ProductReference` is used to list, search, filter, and display data products as part of a portfolio. It should include enough information for users and tools to understand what the product is, who owns it, what domain it belongs to, what type of product it is, and where the full product definition is located.
 
 The `ProductReference` object should stay lightweight. It should not duplicate detailed product metadata such as data access, SLA, data quality, license, pricing, support, or technical interface details. Those details belong in the referenced product model, such as ODPS.
