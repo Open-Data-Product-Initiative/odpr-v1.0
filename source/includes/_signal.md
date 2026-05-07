@@ -2,6 +2,9 @@
 
 The `Signal` object describes an observed market, operational, user, technology, policy, competitive, quality, usage, risk, or gap indicator that may create demand for new use cases, new data products, or product improvements.
 
+<img src="/images/signal.png" width="500">
+
+
 In ODPC, a `Signal` acts as the voice of opportunity. It helps organizations capture what is changing around them or inside their operations, then use that intelligence to guide portfolio planning, prioritization, and product development.
 
 A `Signal` can come from internal sources such as search logs, usage analytics, support tickets, surveys, and operational systems. It can also come from external sources such as AI web crawling, competitor monitoring, market reports, public tenders, policy changes, technology trends, or sector analysis.
