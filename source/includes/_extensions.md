@@ -1,25 +1,30 @@
 # Specification extensions
 
-While the Open Data Product Specification tries to accommodate most use cases, additional data can be added to extend the specification at certain points.
+While the Open Data Product Catalog Specification defines the core catalog objects and attributes, organizations may need to add implementation-specific metadata for local tools, internal workflows, or platform-specific requirements.
 
-The extensions properties are implemented as patterned fields that are always prefixed by "x-". The extensions may or may not be supported by the available tooling, but those may be extended as well to add requested support (if tools are internal or open-sourced). Open Data Product Initiative Technical Steering Committee does not officially approve external extensions - they are fully independent. Popular extensions however are natural candidates for future additions of the standard. 
+Extension properties are implemented as patterned fields that are always prefixed with `x-`. These fields may appear in ODPC objects such as `Catalog`, `ProductReference`, `UseCase`, `BusinessObjective`, and `Signal`.
 
-We encourage you to let us know of useful extensions so that we can consider those in the future releases, [raise an issue in Github](https://github.com/Open-Data-Product-Initiative/dev/issues)
+Extensions are not part of the official ODPC object model unless they are later adopted into the specification. Tooling may ignore extension fields unless explicit support has been added.
 
-Join the [ODPS Discord](https://discord.gg/7KfnFxAc) to discuss the ideas and your needs! 
+Extensions should not be used to redefine core ODPC semantics. They should be used only for additional metadata that does not fit the standard attributes.
+
+Useful and widely adopted extensions may become candidates for future versions of the standard. To propose useful extensions, raise an issue in GitHub:
+
+[Open Data Product Initiative GitHub issues](https://github.com/Open-Data-Product-Initiative/dev/issues)
 
 > Example of extension usage:
 
 ```yml
-
-product:
-  name: Pets of the year
-  productID: 123456are
-  description: ''
+catalog:
+  id: CAT-001
+  name:
+    en: Urban Mobility Data Product Catalog
+  description:
+    en: Catalog of reusable portfolio objects related to urban mobility.
   x-internal-id: foobar123
-
+  x-source-system: internal-catalog-platform
 ```
 
 | <div style="width:150px">Element name</div>   | Type  | Options  | Description  |
 |---|---|---|---|
-|  **^x-** | any  |  | Allows extensions to the Open Data Product Schema. The field name MUST begin with x-, for example, x-internal-id. The value can be null, a primitive, an array or an object. Can have any valid JSON format value. |
+|  **^x-** | any  |  | Allows extensions to the Open Data Catalogs Schema. The field name MUST begin with x-, for example, x-internal-id. The value can be null, a primitive, an array or an object. |
