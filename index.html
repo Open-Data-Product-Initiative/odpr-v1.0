@@ -579,7 +579,9 @@ ODPC should also not define graph traversal, graph analytics, or relationship se
 <blockquote>
 <p>Example of catalog object usage:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight yaml"><code><span class="na">catalog</span><span class="pi">:</span>
+<div class="highlight"><pre class="highlight yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">catalog</span><span class="pi">:</span>
   <span class="na">id</span><span class="pi">:</span> <span class="s">CAT-001</span>
   <span class="na">name</span><span class="pi">:</span>
     <span class="na">en</span><span class="pi">:</span> <span class="s">Urban Mobility Data Product Catalog</span>
@@ -594,6 +596,18 @@ ODPC should also not define graph traversal, graph analytics, or relationship se
 <th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td><code>schema</code></td>
+<td>string</td>
+<td style="text-align: right">✓</td>
+<td>URI of the ODPC catalog schema used to validate the catalog file.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td style="text-align: right">✓</td>
+<td>Version of the ODPC specification used by the catalog file.</td>
+</tr>
 <tr>
 <td><code>catalog</code></td>
 <td>object</td>
