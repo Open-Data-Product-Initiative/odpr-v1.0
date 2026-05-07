@@ -1,12 +1,14 @@
 # Catalog
 
-The `Catalog` object defines a reusable ODPC catalog. It provides the top-level structure for organizing product references, use cases, business objectives, signals, tags, ownership, scope, lifecycle status, and graph location.
+The `Catalog` object defines a reusable ODPC catalog. It provides the top-level structure for organizing product references, use cases, business objectives, signals, tags, ownership, scope, lifecycle status, and graph implementation.
 
 In ODPC, the `Catalog` object acts as the portfolio container. It helps organizations group related data products and demand-side objects around a domain, organization, geography, audience, or strategic theme.
 
-The `Catalog` object can include product references, use cases, business objectives, and signals directly as reusable catalog objects. It can also point to an ODPG graph through the `graph` attribute. The graph defines the relationships between catalog objects, such as which products support which use cases, which use cases contribute to which objectives, and where gaps exist.
+The `Catalog` object can include product references, use cases, business objectives, and signals directly as reusable catalog objects. It can also define where the catalog graph is implemented through the `graph` attribute.
 
-The `Catalog` object should remain focused on catalog structure and portfolio organization. It should not define detailed product metadata, relationship semantics, or graph edges. Detailed product definitions belong to product models such as ODPS. Relationship modeling belongs to ODPG.
+The `graph` attribute identifies the graph standard, version, and URI used for the catalog graph. The graph can be implemented with `ODPG` or another supported graph standard, such as `RDF`, `JSON-LD`, `GraphML`, `openCypher`, `GQL`, `Gremlin`, `GraphSON`, or `GeoSPARQL`.
+
+The `Catalog` object should remain focused on catalog structure and portfolio organization. It should not define detailed product metadata, relationship semantics, nodes, edges, or graph rules. Detailed product definitions belong to product models such as `ODPS`. Relationship modeling belongs to the selected graph standard, with `ODPG` as the native standard for the OpenDataProducts.org specification family.
 
 By defining catalogs as reusable objects, ODPC supports discovery, portfolio browsing, governance review, prioritization, filtering, AI-assisted portfolio analysis, and reporting across data product ecosystems.
 
