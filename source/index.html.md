@@ -84,11 +84,9 @@ It enables organizations to catalog:
 * data products
 * use cases
 * business objectives
-* KPIs
 * signals
 * ownership
 * priorities
-* lifecycle status
 * references to source definitions
 
 This creates a reusable foundation for discovery, governance, prioritization, AI-assisted planning, and graph-based portfolio analysis.
@@ -98,7 +96,7 @@ ODPC aims to:
 
 * enable interoperability between catalogs, data platforms, marketplaces, and tools
 * provide reusable catalog objects for data product portfolio management
-* connect data products to use cases, business objectives, KPIs, and signals
+* connect data products to use cases, business objectives, and signals
 * support ODPS-native and non-ODPS product definitions
 * reduce metadata conversion friction between systems
 * support AI-assisted discovery, cataloging, and portfolio planning
