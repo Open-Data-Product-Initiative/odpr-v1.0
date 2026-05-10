@@ -26,7 +26,8 @@ catalog:
   name:
     en: Urban Mobility Data Product Catalog
   description:
-    en: Catalog of data products, use cases, objectives, and signals related to urban mobility.
+    en: Catalog of data products, use cases, objectives, 
+        and signals related to urban mobility.
 ```
 
 
@@ -52,7 +53,8 @@ catalog:
   name:
     en: Urban Mobility Data Product Catalog
   description:
-    en: Catalog of data products, use cases, objectives, and signals related to urban mobility.
+    en: Catalog of data products, use cases, objectives, 
+        and signals related to urban mobility.
 
   owner:
     organization: Example Transport Authority
@@ -75,7 +77,7 @@ catalog:
   graph:
     standard: ODPG
     version: "1.0"
-    uri: https://example.org/graphs/urban-mobility.graph.yaml
+    uri: https://example.org/graphs/urba.graph.yaml
 
   productReferences:
     - id: DP-001
@@ -84,33 +86,38 @@ catalog:
       name:
         en: UrbanPulse Events Data Product
       description:
-        en: Data product providing event information for urban analytics and citizen services.
+        en: Data product providing event information for 
+            urban analytics and citizen services.
       productModel:
         standard: ODPS
         version: "4.1"
         format: yaml
-        uri: https://example.org/products/urbanpulse-events/odps.yaml
+        uri: https://example.org/products/urba/odps.yaml
 
   useCases:
     - id: UC-001
       name:
         en: Event Demand Forecasting
       description:
-        en: Forecast event-related demand to improve mobility planning and citizen services.
+        en: Forecast event-related demand to improve 
+            mobility planning and citizen services.
 
   businessObjectives:
     - id: BO-001
       name:
         en: Improve Urban Mobility Efficiency
       description:
-        en: Reduce travel delays and improve movement across the city through better data-driven planning and operations.
+        en: Reduce travel delays and improve movement 
+            across the city through better data-driven 
+            planning and operations.
 
   signals:
     - id: SIG-001
       name:
         en: Increasing Event Demand
       description:
-        en: Indicates rising demand for event-related mobility and public service planning.
+        en: Indicates rising demand for event-related 
+            mobility and public service planning.
 
   tags:
     - smart-city

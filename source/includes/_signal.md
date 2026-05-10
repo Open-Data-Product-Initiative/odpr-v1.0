@@ -25,7 +25,9 @@ signal:
   name:
     en: Competitors expanding real-time event intelligence
   description:
-    en: External market monitoring found that competing smart city platforms are adding real-time event intelligence features.
+    en: External market monitoring found that competing 
+        smart city platforms are adding real-time event 
+        intelligence features.
   type: competitive
   source:
     origin: external
@@ -74,7 +76,10 @@ signal:
   name:
     en: Increasing Traffic Congestion During Peak Hours
   description:
-    en: Recurring congestion has been observed in key urban corridors during morning and evening peak hours, creating demand for better traffic optimization and mobility planning data.
+    en: Recurring congestion has been observed in key 
+        urban corridors during morning and evening peak 
+        hours, creating demand for better traffic 
+        optimization and mobility planning data.
   type: operational
   source:
     origin: internal
@@ -88,7 +93,9 @@ signal:
   confidence: high
 
   opportunity:
-    en: Improve traffic planning and congestion response through better traffic flow analysis, incident monitoring, and journey time reliability data.
+    en: Improve traffic planning and congestion response 
+        through better traffic flow analysis, incident 
+        monitoring, and journey time reliability data.
 
   impact:
     valuePotential: high
@@ -100,7 +107,9 @@ signal:
 
   evidence:
     summary:
-      en: Monitoring reports show recurring congestion patterns across central Abu Dhabi corridors during morning and evening peak hours.
+      en: Monitoring reports show recurring congestion 
+          patterns across central Abu Dhabi corridors 
+          during morning and evening peak hours.
     examples:
       - Increased travel time on selected arterial roads during weekday morning peaks.
       - Repeated congestion near high-demand business and government districts.
