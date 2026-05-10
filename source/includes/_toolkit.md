@@ -50,6 +50,8 @@ When working from the source repository, use scripts/search_objects.py for repea
 Use scripts/search_objects.py --json when another tool or agent will consume the result.
 Use scripts/validate_catalog.py to validate ODPC YAML or JSON catalog files against source/schema/odpc.yaml.
 Use scripts/check_agent_artifacts.py in CI or review workflows to detect drift between schema, catalog artifacts, examples, and llms.txt.
+Use scripts/generate_catalog_artifacts.py after editing source/schema/odpc.yaml to regenerate source/schema/odpc.json; use --check in CI or review workflows.
+Use scripts/explain_catalog.py to summarize an ODPC catalog file for humans or AI agents.
 Install script dependencies with python3 -m pip install -r scripts/requirements-agent.txt.
 Do not edit generated or derived artifacts without checking alignment across llms.txt, schema files, catalog artifacts, examples, and tests.
 -->
@@ -57,7 +59,9 @@ Do not edit generated or derived artifacts without checking alignment across llm
 | Script | Purpose |
 |---|---|
 | [`check_agent_artifacts.py`](https://github.com/Open-Data-Product-Initiative/odpc-v1.0/blob/main/scripts/check_agent_artifacts.py) | Checks schema alignment, example files, object JSONL records, and `llms.txt` references |
+| [`generate_catalog_artifacts.py`](https://github.com/Open-Data-Product-Initiative/odpc-v1.0/blob/main/scripts/generate_catalog_artifacts.py) | Regenerates derived catalog artifacts such as `source/schema/odpc.json` from canonical source files; use `--check` to detect drift |
 | [`search_objects.py`](https://github.com/Open-Data-Product-Initiative/odpc-v1.0/blob/main/scripts/search_objects.py) | Searches ODPC object records by keyword or exact object id; use `--json` for machine-readable results |
 | [`validate_catalog.py`](https://github.com/Open-Data-Product-Initiative/odpc-v1.0/blob/main/scripts/validate_catalog.py) | Validates ODPC YAML or JSON catalog files against the ODPC schema |
+| [`explain_catalog.py`](https://github.com/Open-Data-Product-Initiative/odpc-v1.0/blob/main/scripts/explain_catalog.py) | Summarizes an ODPC catalog file, including counts, ids, graph reference, and modeling hints |
 
 The Markdown tables in this specification are intended for human readers. The schema, JSONL, and YAML example files are intended for programmable use, automation, validation, AI retrieval, and catalog tooling.

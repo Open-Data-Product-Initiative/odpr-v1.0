@@ -51,6 +51,22 @@ class AgentScriptsTest(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
             self.assertIn("valid", result.stdout.lower())
 
+    def test_generate_catalog_artifacts_check_passes(self):
+        result = run_script("scripts/generate_catalog_artifacts.py", "--check")
+
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        self.assertIn("up to date", result.stdout.lower())
+
+    def test_explain_catalog_summarizes_full_example(self):
+        result = run_script("scripts/explain_catalog.py", "source/catalog/examples/full.yaml")
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Urban Mobility Data Product Catalog", result.stdout)
+        self.assertIn("Product references: 1", result.stdout)
+        self.assertIn("Use cases: 1", result.stdout)
+        self.assertIn("Business objectives: 1", result.stdout)
+        self.assertIn("Signals: 1", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
