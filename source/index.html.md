@@ -26,6 +26,10 @@ code_clipboard: true
 meta:
   - name: description
     content: The Open Data Product Catalogs, ODPC, is a vendor-neutral, open-source, machine-readable model for cataloging data product portfolios. ODPC defines reusable portfolio objects around data products, including product references, use cases, business objectives, KPIs, signals, and catalog items. 
+  - name: llms
+    content: /llms.txt
+  - name: ai-agent-guidance
+    content: Use /llms.txt for agent guidance and /schema/odpc.yaml or /schema/odpc.json for validation.
 ---
 
 # OPEN DATA PRODUCT CATALOGS - The Linux Foundation
@@ -144,6 +148,5 @@ The first version of ODPC focuses on these objects:
 * Catalog
 
 These objects are designed to be reusable across catalogs, tools, AI workflows, and graph models.
-
 
 

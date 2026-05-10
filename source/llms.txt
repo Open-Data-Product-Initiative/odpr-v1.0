@@ -1,0 +1,86 @@
+# Open Data Product Catalogs (ODPC)
+
+ODPC is a vendor-neutral, open-source, machine-readable catalog model for data product portfolios. It defines reusable portfolio objects around data products, including product references, use cases, business objectives, KPIs nested inside business objectives, signals, and catalogs.
+
+Base URL:
+- https://opendataproducts.org/odpc-v1.0
+
+Human-readable specification:
+- / (https://opendataproducts.org/odpc-v1.0/)
+
+Standards-family context:
+- ODPS is the Open Data Product Specification. Use ODPS when describing one data product and its detailed product metadata. Homepage: https://opendataproducts.org/
+- ODPC is the Open Data Product Catalog specification. Use ODPC when describing catalogs, portfolios, product references, use cases, business objectives, KPIs, signals, ownership, scope, and catalog-level metadata.
+- ODPG is the Open Data Product Graph specification. Use ODPG when describing graph structures and relationships between data products, use cases, objectives, KPIs, signals, governance objects, providers, and consumers. Documentation: https://opendataproducts.org/odpg-v1.0/
+- ODPV is the Open Data Product Vocabulary. Use ODPV when stable shared term ids, labels, definitions, relationship names, and controlled vocabulary guidance are needed. Documentation: https://opendataproducts.org/odpv-v1.0/
+- ODPC does not replace ODPS, ODPG, or ODPV. It provides the catalog and portfolio object layer around data products.
+
+Canonical schema files:
+- /schema/odpc.yaml (https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml)
+- /schema/odpc.json (https://opendataproducts.org/odpc-v1.0/schema/odpc.json)
+
+Source repository:
+- https://github.com/Open-Data-Product-Initiative/odpc-v1.0
+
+Knowledge base:
+- https://opendataproducts.org/howto/
+
+Core ODPC objects:
+- Catalog: top-level portfolio container for organizing product references, use cases, business objectives, signals, ownership, scope, lifecycle status, tags, and graph implementation metadata.
+- ProductReference: lightweight catalog reference to a data product. It identifies the product and points to the authoritative product definition through productModel. Detailed product metadata belongs in ODPS or another referenced product model.
+- UseCase: reusable demand-side object describing a business, operational, analytical, policy, or user need that data products may support.
+- BusinessObjective: reusable outcome object describing a higher-level business, operational, policy, or strategic objective. KPIs are nested inside BusinessObjective, not defined as top-level ODPC objects.
+- Signal: reusable observation or indicator that can inform catalog planning, prioritization, discovery, risk, opportunity, demand, or change.
+
+File selection guidance:
+- Use /schema/odpc.yaml when YAML schema validation or YAML-native tooling is preferred.
+- Use /schema/odpc.json when JSON schema validation or JSON-native tooling is preferred.
+- Use the human-readable specification when you need object explanations, examples, attribute descriptions, or modeling guidance.
+- Use ODPS resources for detailed data product definitions referenced by ProductReference.productModel.
+- Use ODPG resources when modeling relationships, graph nodes, graph edges, traversal, graph analytics, or GraphRAG structures.
+- Use ODPV resources when selecting stable shared vocabulary terms or relationship names across ODPS, ODPC, and ODPG.
+
+Recommended agent workflow:
+1. Fetch /llms.txt first to understand the standards-family context and available ODPC resources.
+2. Load the human-readable ODPC specification when you need object definitions, examples, or attribute-level guidance.
+3. Use /schema/odpc.yaml or /schema/odpc.json to validate ODPC catalog files.
+4. Use Catalog for portfolio containers and catalog-level metadata.
+5. Use ProductReference for lightweight references to data products; do not copy full ODPS product metadata into ProductReference.
+6. Use UseCase for demand, user needs, business problems, analytical needs, or operational scenarios.
+7. Use BusinessObjective for strategic or operational outcomes, and nest KPIs inside BusinessObjective.
+8. Use Signal for demand signals, risk signals, opportunity signals, quality signals, performance signals, trend signals, or external change signals.
+9. Use ODPG, not ODPC, for explicit relationships between catalog objects.
+10. Use ODPV terms when stable shared ids, labels, definitions, or relationship names are needed.
+11. Include the ODPC version when generating structured catalog outputs.
+12. If no ODPC object fits a concept, treat it as an extension candidate instead of inventing a new meaning for an official ODPC object.
+
+Object selection guidance:
+- Use Catalog when describing the portfolio, catalog scope, audience, domains, owner, status, tags, included reusable objects, or graph implementation reference.
+- Use ProductReference when describing a data product in catalog form and pointing to the authoritative product definition.
+- Use UseCase when describing why data products are needed, who benefits, what decision or process is supported, or what value scenario should be enabled.
+- Use BusinessObjective when describing measurable strategic, policy, business, or operational outcomes.
+- Use KPI only inside BusinessObjective.kpis when measuring progress toward an objective.
+- Use Signal when describing evidence that may affect discovery, prioritization, risk assessment, opportunity detection, or portfolio planning.
+- Use ODPG relationships when connecting products, use cases, objectives, KPIs, signals, providers, consumers, or governance concepts.
+
+Modeling constraints:
+- ODPC defines reusable catalog objects. It does not define full data product metadata; use ODPS or another referenced product model for that.
+- ODPC defines catalog structure. It does not define graph traversal, graph analytics, or relationship semantics; use ODPG for that.
+- ProductReference.productModel.uri should point to the authoritative product definition.
+- Language-tagged strings commonly use name.en and description.en.
+- Prefer stable identifiers for catalog objects so they can be referenced by catalogs, tools, and graph implementations.
+- Do not redefine official ODPC objects or invent new meanings for existing objects. Use extensions for local additions.
+
+When returning or generating an ODPC object, include when available:
+- version
+- object type
+- id
+- name
+- description
+- owner
+- status
+- tags or domains
+- links to referenced product models, graph files, or related standards
+- why the selected ODPC object fits the user request
+
+If multiple ODPC objects may fit, return candidate objects and explain the distinction. Prefer the most specific official ODPC object. Use extensions only when the concept cannot be represented by Catalog, ProductReference, UseCase, BusinessObjective, nested KPI, or Signal.
