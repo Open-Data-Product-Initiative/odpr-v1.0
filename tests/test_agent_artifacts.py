@@ -47,8 +47,8 @@ class AgentArtifactsTest(unittest.TestCase):
 
     def test_examples_cover_minimal_full_and_each_core_object(self):
         expected = [
-            "minimal-catalog.yaml",
-            "full-catalog.yaml",
+            "minimal.yaml",
+            "full.yaml",
             "product-reference.yaml",
             "use-case.yaml",
             "business-objective-with-kpis.yaml",
@@ -56,14 +56,14 @@ class AgentArtifactsTest(unittest.TestCase):
         ]
 
         for filename in expected:
-            self.assertTrue((SOURCE / "examples" / filename).is_file())
+            self.assertTrue((SOURCE / "catalog" / "examples" / filename).is_file())
 
-        minimal = load_yaml(SOURCE / "examples" / "minimal-catalog.yaml")
+        minimal = load_yaml(SOURCE / "catalog" / "examples" / "minimal.yaml")
         self.assertEqual(minimal["schema"], "https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml")
         self.assertEqual(minimal["version"], "1.0")
         assert_named_object(minimal["catalog"], "CAT-")
 
-        full = load_yaml(SOURCE / "examples" / "full-catalog.yaml")
+        full = load_yaml(SOURCE / "catalog" / "examples" / "full.yaml")
         catalog = full["catalog"]
         assert_named_object(catalog, "CAT-")
         assert_named_object(catalog["productReferences"][0], "DP-")
@@ -71,25 +71,25 @@ class AgentArtifactsTest(unittest.TestCase):
         assert_named_object(catalog["businessObjectives"][0], "BO-")
         assert_named_object(catalog["signals"][0], "SIG-")
 
-        product_reference = load_yaml(SOURCE / "examples" / "product-reference.yaml")["productReference"]
+        product_reference = load_yaml(SOURCE / "catalog" / "examples" / "product-reference.yaml")["productReference"]
         assert_named_object(product_reference, "DP-")
         self.assertEqual(product_reference["productModel"]["standard"], "ODPS")
         self.assertTrue(product_reference["productModel"]["uri"].startswith("https://"))
 
-        use_case = load_yaml(SOURCE / "examples" / "use-case.yaml")["useCase"]
+        use_case = load_yaml(SOURCE / "catalog" / "examples" / "use-case.yaml")["useCase"]
         assert_named_object(use_case, "UC-")
         self.assertTrue(use_case["dataNeeds"]["items"])
 
-        objective = load_yaml(SOURCE / "examples" / "business-objective-with-kpis.yaml")["businessObjective"]
+        objective = load_yaml(SOURCE / "catalog" / "examples" / "business-objective-with-kpis.yaml")["businessObjective"]
         assert_named_object(objective, "BO-")
         self.assertTrue(objective["kpis"][0]["id"].startswith("KPI-"))
 
-        signal = load_yaml(SOURCE / "examples" / "signal.yaml")["signal"]
+        signal = load_yaml(SOURCE / "catalog" / "examples" / "signal.yaml")["signal"]
         assert_named_object(signal, "SIG-")
         self.assertIn(signal["source"]["origin"], {"internal", "external", "mixed"})
 
     def test_retrieval_jsonl_is_parseable_and_referenced(self):
-        jsonl_path = SOURCE / "objects" / "odpc-objects.jsonl"
+        jsonl_path = SOURCE / "catalog" / "objects.jsonl"
         self.assertTrue(jsonl_path.is_file())
 
         records = [
@@ -108,7 +108,7 @@ class AgentArtifactsTest(unittest.TestCase):
             self.assertTrue(record["doNotUseFor"])
 
         llms = (SOURCE / "llms.txt").read_text(encoding="utf-8")
-        self.assertIn("/objects/odpc-objects.jsonl", llms)
+        self.assertIn("/catalog/objects.jsonl", llms)
 
 
 if __name__ == "__main__":

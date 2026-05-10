@@ -21,19 +21,19 @@ Canonical schema files:
 - /schema/odpc.json (https://opendataproducts.org/odpc-v1.0/schema/odpc.json)
 
 Agent-friendly object file:
-- /objects/odpc-objects.jsonl (https://opendataproducts.org/odpc-v1.0/objects/odpc-objects.jsonl)
+- /catalog/objects.jsonl (https://opendataproducts.org/odpc-v1.0/catalog/objects.jsonl)
 
 Example files:
-- /examples/minimal-catalog.yaml (https://opendataproducts.org/odpc-v1.0/examples/minimal-catalog.yaml)
-- /examples/full-catalog.yaml (https://opendataproducts.org/odpc-v1.0/examples/full-catalog.yaml)
-- /examples/product-reference.yaml (https://opendataproducts.org/odpc-v1.0/examples/product-reference.yaml)
-- /examples/use-case.yaml (https://opendataproducts.org/odpc-v1.0/examples/use-case.yaml)
-- /examples/business-objective-with-kpis.yaml (https://opendataproducts.org/odpc-v1.0/examples/business-objective-with-kpis.yaml)
-- /examples/signal.yaml (https://opendataproducts.org/odpc-v1.0/examples/signal.yaml)
+- /catalog/examples/minimal.yaml (https://opendataproducts.org/odpc-v1.0/catalog/examples/minimal.yaml)
+- /catalog/examples/full.yaml (https://opendataproducts.org/odpc-v1.0/catalog/examples/full.yaml)
+- /catalog/examples/product-reference.yaml (https://opendataproducts.org/odpc-v1.0/catalog/examples/product-reference.yaml)
+- /catalog/examples/use-case.yaml (https://opendataproducts.org/odpc-v1.0/catalog/examples/use-case.yaml)
+- /catalog/examples/business-objective-with-kpis.yaml (https://opendataproducts.org/odpc-v1.0/catalog/examples/business-objective-with-kpis.yaml)
+- /catalog/examples/signal.yaml (https://opendataproducts.org/odpc-v1.0/catalog/examples/signal.yaml)
 
 Agent-oriented source scripts:
 - scripts/check_agent_artifacts.py checks schema alignment, example files, object JSONL records, and llms.txt references.
-- scripts/search_objects.py searches /objects/odpc-objects.jsonl by keyword or exact object id. Use `--json` for machine-readable results.
+- scripts/search_objects.py searches /catalog/objects.jsonl by keyword or exact object id. Use `--json` for machine-readable results.
 - scripts/validate_catalog.py validates ODPC YAML or JSON catalog files against /schema/odpc.yaml. Install dependencies with `python3 -m pip install -r scripts/requirements-agent.txt`.
 
 Source repository:
@@ -50,8 +50,8 @@ Core ODPC objects:
 - Signal: reusable observation or indicator that can inform catalog planning, prioritization, discovery, risk, opportunity, demand, or change.
 
 File selection guidance:
-- Use /objects/odpc-objects.jsonl for retrieval, classification, object selection, and lightweight agent tools. It contains one ODPC concept per line with ids, definitions, required fields, examples, use guidance, and non-use guidance.
-- Use /examples/*.yaml when generating ODPC files or repairing user-provided catalog content.
+- Use /catalog/objects.jsonl for retrieval, classification, object selection, and lightweight agent tools. It contains one ODPC concept per line with ids, definitions, required fields, examples, use guidance, and non-use guidance.
+- Use /catalog/examples/*.yaml when generating ODPC files or repairing user-provided catalog content.
 - Use /schema/odpc.yaml when YAML schema validation or YAML-native tooling is preferred.
 - Use /schema/odpc.json when JSON schema validation or JSON-native tooling is preferred.
 - Use the human-readable specification when you need object explanations, examples, attribute descriptions, or modeling guidance.
@@ -61,8 +61,8 @@ File selection guidance:
 
 Recommended agent workflow:
 1. Fetch /llms.txt first to understand the standards-family context and available ODPC resources.
-2. Load /objects/odpc-objects.jsonl for object selection, retrieval, and lightweight lookup.
-3. Load /examples/*.yaml when generating ODPC catalog content.
+2. Load /catalog/objects.jsonl for object selection, retrieval, and lightweight lookup.
+3. Load /catalog/examples/*.yaml when generating ODPC catalog content.
 4. Load the human-readable ODPC specification when you need object definitions, examples, or attribute-level guidance.
 5. Use /schema/odpc.yaml or /schema/odpc.json to validate ODPC catalog files.
 6. If working in the source repository, use scripts/search_objects.py for repeatable local object lookup and scripts/validate_catalog.py for catalog validation.

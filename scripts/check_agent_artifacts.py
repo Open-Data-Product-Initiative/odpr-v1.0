@@ -8,8 +8,8 @@ from odpc_paths import EXAMPLES_DIR, LLMS_TXT, OBJECTS_JSONL, SCHEMA_JSON, SCHEM
 
 
 EXPECTED_EXAMPLES = [
-    "minimal-catalog.yaml",
-    "full-catalog.yaml",
+    "minimal.yaml",
+    "full.yaml",
     "product-reference.yaml",
     "use-case.yaml",
     "business-objective-with-kpis.yaml",
@@ -75,12 +75,12 @@ def check_examples():
         assert path.is_file(), f"Missing example: {path.relative_to(SOURCE)}"
         load_yaml(path)
 
-    minimal = load_yaml(EXAMPLES_DIR / "minimal-catalog.yaml")
+    minimal = load_yaml(EXAMPLES_DIR / "minimal.yaml")
     assert minimal["schema"] == "https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml"
     assert minimal["version"] == "1.0"
     assert_named_object(minimal["catalog"], "CAT-", "catalog")
 
-    full = load_yaml(EXAMPLES_DIR / "full-catalog.yaml")["catalog"]
+    full = load_yaml(EXAMPLES_DIR / "full.yaml")["catalog"]
     assert_named_object(full, "CAT-", "catalog")
     assert_named_object(full["productReferences"][0], "DP-", "productReferences[0]")
     assert_named_object(full["useCases"][0], "UC-", "useCases[0]")
@@ -100,9 +100,9 @@ def check_objects_and_llms():
 
     llms = LLMS_TXT.read_text(encoding="utf-8")
     for fragment in [
-        "/objects/odpc-objects.jsonl",
-        "/examples/minimal-catalog.yaml",
-        "/examples/full-catalog.yaml",
+        "/catalog/objects.jsonl",
+        "/catalog/examples/minimal.yaml",
+        "/catalog/examples/full.yaml",
         "/schema/odpc.yaml",
         "/schema/odpc.json",
     ]:
@@ -129,4 +129,3 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

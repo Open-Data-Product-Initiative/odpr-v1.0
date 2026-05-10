@@ -7,8 +7,8 @@ ODPC is designed to be usable by AI agents that generate, review, enrich, valida
 Agents SHOULD use ODPC resources in this order:
 
 1. Fetch `/llms.txt` to understand the available resources and standards-family boundaries.
-2. Use `/objects/odpc-objects.jsonl` for lightweight object selection, retrieval, and classification.
-3. Use `/examples/*.yaml` when generating new ODPC catalog content.
+2. Use `/catalog/objects.jsonl` for lightweight object selection, retrieval, and classification.
+3. Use `/catalog/examples/*.yaml` when generating new ODPC catalog content.
 4. Use `/schema/odpc.yaml` or `/schema/odpc.json` to validate catalog files.
 5. Use the human-readable specification when object definitions, examples, and attribute explanations are needed.
 
@@ -18,7 +18,7 @@ When working from the source repository, agents MAY use the helper scripts in `s
 python3 scripts/check_agent_artifacts.py
 python3 scripts/search_objects.py demand --json
 python3 scripts/search_objects.py --id ProductReference
-python3 scripts/validate_catalog.py source/examples/minimal-catalog.yaml
+python3 scripts/validate_catalog.py source/catalog/examples/minimal.yaml
 ```
 
 The validation script requires the packages listed in `scripts/requirements-agent.txt`.
@@ -27,11 +27,11 @@ The validation script requires the packages listed in `scripts/requirements-agen
 
 | Task | Recommended ODPC resource | Notes |
 |---|---|---|
-| Generate a new catalog | `/examples/minimal-catalog.yaml`, `/examples/full-catalog.yaml`, `/schema/odpc.yaml` | Start with the minimal catalog, then add reusable objects only when needed. |
-| Convert product metadata into catalog form | `/examples/product-reference.yaml` | Use `ProductReference` and point `productModel.uri` to the authoritative product definition. |
-| Classify demand or business need text | `/objects/odpc-objects.jsonl`, `/examples/use-case.yaml` | Use `UseCase` for demand-side needs and expected outcomes. |
-| Classify strategic or operational outcomes | `/objects/odpc-objects.jsonl`, `/examples/business-objective-with-kpis.yaml` | Use `BusinessObjective`; nest KPIs inside `businessObjective.kpis`. |
-| Capture evidence, risk, demand, or opportunity | `/examples/signal.yaml` | Use `Signal`; do not model relationships directly in the signal. |
+| Generate a new catalog | `/catalog/examples/minimal.yaml`, `/catalog/examples/full.yaml`, `/schema/odpc.yaml` | Start with the minimal catalog, then add reusable objects only when needed. |
+| Convert product metadata into catalog form | `/catalog/examples/product-reference.yaml` | Use `ProductReference` and point `productModel.uri` to the authoritative product definition. |
+| Classify demand or business need text | `/catalog/objects.jsonl`, `/catalog/examples/use-case.yaml` | Use `UseCase` for demand-side needs and expected outcomes. |
+| Classify strategic or operational outcomes | `/catalog/objects.jsonl`, `/catalog/examples/business-objective-with-kpis.yaml` | Use `BusinessObjective`; nest KPIs inside `businessObjective.kpis`. |
+| Capture evidence, risk, demand, or opportunity | `/catalog/examples/signal.yaml` | Use `Signal`; do not model relationships directly in the signal. |
 | Build graph relationships between objects | ODPG resources | ODPC defines reusable objects. ODPG defines relationships, nodes, and edges. |
 | Select stable terms or relationship names | ODPV resources | ODPV provides controlled vocabulary terms and relationship names. |
 

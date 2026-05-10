@@ -43,7 +43,7 @@ class AgentScriptsTest(unittest.TestCase):
         self.assertIn("productModel", result.stdout)
 
     def test_validate_catalog_accepts_minimal_example_or_reports_missing_dependency(self):
-        result = run_script("scripts/validate_catalog.py", "source/examples/minimal-catalog.yaml")
+        result = run_script("scripts/validate_catalog.py", "source/catalog/examples/minimal.yaml")
 
         if result.returncode == 2:
             self.assertIn("jsonschema", result.stderr)
