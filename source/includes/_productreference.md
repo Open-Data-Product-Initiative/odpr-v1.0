@@ -10,7 +10,7 @@ The `ProductReference` object should stay lightweight. It should not duplicate d
 
 ODPC is ODPS-native, but not ODPS-only. A `ProductReference` can point to an ODPS file or another product definition model through `productModel`.
 
-Connections between products, use cases, business objectives, KPIs, signals, and other catalog objects belong to Open Data Product Graphs (ODPG). ODPG defines the graphs and relationships between catalog objects, while ODPC defines the reusable catalog objects themselves.
+Connections between products, use cases, business objectives, KPIs, signals, and other catalog objects belong to [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/). [ODPG](https://opendataproducts.org/odpg-v1.0/) defines the graphs and relationships between catalog objects, while ODPC defines the reusable catalog objects themselves.
 
 By defining product references as catalog objects, ODPC supports product discovery, portfolio browsing, filtering, prioritization, governance review, and AI-assisted portfolio analysis.
 
@@ -134,5 +134,4 @@ productReference:
 | `owner.role`          | string           | optional                          | Responsible role, such as Data Product Owner or Product Manager.                                                                                                                                                                                                                    |
 | `logoURL`             | string           | optional                          | URL to a logo or visual asset used in catalog display.                                                                                                                                                                                                                              |
 | `outputFileFormats`   | array of strings | optional                          | Output formats available from the product, such as `CSV`, `JSON`, `Parquet`, or `GeoJSON`.                                                                                                                                                                                          |
-
 

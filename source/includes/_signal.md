@@ -11,7 +11,7 @@ A `Signal` can come from internal sources such as search logs, usage analytics, 
 
 The `Signal` object should describe what was observed, where it came from, how strong it is, how confident the organization is, what opportunity it suggests, and what action should be considered.
 
-The `Signal` object should not directly define relationships to products, use cases, business objectives, or other catalog objects. Those connections belong to Open Data Product Graphs (ODPG), which defines the graphs and relationships between catalog objects.
+The `Signal` object should not directly define relationships to products, use cases, business objectives, or other catalog objects. Those connections belong to [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/), which defines the graphs and relationships between catalog objects.
 
 By defining signals as reusable catalog objects, ODPC supports opportunity discovery, market intelligence, gap analysis, portfolio prioritization, AI-assisted planning, and continuous alignment between data products and changing business needs.
 
@@ -148,4 +148,3 @@ signal:
 | `recommendedAction.en`   | string           |          | English recommended action.                                                                                                                                 |
 | `status`                 | string           |          | Signal lifecycle status, such as `new`, `reviewing`, `accepted`, `rejected`, `converted`, or `archived`.                                                    |
 | `tags`                   | array of strings |          | Keywords used to classify, search, or filter the signal.                                                                                                    |
-

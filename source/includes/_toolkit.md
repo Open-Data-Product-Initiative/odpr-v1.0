@@ -26,7 +26,7 @@ Use /catalog/objects.jsonl for retrieval, classification, object selection, and 
 Use /catalog/examples/*.yaml when generating or repairing ODPC catalog content.
 Use ProductReference for lightweight references to data products; do not copy full ODPS product metadata into ODPC.
 Use BusinessObjective.kpis for KPIs; do not create top-level KPI objects.
-Use ODPG, not ODPC, for graph relationships, nodes, edges, traversal, and relationship semantics.
+Use [ODPG](https://opendataproducts.org/odpg-v1.0/), not ODPC, for graph relationships, nodes, edges, traversal, and relationship semantics.
 Use ODPV when stable vocabulary terms or relationship names are needed.
 -->
 

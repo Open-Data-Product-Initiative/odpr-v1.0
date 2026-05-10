@@ -8,9 +8,9 @@ In ODPC, the `Catalog` object acts as the portfolio container. It helps organiza
 
 The `Catalog` object can include product references, use cases, business objectives, and signals directly as reusable catalog objects. It can also define where the catalog graph is implemented through the `graph` attribute.
 
-The `graph` attribute identifies the graph standard, version, and URI used for the catalog graph. The graph can be implemented with `ODPG` or another supported graph standard, such as `RDF`, `JSON-LD`, `GraphML`, `openCypher`, `GQL`, `Gremlin`, `GraphSON`, or `GeoSPARQL`.
+The `graph` attribute identifies the graph standard, version, and URI used for the catalog graph. The graph can be implemented with [ODPG](https://opendataproducts.org/odpg-v1.0/) or another supported graph standard, such as `RDF`, `JSON-LD`, `GraphML`, `openCypher`, `GQL`, `Gremlin`, `GraphSON`, or `GeoSPARQL`.
 
-The `Catalog` object should remain focused on catalog structure and portfolio organization. It should not define detailed product metadata, relationship semantics, nodes, edges, or graph rules. Detailed product definitions belong to product models such as `ODPS`. Relationship modeling belongs to the selected graph standard, with `ODPG` as the native standard for the OpenDataProducts.org specification family.
+The `Catalog` object should remain focused on catalog structure and portfolio organization. It should not define detailed product metadata, relationship semantics, nodes, edges, or graph rules. Detailed product definitions belong to product models such as `ODPS`. Relationship modeling belongs to the selected graph standard, with [ODPG](https://opendataproducts.org/odpg-v1.0/) as the native standard for the OpenDataProducts.org specification family.
 
 By defining catalogs as reusable objects, ODPC supports discovery, portfolio browsing, governance review, prioritization, filtering, AI-assisted portfolio analysis, and reporting across data product ecosystems.
 
@@ -138,7 +138,7 @@ catalog:
 | `version` | string |  | Catalog version. |
 | `status` | string |  | Lifecycle status of the catalog, such as `draft`, `active`, `deprecated`, or `retired`. |
 | `graph` | object |  | Defines the graph specification used to describe relationships between catalog objects. |
-| `graph.standard` | string |  | Graph standard used for the catalog graph. Default is `ODPG` for Open Data Product Graphs. Other options: `RDF` for semantic web graphs, `JSON-LD` for linked data in JSON, `GraphML` for graph exchange, `openCypher` for property graph scripts, `GQL` for ISO property graph queries, `Gremlin` for graph traversal, `GraphSON` for TinkerPop-style graph JSON, or `GeoSPARQL` for geospatial RDF graphs. |
+| `graph.standard` | string |  | Graph standard used for the catalog graph. Default is [ODPG](https://opendataproducts.org/odpg-v1.0/) for Open Data Product Graphs. Other options: `RDF` for semantic web graphs, `JSON-LD` for linked data in JSON, `GraphML` for graph exchange, `openCypher` for property graph scripts, `GQL` for ISO property graph queries, `Gremlin` for graph traversal, `GraphSON` for TinkerPop-style graph JSON, or `GeoSPARQL` for geospatial RDF graphs. |
 | `graph.version` | string | ✓ when `graph` is used | Version of the graph standard. |
 | `graph.uri` | string | ✓ when `graph` is used | URI pointing to the graph definition. |
 | `productReferences` | array of objects |  | List of data product references included in the catalog. Each item follows the `ProductReference` object schema. |

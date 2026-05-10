@@ -7,9 +7,9 @@ The `UseCase` object describes a business, operational, analytical, or policy us
 
 In ODPC, a use case is a demand-side portfolio object. It helps organizations understand where data products create value and which business needs the portfolio should support.
 
-A `UseCase` can describe required data through `dataNeeds`, but it should not directly reference data products. Connections between use cases, data products, business objectives, and signal belong to Open Data Product Graphs (ODPG).
+A `UseCase` can describe required data through `dataNeeds`, but it should not directly reference data products. Connections between use cases, data products, business objectives, and signal belong to [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/).
 
-ODPG defines graphs and connections between catalog objects. It is used to model relationships such as which data products support a use case, which use cases contribute to a business objective, and where portfolio gaps exist.
+[ODPG](https://opendataproducts.org/odpg-v1.0/) defines graphs and connections between catalog objects. It is used to model relationships such as which data products support a use case, which use cases contribute to a business objective, and where portfolio gaps exist.
 
 The `UseCase` object should remain focused on the use case itself, not on detailed relationship semantics.
 
@@ -141,4 +141,3 @@ useCase:
 | `status`                | string           | optional                          | Lifecycle status of the use case, such as `draft`, `active`, `paused`, `completed`, or `retired`.    |
 | `priority`              | string           | optional                          | Relative importance of the use case, such as `low`, `medium`, `high`, or `critical`.                 |
 | `tags`                  | array of strings | optional                          | Keywords used to classify, search, or filter the use case.                                           |
-

@@ -57,7 +57,7 @@ ODPC is part of the OpenDataProducts.org standards family. It complements the Op
 <img src="/images/odpc.png" width="500">
 
 
-ODPS defines one data product. ODPC defines the reusable portfolio objects around data products. [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/), defines the relationships between those objects.
+ODPS defines one data product. ODPC defines the reusable portfolio objects around data products. [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/) defines the relationships between those objects.
 
 The goal of ODPC is to help organizations move from isolated data product descriptions to managed data product portfolios that connect products to demand, use cases, business objectives, and measurable outcomes.
 
@@ -94,7 +94,7 @@ ODPC defines the structure for that portfolio layer. It enables organizations to
 
 This creates a reusable foundation for discovery, governance, prioritization, AI-assisted planning, and graph-based portfolio analysis.
 
-**ODPC organizes the portfolio. ODPG connects the portfolio. GraphRAG makes the connected portfolio usable by AI assistants for discovery, gap analysis, impact mapping, and decision support.**
+**ODPC organizes the portfolio. [ODPG](https://opendataproducts.org/odpg-v1.0/) connects the portfolio. GraphRAG makes the connected portfolio usable by AI assistants for discovery, gap analysis, impact mapping, and decision support.**
 
 
 ## Specification aims and aspects
@@ -106,7 +106,7 @@ ODPC aims to:
 * support ODPS-native and non-ODPS product definitions
 * reduce metadata conversion friction between systems
 * support AI-assisted discovery, cataloging, and portfolio planning
-* provide the reusable object layer for Open Data Product Graphs, ODPG
+* provide the reusable object layer for [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/)
 * support machine-readable cataloging with YAML and schema validation
 
 **Note!** In the "Open Data Product" focus is on the latter words and the prefix "open" refers to the openness of the standard. Any kind of 
@@ -117,7 +117,7 @@ The OpenDataProducts.org standards family follows a simple separation of concern
 
 * **ODPS defines the product.**
 * **ODPC defines the reusable portfolio objects.**
-* **ODPG defines the relationships.**
+* **[ODPG](https://opendataproducts.org/odpg-v1.0/) defines the relationships.**
 
 This keeps each specification focused. ODPC should not redefine the full structure of a data product. That belongs to ODPS or to another source product model. 
 ODPC should also not define graph traversal, graph analytics, or relationship semantics. Those belong to [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/).
