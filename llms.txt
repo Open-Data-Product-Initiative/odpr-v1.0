@@ -12,9 +12,9 @@ Human-readable specification:
 Standards-family context:
 - ODPS is the Open Data Product Specification. Use ODPS when describing one data product and its detailed product metadata. Homepage: https://opendataproducts.org/
 - ODPC is the Open Data Product Catalog specification. Use ODPC when describing catalogs, portfolios, product references, use cases, business objectives, KPIs, signals, ownership, scope, and catalog-level metadata.
-- ODPG is the Open Data Product Graph specification. Use ODPG when describing graph structures and relationships between data products, use cases, objectives, KPIs, signals, governance objects, providers, and consumers. Documentation: https://opendataproducts.org/odpg-v1.0/
+- [ODPG](https://opendataproducts.org/odpg-v1.0/) is the Open Data Product Graph specification. Use [ODPG](https://opendataproducts.org/odpg-v1.0/) when describing graph structures and relationships between data products, use cases, objectives, KPIs, signals, governance objects, providers, and consumers.
 - ODPV is the Open Data Product Vocabulary. Use ODPV when stable shared term ids, labels, definitions, relationship names, and controlled vocabulary guidance are needed. Documentation: https://opendataproducts.org/odpv-v1.0/
-- ODPC does not replace ODPS, ODPG, or ODPV. It provides the catalog and portfolio object layer around data products.
+- ODPC does not replace ODPS, [ODPG](https://opendataproducts.org/odpg-v1.0/), or ODPV. It provides the catalog and portfolio object layer around data products.
 
 Canonical schema files:
 - /schema/odpc.yaml (https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml)
@@ -58,8 +58,8 @@ File selection guidance:
 - Use /schema/odpc.json when JSON schema validation or JSON-native tooling is preferred.
 - Use the human-readable specification when you need object explanations, examples, attribute descriptions, or modeling guidance.
 - Use ODPS resources for detailed data product definitions referenced by ProductReference.productModel.
-- Use ODPG resources when modeling relationships, graph nodes, graph edges, traversal, graph analytics, or GraphRAG structures.
-- Use ODPV resources when selecting stable shared vocabulary terms or relationship names across ODPS, ODPC, and ODPG.
+- Use [ODPG](https://opendataproducts.org/odpg-v1.0/) resources when modeling relationships, graph nodes, graph edges, traversal, graph analytics, or GraphRAG structures.
+- Use ODPV resources when selecting stable shared vocabulary terms or relationship names across ODPS, ODPC, and [ODPG](https://opendataproducts.org/odpg-v1.0/).
 
 Recommended agent workflow:
 1. Fetch /llms.txt first to understand the standards-family context and available ODPC resources.
@@ -73,7 +73,7 @@ Recommended agent workflow:
 9. Use UseCase for demand, user needs, business problems, analytical needs, or operational scenarios.
 10. Use BusinessObjective for strategic or operational outcomes, and nest KPIs inside BusinessObjective.
 11. Use Signal for demand signals, risk signals, opportunity signals, quality signals, performance signals, trend signals, or external change signals.
-12. Use ODPG, not ODPC, for explicit relationships between catalog objects.
+12. Use [ODPG](https://opendataproducts.org/odpg-v1.0/), not ODPC, for explicit relationships between catalog objects.
 13. Use ODPV terms when stable shared ids, labels, definitions, or relationship names are needed.
 14. Include the ODPC version when generating structured catalog outputs.
 15. If no ODPC object fits a concept, treat it as an extension candidate instead of inventing a new meaning for an official ODPC object.
@@ -85,11 +85,11 @@ Object selection guidance:
 - Use BusinessObjective when describing measurable strategic, policy, business, or operational outcomes.
 - Use KPI only inside BusinessObjective.kpis when measuring progress toward an objective.
 - Use Signal when describing evidence that may affect discovery, prioritization, risk assessment, opportunity detection, or portfolio planning.
-- Use ODPG relationships when connecting products, use cases, objectives, KPIs, signals, providers, consumers, or governance concepts.
+- Use [ODPG](https://opendataproducts.org/odpg-v1.0/) relationships when connecting products, use cases, objectives, KPIs, signals, providers, consumers, or governance concepts.
 
 Modeling constraints:
 - ODPC defines reusable catalog objects. It does not define full data product metadata; use ODPS or another referenced product model for that.
-- ODPC defines catalog structure. It does not define graph traversal, graph analytics, or relationship semantics; use ODPG for that.
+- ODPC defines catalog structure. It does not define graph traversal, graph analytics, or relationship semantics; use [ODPG](https://opendataproducts.org/odpg-v1.0/) for that.
 - ProductReference.productModel.uri should point to the authoritative product definition.
 - Language-tagged strings commonly use name.en and description.en.
 - Prefer stable identifiers for catalog objects so they can be referenced by catalogs, tools, and graph implementations.
@@ -103,7 +103,7 @@ Extension guidance:
 - Use extensions for local integration details such as internal system ids, workflow state, platform URLs, ingestion job ids, UI hints, sync timestamps, review metadata, or source-system traceability.
 - Do not use extensions to replace official ODPC fields. If an official field exists, use it instead of an `x-` field.
 - Do not use extensions to change the meaning of official ODPC objects or fields. For example, do not use `x-use-case` to make a ProductReference behave like a UseCase.
-- Do not use extensions for graph relationships, relationship semantics, nodes, edges, traversal rules, or GraphRAG structures. Use ODPG for those.
+- Do not use extensions for graph relationships, relationship semantics, nodes, edges, traversal rules, or GraphRAG structures. Use [ODPG](https://opendataproducts.org/odpg-v1.0/) for those.
 - Do not use extensions to copy full ODPS product metadata into ProductReference. ProductReference should remain lightweight and point to the authoritative product model through `productModel`.
 - Do not use extensions for shared vocabulary terms or relationship names that should come from ODPV.
 - If an extension becomes broadly useful across catalogs or organizations, treat it as a candidate for a future ODPC field and propose it through GitHub issues instead of relying on a private meaning.

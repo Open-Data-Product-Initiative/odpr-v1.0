@@ -502,7 +502,7 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 
 <p><img src="images/odpc-98772d2a.png" width="500"></p>
 
-<p>ODPS defines one data product. ODPC defines the reusable portfolio objects around data products. <a href="https://opendataproducts.org/odpg-v1.0/">Open Data Product Graphs, ODPG</a>, defines the relationships between those objects.</p>
+<p>ODPS defines one data product. ODPC defines the reusable portfolio objects around data products. <a href="https://opendataproducts.org/odpg-v1.0/">Open Data Product Graphs, ODPG</a> defines the relationships between those objects.</p>
 
 <p>The goal of ODPC is to help organizations move from isolated data product descriptions to managed data product portfolios that connect products to demand, use cases, business objectives, and measurable outcomes.</p>
 <h2 id='odpc-is-odps-native-but-not-odps-only'>ODPC is ODPS-native, but not ODPS-only</h2>
@@ -541,7 +541,7 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 
 <p>This creates a reusable foundation for discovery, governance, prioritization, AI-assisted planning, and graph-based portfolio analysis.</p>
 
-<p><strong>ODPC organizes the portfolio. ODPG connects the portfolio. GraphRAG makes the connected portfolio usable by AI assistants for discovery, gap analysis, impact mapping, and decision support.</strong></p>
+<p><strong>ODPC organizes the portfolio. <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> connects the portfolio. GraphRAG makes the connected portfolio usable by AI assistants for discovery, gap analysis, impact mapping, and decision support.</strong></p>
 <h2 id='specification-aims-and-aspects'>Specification aims and aspects</h2>
 <p>ODPC aims to:</p>
 
@@ -552,7 +552,7 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 <li>support ODPS-native and non-ODPS product definitions</li>
 <li>reduce metadata conversion friction between systems</li>
 <li>support AI-assisted discovery, cataloging, and portfolio planning</li>
-<li>provide the reusable object layer for Open Data Product Graphs, ODPG</li>
+<li>provide the reusable object layer for <a href="https://opendataproducts.org/odpg-v1.0/">Open Data Product Graphs, ODPG</a></li>
 <li>support machine-readable cataloging with YAML and schema validation</li>
 </ul>
 
@@ -564,7 +564,7 @@ connotations to open data are not intentional, intended, or desirable.</p>
 <ul>
 <li><strong>ODPS defines the product.</strong></li>
 <li><strong>ODPC defines the reusable portfolio objects.</strong></li>
-<li><strong>ODPG defines the relationships.</strong></li>
+<li><strong><a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> defines the relationships.</strong></li>
 </ul>
 
 <p>This keeps each specification focused. ODPC should not redefine the full structure of a data product. That belongs to ODPS or to another source product model. 
@@ -624,7 +624,7 @@ Use /catalog/objects.jsonl for retrieval, classification, object selection, and 
 Use /catalog/examples/*.yaml when generating or repairing ODPC catalog content.
 Use ProductReference for lightweight references to data products; do not copy full ODPS product metadata into ODPC.
 Use BusinessObjective.kpis for KPIs; do not create top-level KPI objects.
-Use ODPG, not ODPC, for graph relationships, nodes, edges, traversal, and relationship semantics.
+Use [ODPG](https://opendataproducts.org/odpg-v1.0/), not ODPC, for graph relationships, nodes, edges, traversal, and relationship semantics.
 Use ODPV when stable vocabulary terms or relationship names are needed.
 -->
 
@@ -738,9 +738,9 @@ Do not edit generated or derived artifacts without checking alignment across llm
 
 <p>The <code>Catalog</code> object can include product references, use cases, business objectives, and signals directly as reusable catalog objects. It can also define where the catalog graph is implemented through the <code>graph</code> attribute.</p>
 
-<p>The <code>graph</code> attribute identifies the graph standard, version, and URI used for the catalog graph. The graph can be implemented with <code>ODPG</code> or another supported graph standard, such as <code>RDF</code>, <code>JSON-LD</code>, <code>GraphML</code>, <code>openCypher</code>, <code>GQL</code>, <code>Gremlin</code>, <code>GraphSON</code>, or <code>GeoSPARQL</code>.</p>
+<p>The <code>graph</code> attribute identifies the graph standard, version, and URI used for the catalog graph. The graph can be implemented with <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> or another supported graph standard, such as <code>RDF</code>, <code>JSON-LD</code>, <code>GraphML</code>, <code>openCypher</code>, <code>GQL</code>, <code>Gremlin</code>, <code>GraphSON</code>, or <code>GeoSPARQL</code>.</p>
 
-<p>The <code>Catalog</code> object should remain focused on catalog structure and portfolio organization. It should not define detailed product metadata, relationship semantics, nodes, edges, or graph rules. Detailed product definitions belong to product models such as <code>ODPS</code>. Relationship modeling belongs to the selected graph standard, with <code>ODPG</code> as the native standard for the OpenDataProducts.org specification family.</p>
+<p>The <code>Catalog</code> object should remain focused on catalog structure and portfolio organization. It should not define detailed product metadata, relationship semantics, nodes, edges, or graph rules. Detailed product definitions belong to product models such as <code>ODPS</code>. Relationship modeling belongs to the selected graph standard, with <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> as the native standard for the OpenDataProducts.org specification family.</p>
 
 <p>By defining catalogs as reusable objects, ODPC supports discovery, portfolio browsing, governance review, prioritization, filtering, AI-assisted portfolio analysis, and reporting across data product ecosystems.</p>
 <h2 id='mandatory-attributes-and-options'>Mandatory attributes and options</h2>
@@ -972,7 +972,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 <td><code>graph.standard</code></td>
 <td>string</td>
 <td style="text-align: right"></td>
-<td>Graph standard used for the catalog graph. Default is <code>ODPG</code> for Open Data Product Graphs. Other options: <code>RDF</code> for semantic web graphs, <code>JSON-LD</code> for linked data in JSON, <code>GraphML</code> for graph exchange, <code>openCypher</code> for property graph scripts, <code>GQL</code> for ISO property graph queries, <code>Gremlin</code> for graph traversal, <code>GraphSON</code> for TinkerPop-style graph JSON, or <code>GeoSPARQL</code> for geospatial RDF graphs.</td>
+<td>Graph standard used for the catalog graph. Default is <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> for Open Data Product Graphs. Other options: <code>RDF</code> for semantic web graphs, <code>JSON-LD</code> for linked data in JSON, <code>GraphML</code> for graph exchange, <code>openCypher</code> for property graph scripts, <code>GQL</code> for ISO property graph queries, <code>Gremlin</code> for graph traversal, <code>GraphSON</code> for TinkerPop-style graph JSON, or <code>GeoSPARQL</code> for geospatial RDF graphs.</td>
 </tr>
 <tr>
 <td><code>graph.version</code></td>
@@ -1028,7 +1028,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 
 <p>ODPC is ODPS-native, but not ODPS-only. A <code>ProductReference</code> can point to an ODPS file or another product definition model through <code>productModel</code>.</p>
 
-<p>Connections between products, use cases, business objectives, KPIs, signals, and other catalog objects belong to Open Data Product Graphs (ODPG). ODPG defines the graphs and relationships between catalog objects, while ODPC defines the reusable catalog objects themselves.</p>
+<p>Connections between products, use cases, business objectives, KPIs, signals, and other catalog objects belong to <a href="https://opendataproducts.org/odpg-v1.0/">Open Data Product Graphs, ODPG</a>. <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> defines the graphs and relationships between catalog objects, while ODPC defines the reusable catalog objects themselves.</p>
 
 <p>By defining product references as catalog objects, ODPC supports product discovery, portfolio browsing, filtering, prioritization, governance review, and AI-assisted portfolio analysis.</p>
 <h2 id='mandatory-attributes-and-options'>Mandatory attributes and options</h2>
@@ -1315,9 +1315,9 @@ Do not edit generated or derived artifacts without checking alignment across llm
 
 <p>In ODPC, a use case is a demand-side portfolio object. It helps organizations understand where data products create value and which business needs the portfolio should support.</p>
 
-<p>A <code>UseCase</code> can describe required data through <code>dataNeeds</code>, but it should not directly reference data products. Connections between use cases, data products, business objectives, and signal belong to Open Data Product Graphs (ODPG).</p>
+<p>A <code>UseCase</code> can describe required data through <code>dataNeeds</code>, but it should not directly reference data products. Connections between use cases, data products, business objectives, and signal belong to <a href="https://opendataproducts.org/odpg-v1.0/">Open Data Product Graphs, ODPG</a>.</p>
 
-<p>ODPG defines graphs and connections between catalog objects. It is used to model relationships such as which data products support a use case, which use cases contribute to a business objective, and where portfolio gaps exist.</p>
+<p><a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> defines graphs and connections between catalog objects. It is used to model relationships such as which data products support a use case, which use cases contribute to a business objective, and where portfolio gaps exist.</p>
 
 <p>The <code>UseCase</code> object should remain focused on the use case itself, not on detailed relationship semantics.</p>
 
@@ -1870,7 +1870,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 
 <p>The <code>Signal</code> object should describe what was observed, where it came from, how strong it is, how confident the organization is, what opportunity it suggests, and what action should be considered.</p>
 
-<p>The <code>Signal</code> object should not directly define relationships to products, use cases, business objectives, or other catalog objects. Those connections belong to Open Data Product Graphs (ODPG), which defines the graphs and relationships between catalog objects.</p>
+<p>The <code>Signal</code> object should not directly define relationships to products, use cases, business objectives, or other catalog objects. Those connections belong to <a href="https://opendataproducts.org/odpg-v1.0/">Open Data Product Graphs, ODPG</a>, which defines the graphs and relationships between catalog objects.</p>
 
 <p>By defining signals as reusable catalog objects, ODPC supports opportunity discovery, market intelligence, gap analysis, portfolio prioritization, AI-assisted planning, and continuous alignment between data products and changing business needs.</p>
 <h2 id='mandatory-attributes-and-options'>Mandatory attributes and options</h2>
@@ -2245,7 +2245,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 <li><a href="https://www.linkedin.com/in/jarkkomoilanen/">Jarkko Moilanen</a></li>
 </ul>
 <h1 id='terms-used'>Terms used</h1>
-<p>ODPC uses the <a href="https://opendataproducts.org/odpv-v1.0/">Open Data Product Vocabulary, ODPV</a>, as the shared vocabulary for the OpenDataProducts.org standards family. Use ODPV for common terms, stable ids, labels, definitions, aliases, and relationship names across ODPS, ODPC, and ODPG. For machine-readable lookup, use the ODPV term records at <a href="https://opendataproducts.org/odpv-v1.0/vocab/terms.jsonl">ODPV terms.jsonl</a>.</p>
+<p>ODPC uses the <a href="https://opendataproducts.org/odpv-v1.0/">Open Data Product Vocabulary, ODPV</a>, as the shared vocabulary for the OpenDataProducts.org standards family. Use ODPV for common terms, stable ids, labels, definitions, aliases, and relationship names across ODPS, ODPC, and <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a>. For machine-readable lookup, use the ODPV term records at <a href="https://opendataproducts.org/odpv-v1.0/vocab/terms.jsonl">ODPV terms.jsonl</a>.</p>
 
 <p>The terms below explain ODPC-specific usage where this specification gives a shared vocabulary term a concrete catalog-object shape, field-level meaning, or modeling constraint.</p>
 <h2 id='shared-terms-from-odpv'>Shared terms from ODPV</h2>
@@ -2289,7 +2289,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 <tr>
 <td>Data product graph</td>
 <td><code>DataProductGraph</code></td>
-<td>Referenced from ODPC through <code>Catalog.graph</code>; graph structures belong to ODPG or another graph standard.</td>
+<td>Referenced from ODPC through <code>Catalog.graph</code>; graph structures belong to <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> or another graph standard.</td>
 </tr>
 <tr>
 <td>Identifier</td>
@@ -2337,7 +2337,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 </tr>
 <tr>
 <td><code>Graph standard</code></td>
-<td>The graph standard used to implement catalog relationships through <code>Catalog.graph</code>, such as <code>ODPG</code>, <code>RDF</code>, <code>JSON-LD</code>, <code>GraphML</code>, <code>openCypher</code>, <code>GQL</code>, <code>Gremlin</code>, <code>GraphSON</code>, or <code>GeoSPARQL</code>.</td>
+<td>The graph standard used to implement catalog relationships through <code>Catalog.graph</code>, such as <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a>, <code>RDF</code>, <code>JSON-LD</code>, <code>GraphML</code>, <code>openCypher</code>, <code>GQL</code>, <code>Gremlin</code>, <code>GraphSON</code>, or <code>GeoSPARQL</code>.</td>
 </tr>
 <tr>
 <td><code>Extension property</code></td>
@@ -2345,7 +2345,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 </tr>
 </tbody></table>
 
-<p>Relationship names such as <code>supports</code>, <code>requires</code>, <code>contributesTo</code>, <code>measures</code>, <code>dependsOn</code>, <code>providedBy</code>, and <code>consumedBy</code> should come from ODPV relationship terms and should be modeled in ODPG or another graph standard, not as direct ODPC object fields.</p>
+<p>Relationship names such as <code>supports</code>, <code>requires</code>, <code>contributesTo</code>, <code>measures</code>, <code>dependsOn</code>, <code>providedBy</code>, and <code>consumedBy</code> should come from ODPV relationship terms and should be modeled in <a href="https://opendataproducts.org/odpg-v1.0/">ODPG</a> or another graph standard, not as direct ODPC object fields.</p>
 
       </div>
       <div class="dark-box">
