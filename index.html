@@ -437,6 +437,14 @@
           </li>
           <li>
             <a href="#terms-used" class="toc-h1 toc-link" data-title="Terms used">Terms used</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#shared-terms-from-odpv" class="toc-h2 toc-link" data-title="Shared terms from ODPV">Shared terms from ODPV</a>
+                  </li>
+                  <li>
+                    <a href="#odpc-specific-usage-notes" class="toc-h2 toc-link" data-title="ODPC-specific usage notes">ODPC-specific usage notes</a>
+                  </li>
+              </ul>
           </li>
       </ul>
         <ul class="toc-footer">
@@ -2227,8 +2235,74 @@ Do not edit generated or derived artifacts without checking alignment across llm
 <li><a href="https://www.linkedin.com/in/jarkkomoilanen/">Jarkko Moilanen</a></li>
 </ul>
 <h1 id='terms-used'>Terms used</h1>
-<p>Here&#39;s list of terms used and what we mean with them. The meaning of terms is mostly taken from existing knowledge eg articles and other trusted sources. The source is always linked to the term. In some rare cases term is defined for the specification purposes only. </p>
+<p>ODPC uses the <a href="https://opendataproducts.org/odpv-v1.0/">Open Data Product Vocabulary, ODPV</a>, as the shared vocabulary for the OpenDataProducts.org standards family. Use ODPV for common terms, stable ids, labels, definitions, aliases, and relationship names across ODPS, ODPC, and ODPG.</p>
 
+<p>The terms below explain ODPC-specific usage where this specification gives a shared vocabulary term a concrete catalog-object shape, field-level meaning, or modeling constraint.</p>
+<h2 id='shared-terms-from-odpv'>Shared terms from ODPV</h2>
+<table><thead>
+<tr>
+<th>Term</th>
+<th>ODPV term</th>
+<th>ODPC usage</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Data product catalog</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/DataProductCatalog"><code>DataProductCatalog</code></a></td>
+<td>Implemented in ODPC as the <code>Catalog</code> object.</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/UseCase"><code>UseCase</code></a></td>
+<td>Implemented in ODPC as the <code>UseCase</code> object.</td>
+</tr>
+<tr>
+<td>Business objective</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/BusinessObjective"><code>BusinessObjective</code></a></td>
+<td>Implemented in ODPC as the <code>BusinessObjective</code> object.</td>
+</tr>
+<tr>
+<td>KPI</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/KPI"><code>KPI</code></a></td>
+<td>In ODPC, KPIs are nested inside <code>BusinessObjective.kpis</code>, not defined as top-level catalog objects.</td>
+</tr>
+<tr>
+<td>Signal</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/Signal"><code>Signal</code></a></td>
+<td>Implemented in ODPC as the <code>Signal</code> object.</td>
+</tr>
+<tr>
+<td>Data need</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/DataNeed"><code>DataNeed</code></a></td>
+<td>Represented in ODPC through <code>UseCase.dataNeeds</code>.</td>
+</tr>
+<tr>
+<td>Data product graph</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/DataProductGraph"><code>DataProductGraph</code></a></td>
+<td>Referenced from ODPC through <code>Catalog.graph</code>; graph structures belong to ODPG or another graph standard.</td>
+</tr>
+<tr>
+<td>Identifier</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/Identifier"><code>Identifier</code></a></td>
+<td>Used in ODPC object <code>id</code> fields.</td>
+</tr>
+<tr>
+<td>Reference</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/Reference"><code>Reference</code></a></td>
+<td>Used in ODPC for pointers such as <code>ProductReference.productModel.uri</code> and <code>Catalog.graph.uri</code>.</td>
+</tr>
+<tr>
+<td>Owner</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/Owner"><code>Owner</code></a></td>
+<td>Used in ODPC <code>owner</code> fields for accountable organizations, teams, or roles.</td>
+</tr>
+<tr>
+<td>Domain</td>
+<td><a href="https://opendataproducts.org/odpv-v1.0/terms/Domain"><code>Domain</code></a></td>
+<td>Used in ODPC <code>domains</code> and <code>scope.domains</code> fields for catalog grouping and filtering.</td>
+</tr>
+</tbody></table>
+<h2 id='odpc-specific-usage-notes'>ODPC-specific usage notes</h2>
 <table><thead>
 <tr>
 <th>Term</th>
@@ -2236,70 +2310,32 @@ Do not edit generated or derived artifacts without checking alignment across llm
 </tr>
 </thead><tbody>
 <tr>
-<td><code>Open Data Product Specification (ODPS)</code></td>
-<td>Defines one data product, including metadata, ownership, access, quality, service levels, pricing, licensing, support, governance, and product strategy.</td>
-</tr>
-<tr>
-<td><code>Open Data Product Catalog Specification (ODPC)</code></td>
-<td>Defines reusable portfolio objects used for data product discovery, planning, prioritization, and portfolio management.</td>
-</tr>
-<tr>
-<td><code>Open Data Product Graph Specification (ODPG)</code></td>
-<td>Defines graphs and relationships between data products, product references, use cases, business objectives, signals, and other catalog objects.</td>
-</tr>
-<tr>
 <td><code>Catalog</code></td>
-<td>The top-level ODPC object that organizes reusable portfolio objects such as product references, use cases, business objectives, and signals.</td>
+<td>The ODPC object that implements an ODPV <code>DataProductCatalog</code>. It is the top-level portfolio container for product references, use cases, business objectives, signals, ownership, scope, lifecycle status, tags, and graph implementation metadata.</td>
 </tr>
 <tr>
 <td><code>ProductReference</code></td>
-<td>A lightweight catalog object that identifies a data product and points to its authoritative product definition through <code>productModel</code>.</td>
-</tr>
-<tr>
-<td><code>UseCase</code></td>
-<td>A demand-side catalog object that describes why data is needed, who needs it, what decision or process it supports, and what outcome is expected.</td>
-</tr>
-<tr>
-<td><code>BusinessObjective</code></td>
-<td>A catalog object that defines a higher-level business, operational, policy, or strategic objective. It can include KPIs used to measure progress.</td>
-</tr>
-<tr>
-<td><code>Signal</code></td>
-<td>A catalog object that captures an observed market, operational, user, technology, policy, competitive, quality, usage, risk, or gap indicator.</td>
+<td>An ODPC-specific lightweight catalog object that identifies a data product and points to its authoritative product definition through <code>productModel</code>. It should not duplicate full ODPS product metadata.</td>
 </tr>
 <tr>
 <td><code>ProductModel</code></td>
-<td>The authoritative model or specification used to define a data product, such as <code>ODPS</code>, <code>DPDS</code>, or an internal product model.</td>
-</tr>
-<tr>
-<td><code>Graph</code></td>
-<td>A model that connects catalog objects through nodes and edges. In the OpenDataProducts.org family, <code>ODPG</code> is the native graph standard.</td>
-</tr>
-<tr>
-<td><code>Node</code></td>
-<td>An object represented in a graph, such as a product reference, use case, business objective, or signal.</td>
-</tr>
-<tr>
-<td><code>Edge</code></td>
-<td>A relationship between two graph nodes. It can include direction, type, confidence, weight, evidence, and source.</td>
-</tr>
-<tr>
-<td><code>KPI</code></td>
-<td>A key performance indicator used to measure progress, performance, or value. In ODPC, KPIs are defined inside <code>BusinessObjective</code>.</td>
+<td>The authoritative model or specification used to define a referenced data product, such as <code>ODPS</code>, <code>DPDS</code>, or an internal product model. In ODPC, <code>productModel.uri</code> points to the source product definition.</td>
 </tr>
 <tr>
 <td><code>Portfolio object</code></td>
-<td>A reusable object used to manage a data product portfolio. Examples include <code>ProductReference</code>, <code>UseCase</code>, <code>BusinessObjective</code>, and <code>Signal</code>.</td>
-</tr>
-<tr>
-<td><code>Relationship</code></td>
-<td>A connection between two or more objects, such as a use case using a product reference or a signal suggesting a use case. Relationship modeling belongs to graph standards such as <code>ODPG</code>.</td>
+<td>A reusable ODPC object used to manage a data product portfolio. Examples include <code>ProductReference</code>, <code>UseCase</code>, <code>BusinessObjective</code>, and <code>Signal</code>.</td>
 </tr>
 <tr>
 <td><code>Graph standard</code></td>
-<td>The graph standard used to implement the catalog graph, such as <code>ODPG</code>, <code>RDF</code>, <code>JSON-LD</code>, <code>GraphML</code>, <code>openCypher</code>, <code>GQL</code>, <code>Gremlin</code>, <code>GraphSON</code>, or <code>GeoSPARQL</code>.</td>
+<td>The graph standard used to implement catalog relationships through <code>Catalog.graph</code>, such as <code>ODPG</code>, <code>RDF</code>, <code>JSON-LD</code>, <code>GraphML</code>, <code>openCypher</code>, <code>GQL</code>, <code>Gremlin</code>, <code>GraphSON</code>, or <code>GeoSPARQL</code>.</td>
+</tr>
+<tr>
+<td><code>Extension property</code></td>
+<td>A local or implementation-specific field whose name begins with <code>x-</code>. Extensions can add platform metadata without redefining official ODPC semantics.</td>
 </tr>
 </tbody></table>
+
+<p>Relationship names such as <code>supports</code>, <code>requires</code>, <code>contributesTo</code>, <code>measures</code>, <code>dependsOn</code>, <code>providedBy</code>, and <code>consumedBy</code> should come from ODPV relationship terms and should be modeled in ODPG or another graph standard, not as direct ODPC object fields.</p>
 
       </div>
       <div class="dark-box">
