@@ -1,4 +1,4 @@
-# ProductReference
+# ODPC ProductReference
 
 The `ProductReference` object defines a lightweight catalog reference to a data product. It identifies the product, provides the key information needed for catalog discovery, and points to the authoritative product definition through `productModel`.
 
