@@ -618,6 +618,14 @@ ODPC should also not define graph traversal, graph analytics, or relationship se
 <li>Use <code>/schema/odpc.yaml</code> or <code>/schema/odpc.json</code> to validate catalog files.</li>
 <li>Use the human-readable specification when object definitions, examples, and attribute explanations are needed.</li>
 </ol>
+
+<p>When working from the source repository, agents MAY use the helper scripts in <code>scripts/</code>:</p>
+<div class="highlight"><pre class="highlight shell"><code>python3 scripts/check_agent_artifacts.py
+python3 scripts/search_objects.py demand <span class="nt">--json</span>
+python3 scripts/search_objects.py <span class="nt">--id</span> ProductReference
+python3 scripts/validate_catalog.py <span class="nb">source</span>/examples/minimal-catalog.yaml
+</code></pre></div>
+<p>The validation script requires the packages listed in <code>scripts/requirements-agent.txt</code>.</p>
 <h2 id='common-agent-tasks'>Common agent tasks</h2>
 <table><thead>
 <tr>
