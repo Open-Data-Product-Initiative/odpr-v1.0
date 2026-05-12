@@ -46,9 +46,9 @@ productReference:
 | `description`           | object | required, language-tagged strings | Short product description used for catalog display and discovery.                                |
 | `description.en`        | string | required                          | English product description.                                                                     |
 | `productModel`          | object | required                          | Defines the authoritative product model or specification the catalog reference points to.        |
-| `productModel.standard` | string | required                          | Product model or standard used by the referenced product, such as `ODPS`, `DPDS`, or `internal`. |
+| `productModel.standard` | string | required                          | Product model or standard used by the referenced product, one of: `ODPS`, `DPDS`, or `internal`. |
 | `productModel.version`  | string | required                          | Version of the referenced product model or standard, such as ODPS `4.1`.                         |
-| `productModel.format`   | string | required                          | Format of the referenced product model, such as `yaml`, `json`, `toon` or `html`.                       |
+| `productModel.format`   | string | required                          | Format of the referenced product model, one of: `yaml`, `json`, `toon` or `html`.                       |
 | `productModel.$ref`     | string | required                          | Reference to the authoritative product definition, as a local file path or URL.      |
 
 
