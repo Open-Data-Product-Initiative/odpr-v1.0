@@ -48,7 +48,7 @@ productReference:
 | `productModel`          | object | required                          | Defines the authoritative product model or specification the catalog reference points to.        |
 | `productModel.standard` | string | required                          | Product model or standard used by the referenced product, such as `ODPS`, `DPDS`, or `internal`. |
 | `productModel.version`  | string | required                          | Version of the referenced product model or standard, such as ODPS `4.1`.                         |
-| `productModel.format`   | string | required                          | Format of the referenced product model, such as `yaml`, `json`, or `html`.                       |
+| `productModel.format`   | string | required                          | Format of the referenced product model, such as `yaml`, `json`, `toon` or `html`.                       |
 | `productModel.uri`      | string | required                          | URI pointing to the authoritative product definition.                                            |
 
 
