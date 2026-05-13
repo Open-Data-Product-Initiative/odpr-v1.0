@@ -14,9 +14,9 @@ The terms below explain ODPC-specific usage where this specification gives a sha
 | KPI | `KPI` | In ODPC, KPIs are nested inside `BusinessObjective.kpis`, not defined as top-level catalog objects. |
 | Signal | `Signal` | Implemented in ODPC as the `Signal` object. |
 | Data need | `DataNeed` | Represented in ODPC through `UseCase.dataNeeds`. |
-| Data product graph | `DataProductGraph` | Referenced from ODPC through `Catalog.meta.graph`; graph structures belong to [ODPG](https://opendataproducts.org/odpg-v1.0/) or another graph standard. |
+| Data product graph | `DataProductGraph` | Referenced from ODPC through `Catalog.metadata.graph`; graph structures belong to [ODPG](https://opendataproducts.org/odpg-v1.0/) or another graph standard. |
 | Identifier | `Identifier` | Used in ODPC object `id` fields. |
-| Reference | `Reference` | Used in ODPC for pointers such as `ProductReference.productModel.$ref` and `Catalog.meta.graph.$ref`. |
+| Reference | `Reference` | Used in ODPC for pointers such as `ProductReference.productModel.$ref` and `Catalog.metadata.graph.$ref`. |
 | Owner | `Owner` | Used in ODPC `owner` fields for accountable organizations, teams, or roles. |
 | Domain | `Domain` | Used in ODPC `domains` and `scope.domains` fields for catalog grouping and filtering. |
 
@@ -28,7 +28,7 @@ The terms below explain ODPC-specific usage where this specification gives a sha
 | `ProductReference` | An ODPC-specific lightweight catalog object that identifies a data product and points to its authoritative product definition through `productModel`. It should not duplicate full ODPS product metadata. |
 | `ProductModel` | The authoritative model or specification used to define a referenced data product, such as `ODPS`, `DPDS`, or an internal product model. In ODPC, `productModel.$ref` points to the source product definition as a local file path or URL. |
 | `Portfolio object` | A reusable ODPC object used to manage a data product portfolio. Examples include `ProductReference`, `UseCase`, `BusinessObjective`, and `Signal`. |
-| `Graph standard` | The graph standard used to implement catalog relationships through `Catalog.meta.graph`, such as [ODPG](https://opendataproducts.org/odpg-v1.0/), `RDF`, `JSON-LD`, `GraphML`, `openCypher`, `GQL`, `Gremlin`, `GraphSON`, or `GeoSPARQL`. |
+| `Graph standard` | The graph standard used to implement catalog relationships through `Catalog.metadata.graph`, such as [ODPG](https://opendataproducts.org/odpg-v1.0/), `RDF`, `JSON-LD`, `GraphML`, `openCypher`, `GQL`, `Gremlin`, `GraphSON`, or `GeoSPARQL`. |
 | `Extension property` | A local or implementation-specific field whose name begins with `x-`. Extensions can add platform metadata without redefining official ODPC semantics. |
 
 Relationship names such as `supports`, `requires`, `contributesTo`, `measures`, `dependsOn`, `providedBy`, and `consumedBy` should come from ODPV relationship terms and should be modeled in [ODPG](https://opendataproducts.org/odpg-v1.0/) or another graph standard, not as direct ODPC object fields.

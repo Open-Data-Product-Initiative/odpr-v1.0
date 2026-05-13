@@ -5,8 +5,9 @@
 ```yml
 schema: https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml
 version: "1.0"
+kind: Catalog
 catalog:
-  meta:
+  metadata:
     id: CAT-001
     name:
       en: Urban Mobility Data Product Catalog

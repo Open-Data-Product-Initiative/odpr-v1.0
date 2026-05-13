@@ -46,21 +46,21 @@ def collect_ids(items):
 
 def render_summary(document, path):
     catalog = document.get("catalog", {}) if isinstance(document, dict) else {}
-    meta = catalog.get("meta", {}) if isinstance(catalog, dict) else {}
+    metadata = catalog.get("metadata", {}) if isinstance(catalog, dict) else {}
     lines = [
         f"File: {path}",
         f"Schema: {document.get('schema', '(missing)') if isinstance(document, dict) else '(missing)'}",
         f"ODPC version: {document.get('version', '(missing)') if isinstance(document, dict) else '(missing)'}",
-        f"Catalog id: {meta.get('id', '(missing)')}",
-        f"Catalog name: {lang_en(meta.get('name'))}",
-        f"Status: {meta.get('status', '(not set)')}",
+        f"Catalog id: {metadata.get('id', '(missing)')}",
+        f"Catalog name: {lang_en(metadata.get('name'))}",
+        f"Status: {metadata.get('status', '(not set)')}",
         f"Product references: {count_items(catalog, 'productReferences')}",
         f"Use cases: {count_items(catalog, 'useCases')}",
         f"Business objectives: {count_items(catalog, 'businessObjectives')}",
         f"Signals: {count_items(catalog, 'signals')}",
     ]
 
-    graph = meta.get("graph")
+    graph = metadata.get("graph")
     if isinstance(graph, dict):
         lines.append(f"Graph: {graph.get('standard', '(unknown)')} {graph.get('version', '')} {graph.get('$ref', '')}".strip())
     else:
@@ -80,7 +80,7 @@ def render_summary(document, path):
     if count_items(catalog, "productReferences") == 0:
         hints.append("No productReferences found; add ProductReference objects when cataloging data products.")
     if graph is None:
-        hints.append("No graph reference found; use Catalog.meta.graph when relationships are implemented in ODPG or another graph standard.")
+        hints.append("No graph reference found; use Catalog.metadata.graph when relationships are implemented in ODPG or another graph standard.")
     if hints:
         lines.append("Hints:")
         lines.extend(f"- {hint}" for hint in hints)

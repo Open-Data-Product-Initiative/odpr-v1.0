@@ -32,21 +32,26 @@ class AgentArtifactsTest(unittest.TestCase):
         schema = load_yaml(SOURCE / "schema" / "odpc.yaml")
         json_schema = json.loads((SOURCE / "schema" / "odpc.json").read_text(encoding="utf-8"))
 
-        self.assertEqual(schema["required"], ["schema", "version", "catalog"])
+        self.assertEqual(schema["required"], ["schema", "version", "kind", "catalog"])
+        self.assertEqual(list(schema["properties"]), ["schema", "version", "kind", "catalog"])
+        self.assertEqual(schema["properties"]["kind"]["const"], "Catalog")
         self.assertIn("catalog", schema["properties"])
         self.assertNotIn("product", schema["properties"])
         self.assertEqual(json_schema["required"], schema["required"])
+        self.assertEqual(list(json_schema["properties"]), ["schema", "version", "kind", "catalog"])
+        self.assertEqual(json_schema["properties"]["kind"]["const"], "Catalog")
         self.assertIn("catalog", json_schema["properties"])
         self.assertNotIn("product", json_schema["properties"])
 
         catalog_ref = schema["properties"]["catalog"]["$ref"].split("/")[-1]
         catalog = schema["$defs"][catalog_ref]
-        self.assertEqual(catalog["required"], ["meta"])
-        self.assertIn("meta", catalog["properties"])
-        meta_ref = catalog["properties"]["meta"]["$ref"].split("/")[-1]
-        meta = schema["$defs"][meta_ref]
-        self.assertEqual(meta["required"], ["id", "name", "description"])
-        self.assertIn("tags", meta["properties"])
+        self.assertEqual(catalog["required"], ["metadata"])
+        self.assertIn("metadata", catalog["properties"])
+        self.assertNotIn("meta", catalog["properties"])
+        metadata_ref = catalog["properties"]["metadata"]["$ref"].split("/")[-1]
+        metadata = schema["$defs"][metadata_ref]
+        self.assertEqual(metadata["required"], ["id", "name", "description"])
+        self.assertIn("tags", metadata["properties"])
         self.assertNotIn("tags", catalog["properties"])
         graph_reference = schema["$defs"]["GraphReference"]
         self.assertEqual(graph_reference["required"], ["standard", "version", "$ref"])
@@ -71,15 +76,19 @@ class AgentArtifactsTest(unittest.TestCase):
         minimal = load_yaml(SOURCE / "catalog" / "examples" / "minimal.yaml")
         self.assertEqual(minimal["schema"], "https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml")
         self.assertEqual(minimal["version"], "1.0")
-        assert_named_object(minimal["catalog"]["meta"], "CAT-")
+        self.assertEqual(minimal["kind"], "Catalog")
+        assert_named_object(minimal["catalog"]["metadata"], "CAT-")
+        self.assertNotIn("meta", minimal["catalog"])
 
         full = load_yaml(SOURCE / "catalog" / "examples" / "full.yaml")
+        self.assertEqual(full["kind"], "Catalog")
         catalog = full["catalog"]
-        assert_named_object(catalog["meta"], "CAT-")
-        self.assertIn("tags", catalog["meta"])
+        assert_named_object(catalog["metadata"], "CAT-")
+        self.assertIn("tags", catalog["metadata"])
+        self.assertNotIn("meta", catalog)
         self.assertNotIn("tags", catalog)
-        self.assertIn("$ref", catalog["meta"]["graph"])
-        self.assertNotIn("uri", catalog["meta"]["graph"])
+        self.assertIn("$ref", catalog["metadata"]["graph"])
+        self.assertNotIn("uri", catalog["metadata"]["graph"])
         assert_named_object(catalog["productReferences"][0], "DP-")
         assert_named_object(catalog["useCases"][0], "UC-")
         assert_named_object(catalog["businessObjectives"][0], "BO-")
