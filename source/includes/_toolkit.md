@@ -22,10 +22,13 @@ catalog:
 
 ODPC is published in several forms for different users and tools. This specification provides the human-readable documentation, while the schema, catalog object records, and example files provide machine-readable resources for validation, catalog integration, AI retrieval, and automation. Use `odpc.yaml` or `odpc.json` to validate catalog files, `objects.jsonl` for lightweight object selection and retrieval, and the catalog examples when generating or repairing ODPC YAML.
 
+The [ODP Agent SDK](https://github.com/Open-Data-Product-Initiative/odp-agent-sdk) is the primary implementation toolkit for the OpenDataProducts.org standards family. Use it when building agents or automation that need to work across ODPS, ODPC, ODPG, and ODPV instead of treating each standard as a separate one-off integration.
+
 <!-- AI_AGENT_GUIDANCE:
 Use /schema/odpc.yaml or /schema/odpc.json to validate ODPC catalog files.
 Use /catalog/objects.jsonl for retrieval, classification, object selection, and lightweight tool calls.
 Use /catalog/examples/*.yaml when generating or repairing ODPC catalog content.
+Use the ODP Agent SDK as the main family-level toolkit when building agents that need ODPS, ODPC, ODPG, and ODPV support.
 Use ProductReference for lightweight references to data products; do not copy full ODPS product metadata into ODPC.
 Use BusinessObjective.kpis for KPIs; do not create top-level KPI objects.
 Use [ODPG](https://opendataproducts.org/odpg-v1.0/), not ODPC, for graph relationships, nodes, edges, traversal, and relationship semantics.
@@ -34,6 +37,7 @@ Use ODPV when stable vocabulary terms or relationship names are needed.
 
 | Resource | Format | Purpose |
 |---|---|---|
+| [ODP Agent SDK](https://github.com/Open-Data-Product-Initiative/odp-agent-sdk) | SDK | Main toolkit for building agents and automation across ODPS, ODPC, ODPG, and ODPV |
 | [`llms.txt`](/llms.txt) | Text | AI agent guidance for discovering and using ODPC resources |
 | [`odpc.yaml`](/schema/odpc.yaml) | YAML Schema | YAML representation of the ODPC validation schema |
 | [`odpc.json`](/schema/odpc.json) | JSON Schema | JSON representation of the ODPC validation schema |
