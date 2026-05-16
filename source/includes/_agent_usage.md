@@ -54,26 +54,11 @@ Agents using ODPC should keep object boundaries clear:
 
 ## Example prompts ODPC enables
 
-```text
-Validate this ODPC catalog and suggest schema-compliant repairs.
-```
 
-```text
-Generate ProductReference entries for all ODPS files in this folder.
-```
+* "Validate this ODPC catalog and suggest schema-compliant repairs."
+* "Generate ProductReference entries for all ODPS files in this folder."
+* "Find active smart-city products that support event demand forecasting."
+* "Identify use cases without matching product references and propose portfolio gaps."
+* "Prepare ODPG node and relationship candidates from this ODPC catalog."
+* "Summarize governance issues across products, owners, lifecycle statuses, and referenced product models."
 
-```text
-Find active smart-city products that support event demand forecasting.
-```
-
-```text
-Identify use cases without matching product references and propose portfolio gaps.
-```
-
-```text
-Prepare ODPG node and relationship candidates from this ODPC catalog.
-```
-
-```text
-Summarize governance issues across products, owners, lifecycle statuses, and referenced product models.
-```
