@@ -713,6 +713,8 @@ Use ODPV when stable vocabulary terms or relationship names are needed.
 When working from the source repository, use scripts/search_objects.py for repeatable local ODPC object lookup.
 Use scripts/search_objects.py --json when another tool or agent will consume the result.
 Use scripts/validate_catalog.py to validate ODPC YAML or JSON catalog files against source/schema/odpc.yaml.
+Use scripts/build_catalog.py to generate one ODPC catalog from a folder of standalone ProductReference, UseCase, BusinessObjective, Signal, metadata, ODPS product, or full catalog YAML files.
+Use scripts/build_catalog.py --html to also generate a standalone browser-viewable catalog page; use --html-template to apply a custom editable HTML template.
 Use scripts/check_agent_artifacts.py in CI or review workflows to detect drift between schema, catalog artifacts, examples, and llms.txt.
 Use scripts/generate_catalog_artifacts.py after editing source/schema/odpc.yaml to regenerate source/schema/odpc.json; use --check in CI or review workflows.
 Use scripts/explain_catalog.py to summarize an ODPC catalog file for humans or AI agents.
@@ -735,6 +737,10 @@ Do not edit generated or derived artifacts without checking alignment across llm
 <td>Regenerates derived catalog artifacts such as <code>source/schema/odpc.json</code> from canonical source files; use <code>--check</code> to detect drift</td>
 </tr>
 <tr>
+<td><a href="https://github.com/Open-Data-Product-Initiative/odpc-v1.0/blob/main/scripts/build_catalog.py"><code>build_catalog.py</code></a></td>
+<td>Builds one ODPC catalog from a folder of standalone YAML or JSON fragments, ODPS product files, optional metadata files, and existing full catalog files; optionally renders browser-viewable HTML with <code>--html</code> and <code>--html-template</code></td>
+</tr>
+<tr>
 <td><a href="https://github.com/Open-Data-Product-Initiative/odpc-v1.0/blob/main/scripts/search_objects.py"><code>search_objects.py</code></a></td>
 <td>Searches ODPC object records by keyword or exact object id; use <code>--json</code> for machine-readable results</td>
 </tr>
@@ -747,6 +753,8 @@ Do not edit generated or derived artifacts without checking alignment across llm
 <td>Summarizes an ODPC catalog file, including counts, ids, graph reference, and modeling hints</td>
 </tr>
 </tbody></table>
+
+<p>The default HTML template is <a href="https://github.com/Open-Data-Product-Initiative/odpc-v1.0/blob/main/source/catalog/templates/catalog.html"><code>catalog.html</code></a>. Copy and edit it when a generated catalog needs organization-specific branding, layout, or styling.</p>
 
 <p>The Markdown tables in this specification are intended for human readers. The schema, JSONL, and YAML example files are intended for programmable use, automation, validation, AI retrieval, and catalog tooling.</p>
 <h1 id='ai-agent-usage-patterns'>AI Agent Usage Patterns</h1>
