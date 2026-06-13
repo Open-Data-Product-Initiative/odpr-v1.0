@@ -34,7 +34,7 @@ meta:
 
 # OPEN DATA PRODUCT RECIPE SPECIFICATION - The Linux Foundation
 
-## Version 1.0
+## Version DRAFT
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
