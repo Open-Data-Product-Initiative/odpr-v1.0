@@ -109,6 +109,14 @@ provider:
   environment: development
 ```
 
+These examples show how Provider profiles turn recipe-level `providerRef`
+names into standardized runtime profiles.
+
+`local-fast` is intended for development and fast CI-style checks. A recipe
+that uses `providerRef: local-fast` asks the executor to use a local provider
+profile backed by Ollama and the `gemma` model. The low temperature keeps local
+drafting runs predictable while avoiding any hosted model dependency.
+
 ```yaml
 schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
 version: "1.0"
@@ -123,3 +131,11 @@ provider:
   temperature: 0.0
   environment: production
 ```
+
+`internal-secure` is intended for controlled production or enterprise
+environments. A recipe that uses `providerRef: internal-secure` asks the
+executor to route model calls through an approved internal gateway. The profile
+names the gateway endpoint and credential reference, but it does not embed the
+actual credential or API key.
+
+
