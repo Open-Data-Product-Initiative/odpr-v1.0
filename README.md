@@ -1,11 +1,13 @@
 # Data Product Recipe Specification (ODPR)
 
 The Data Product Recipe Specification, ODPR, is a lightweight, vendor-neutral,
-machine-readable standard for reusable data product workflow recipes.
+machine-readable standard for reusable data product workflow recipes and named
+provider profiles.
 
 ODPR describes how repeatable data product work gets done: which steps run,
 which inputs and outputs are used, which checks or gates apply, which context
-format is preferred, and which execution mode is expected.
+format is preferred, which execution mode is expected, and which standardized
+provider profile should be used.
 
 The Open Data Product SDK is intended to be the first reference implementation
 for validating and executing ODPR recipes.
@@ -23,6 +25,16 @@ ODPR defines portable recipes for workflows such as:
 
 Recipes are declarative workflow contracts. They are not scripts and they are
 not tied to one SDK, CI/CD system, model provider, or orchestration engine.
+
+ODPR also defines portable Provider profiles so `providerRef` values resolve to
+a consistent object shape instead of implementation-specific provider
+configuration. Provider profiles standardize names, provider family, model,
+provider class, endpoint reference, credentials reference, and safe defaults
+such as temperature. They do not store raw secrets.
+
+Validation should reject embedded secrets or API keys in Recipe and Provider
+documents. Use `providerRef` and `credentialsRef` instead of raw keys, tokens,
+passwords, or inline secret values.
 
 # Relationship To The Standards Family
 
@@ -47,7 +59,8 @@ those artifacts can be declared, inspected, validated, automated, and reused.
 * Let workflows stay stable while model runtimes vary by environment, task, or
   deployment stage.
 * Support compact context policy such as YAML, TOON, GCF, or automatic fallback.
-* Keep provider execution configurable without making ODPR a provider registry.
+* Standardize provider profile shape without storing raw secrets or defining
+  provider-specific APIs.
 * Give AI agents a safe recipe contract they can inspect before running tools.
 
 # Found a Bug?

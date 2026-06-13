@@ -11,7 +11,9 @@ recipe:
     tags:
       - hybrid
       - graph
+  version: "1.0.0"
   type: hybrid
+  environment: staging
   execution:
     mode: hybrid
   context:
@@ -33,6 +35,9 @@ recipe:
       providerRef: production-quality
       with:
         workspace: portfolio/
+  outputs:
+    - id: graph-context
+      path: generated/graph.yaml
   review:
     required: true
     mode: both

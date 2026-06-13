@@ -14,7 +14,7 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | Step | One declared operation in a recipe. |
 | Gate | A required validation, quality, approval, or review condition. |
 | Context | The artifact or compact sidecar format used as prompt, review, or execution context. |
-| Provider | A local or hosted execution target resolved by the SDK or platform running the recipe. |
+| Provider | A named ODPR runtime profile that recipes can reference with `providerRef`. |
 | Review | A human or agent review expectation declared by the recipe. |
 
 ## ODPR-specific usage notes
@@ -22,7 +22,8 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | Term | Description |
 |---|---|
 | `Recipe` | The ODPR root object that declares one repeatable data product workflow. |
-| `providerRef` | A provider reference used by the execution environment. ODPR does not define provider internals. |
+| `Provider` | The ODPR root object that declares one named provider profile. |
+| `providerRef` | A reference from a recipe to `Provider.provider.id`. |
 | `context.format` | The preferred context format for a recipe, such as `yaml`, `toon`, `gcf`, or `auto`. |
 | `execution.mode` | Whether the recipe expects local, hosted, hybrid, or no model execution. |
 | `runPolicy` | Runtime guidance such as timeout or retry expectations. |

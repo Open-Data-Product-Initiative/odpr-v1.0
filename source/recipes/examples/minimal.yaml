@@ -8,7 +8,9 @@ recipe:
       en: Local Fragment Draft
     description:
       en: Generate draft ODPC fragments locally for fast iteration.
+  version: "1.0.0"
   type: dev
+  environment: development
   execution:
     mode: local
     providerRef: local-fast
@@ -19,3 +21,6 @@ recipe:
         kind: signal
         input: source_docs/signals/
         output: generated/fragments/
+  outputs:
+    - id: draft-fragments
+      path: generated/fragments/

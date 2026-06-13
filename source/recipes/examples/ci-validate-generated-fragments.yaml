@@ -11,7 +11,9 @@ recipe:
     tags:
       - ci
       - validation
+  version: "1.0.0"
   type: ci
+  environment: ci
   execution:
     mode: local
     providerRef: local-fast
@@ -31,6 +33,9 @@ recipe:
       command: validate
       with:
         input: generated/fragments/
+  outputs:
+    - id: generated-fragments
+      path: generated/fragments/
   gates:
     - id: fragments-valid
       type: validation
