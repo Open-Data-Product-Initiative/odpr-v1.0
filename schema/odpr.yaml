@@ -8,7 +8,6 @@ required:
   - schema
   - version
   - kind
-  - recipe
 properties:
   schema:
     type: string
@@ -18,9 +17,30 @@ properties:
     const: "1.0"
   kind:
     type: string
-    const: Recipe
+    enum:
+      - Recipe
+      - Provider
   recipe:
     $ref: "#/$defs/Recipe"
+  provider:
+    $ref: "#/$defs/Provider"
+oneOf:
+  - required:
+      - recipe
+    properties:
+      kind:
+        const: Recipe
+    not:
+      required:
+        - provider
+  - required:
+      - provider
+    properties:
+      kind:
+        const: Provider
+    not:
+      required:
+        - recipe
 $defs:
   LocalizedText:
     type: object
@@ -193,6 +213,47 @@ $defs:
       retries:
         type: integer
         minimum: 0
+  Provider:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    required:
+      - id
+      - provider
+    properties:
+      id:
+        type: string
+        minLength: 1
+      provider:
+        type: string
+        minLength: 1
+      model:
+        type: string
+        minLength: 1
+      providerClass:
+        type: string
+        enum:
+          - local
+          - hosted
+          - hybrid
+          - none
+      endpointRef:
+        type: string
+        minLength: 1
+      credentialsRef:
+        type: string
+        minLength: 1
+      temperature:
+        type: number
+        minimum: 0
+      settings:
+        type: object
+        additionalProperties: true
+      description:
+        type: string
+      environment:
+        type: string
   Recipe:
     type: object
     additionalProperties: false
@@ -200,11 +261,15 @@ $defs:
       "^x-": {}
     required:
       - metadata
+      - version
       - type
       - steps
     properties:
       metadata:
         $ref: "#/$defs/Metadata"
+      version:
+        type: string
+        minLength: 1
       type:
         type: string
         enum:

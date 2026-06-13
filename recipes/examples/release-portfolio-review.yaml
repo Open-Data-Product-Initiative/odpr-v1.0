@@ -11,7 +11,9 @@ recipe:
     tags:
       - release
       - portfolio
+  version: "1.0.0"
   type: release
+  environment: production
   execution:
     mode: hosted
     providerRef: production-quality
@@ -38,6 +40,13 @@ recipe:
       command: portfolio.explain
       with:
         workspace: portfolio/
+  outputs:
+    - id: localized-portfolio-fi
+      path: portfolio/index.fi.html
+    - id: localized-portfolio-sv
+      path: portfolio/index.sv.html
+    - id: release-explanation
+      path: portfolio/explanation.md
   gates:
     - id: human-review
       type: review
