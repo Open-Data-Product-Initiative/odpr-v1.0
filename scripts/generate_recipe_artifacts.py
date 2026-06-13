@@ -5,7 +5,7 @@ import sys
 
 import yaml
 
-from odpc_paths import SCHEMA_JSON, SCHEMA_YAML
+from odpr_paths import SCHEMA_JSON, SCHEMA_YAML
 
 
 def load_schema_yaml():
@@ -19,7 +19,7 @@ def render_schema_json():
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description="Generate derived ODPC catalog artifacts from canonical sources.",
+        description="Generate derived ODPR recipe artifacts from canonical sources.",
     )
     parser.add_argument(
         "--check",
@@ -33,9 +33,12 @@ def main(argv=None):
 
     if args.check:
         if current != expected:
-            print(f"{SCHEMA_JSON}: out of date. Run `python scripts/generate_catalog_artifacts.py`.", file=sys.stderr)
+            print(
+                f"{SCHEMA_JSON}: out of date. Run `python scripts/generate_recipe_artifacts.py`.",
+                file=sys.stderr,
+            )
             return 1
-        print("OK: catalog artifacts are up to date.")
+        print("OK: recipe artifacts are up to date.")
         return 0
 
     SCHEMA_JSON.write_text(expected, encoding="utf-8")

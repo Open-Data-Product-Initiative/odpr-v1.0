@@ -1,7 +1,7 @@
 ---
-title: Open Data Product Catalogs (ODPC) version 1.0 | Linux Foundation
+title: Open Data Product Recipe Specification (ODPR) version 1.0 | Linux Foundation
 
-language_tabs: # must be one of https://git.io/vQNgJ
+language_tabs:
 - yaml
 
 toc_footers:
@@ -12,11 +12,7 @@ toc_footers:
 includes:
 - toolkit
 - agent_usage
-- catalog
-- productreference
-- usecase
-- businessobjective
-- signal
+- recipe
 - extensions
 - contributors
 - terms
@@ -27,129 +23,143 @@ code_clipboard: true
 
 meta:
   - name: description
-    content: Open Data Product Catalogs (ODPC) version 1.0 is a vendor-neutral, open-source, machine-readable model for cataloging data product portfolios. ODPC defines reusable portfolio objects around data products, including product references, use cases, business objectives, KPIs, signals, and catalog items.
+    content: Open Data Product Recipe Specification (ODPR) version 1.0 is a lightweight, vendor-neutral, machine-readable standard for reusable data product workflow recipes.
   - name: spec-version
     content: "1.0"
   - name: llms
     content: /llms.txt
   - name: ai-agent-guidance
-    content: Use /llms.txt for agent guidance and /schema/odpc.yaml or /schema/odpc.json for validation.
+    content: Use /llms.txt for agent guidance and /schema/odpr.yaml or /schema/odpr.json for validation.
 ---
 
-# OPEN DATA PRODUCT CATALOGS - The Linux Foundation
+# OPEN DATA PRODUCT RECIPE SPECIFICATION - The Linux Foundation
 
 ## Version 1.0
-The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in BCP 14 ([RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119) and [RFC 8174](https://datatracker.ietf.org/doc/html/rfc8174)) when, and only when, they appear in all capitals, as shown here.
 
-The specification is shared under <a href='https://www.apache.org/licenses/LICENSE-2.0'>Apache 2.0</a> license. 
-Development of the specification is under the umbrella of the Linux Foundation. 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in BCP 14
+([RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119) and
+[RFC 8174](https://datatracker.ietf.org/doc/html/rfc8174)) when, and only when,
+they appear in all capitals, as shown here.
+
+The specification is shared under <a href='https://www.apache.org/licenses/LICENSE-2.0'>Apache 2.0</a> license.
+Development of the specification is under the umbrella of the Linux Foundation.
 
 | Topic | Link | Description |
 |---|---|---|
-| Version source | <a href="https://github.com/Open-Data-Product-Initiative/odpc-v1.0">Open Data Product Catalogs on GitHub</a> | Official source repository for the ODPC specification |
+| Version source | <a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0">Data Product Recipe Specification on GitHub</a> | Official source repository for the ODPR specification |
 | Knowledge Base | [Open Data Product Spec Family Knowledge Base](https://opendataproducts.org/howto/) | Practical examples, FAQs, and implementation guidance |
-| Contribute | [Raise an issue in GitHub](https://github.com/Open-Data-Product-Initiative/odpc-v1.0/issues) | Submit issues or suggestions to the specification maintainers |
+| Contribute | [Raise an issue in GitHub](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/issues) | Submit issues or suggestions to the specification maintainers |
 
 # Introduction
-The Open Data Product Catalogs, ODPC, is a vendor-neutral, open-source, machine-readable catalog model for data product portfolios. It defines reusable catalog objects such as data product references, use cases, business objectives, KPIs, signals, and catalog items.
 
-ODPC is part of the OpenDataProducts.org standards family. It complements the Open Data Product Specification, ODPS, by adding the catalog and portfolio layer around individual data products.
+The Data Product Recipe Specification, ODPR, is a lightweight, vendor-neutral,
+machine-readable recipe model for repeatable data product delivery workflows.
 
-<img src="/images/odpc.png" width="750">
+ODPR is part of the OpenDataProducts.org standards family. It complements the
+Open Data Product Specification, ODPS, Open Data Product Catalogs, ODPC, Open
+Data Product Graphs, ODPG, and Open Data Product Vocabulary, ODPV, by defining
+how workflows around those artifacts can be declared and automated.
 
+ODPR standardizes how data product work gets done, not only what the final
+artifact looks like.
 
-ODPS defines one data product. ODPC defines the reusable portfolio objects around data products. [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/) defines the relationships between those objects.
+## Why ODPR is needed
 
-The goal of ODPC is to help organizations move from isolated data product descriptions to managed data product portfolios that connect products to demand, use cases, business objectives, and measurable outcomes.
+Data product work often depends on manual command sequences, scripts, notebooks,
+prompts, and local habits. That creates delivery variation, makes validation
+and review steps easy to skip, hides model-provider choices, and forces CI/CD
+automation and AI agents to guess the intended workflow.
 
-## ODPC is ODPS-native, but not ODPS-only
-ODPC is designed to work naturally with ODPS. ODPS remains the preferred product definition model in the OpenDataProducts.org standards family.
+ODPR solves this by turning repeatable data product work into declared recipes.
+A recipe describes:
 
-At the same time, ODPC is not limited to ODPS. Many organizations already use other product descriptions, internal schemas, vendor catalogs, marketplace definitions, or data mesh descriptors. ODPC supports those models through the ProductReference object and mapping profiles.
-
-This makes it possible to catalog data products described with:
-
-* ODPS YAML files
-* DPDS descriptors
-* internal enterprise product templates
-* vendor catalog assets
-* marketplace product definitions
-* API-based product metadata sources
-
-The ProductReference object provides the bridge between the catalog layer and the source product definition.
-
-## Why ODPC is needed
-Data product management does not stop at one product. Organizations need to understand which data products exist, which use cases they support, which business objectives they contribute to, and which signals indicate demand, risk, opportunity, or change.
-
-A catalog should not only list products. It should help organizations manage data products as a portfolio.
-
-ODPC defines the structure for that portfolio layer. It enables organizations to catalog:
-
-* data products
-* use cases
-* business objectives
-* signals
-* ownership
-* priorities
-* references to source definitions
-
-This creates a reusable foundation for discovery, governance, prioritization, AI-assisted planning, and graph-based portfolio analysis.
-
-**ODPC organizes the portfolio. [ODPG](https://opendataproducts.org/odpg-v1.0/) connects the portfolio. GraphRAG makes the connected portfolio usable by AI assistants for discovery, gap analysis, impact mapping, and decision support.**
-
-
-## Specification aims and aspects
-ODPC aims to:
-
-* enable interoperability between catalogs, data platforms, marketplaces, and tools
-* provide reusable catalog objects for data product portfolio management
-* connect data products to use cases, business objectives, and signals
-* support ODPS-native and non-ODPS product definitions
-* reduce metadata conversion friction between systems
-* support AI-assisted discovery, cataloging, and portfolio planning
-* provide the reusable object layer for [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/)
-* support machine-readable cataloging with YAML and schema validation
-
-**Note!** In the "Open Data Product" focus is on the latter words and the prefix "open" refers to the openness of the standard. Any kind of 
-connotations to open data are not intentional, intended, or desirable.
+* what workflow runs
+* which inputs it uses
+* which outputs it creates
+* which steps run
+* which checks or gates apply
+* which context format is preferred
+* which execution mode is expected
+* which provider reference or provider class is used
+* whether human review is required
 
 ## Core design principle
-The OpenDataProducts.org standards family follows a simple separation of concerns.
+
+A recipe is not a script.
+
+A recipe is a portable, declarative workflow contract. Scripts tell one tool
+what to do. Recipes tell teams, tools, agents, and automation systems how a data
+product workflow should run.
+
+## Relationship to the standards family
+
+The OpenDataProducts.org standards family follows a separation of concerns:
 
 * **ODPS defines the product.**
-* **ODPC defines the reusable portfolio objects.**
-* **[ODPG](https://opendataproducts.org/odpg-v1.0/) defines the relationships.**
+* **ODPC defines catalogs and reusable portfolio objects.**
+* **ODPG defines relationships and graphs.**
+* **ODPV defines shared vocabulary and terms.**
+* **ODPR defines repeatable workflows for data product delivery.**
 
-This keeps each specification focused. ODPC should not redefine the full structure of a data product. That belongs to ODPS or to another source product model. 
-ODPC should also not define graph traversal, graph analytics, or relationship semantics. Those belong to [Open Data Product Graphs, ODPG](https://opendataproducts.org/odpg-v1.0/).
+ODPR does not define the product, catalog, graph, or vocabulary model. It
+defines the workflow contract around those artifacts.
 
-## Main ODPC objects
-> Example of catalog use:
+## Example recipe
 
-```yml
-schema: https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml
+```yaml
+schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
 version: "1.0"
-kind: Catalog
-catalog:
+kind: Recipe
+recipe:
   metadata:
-    id: CAT-001
+    id: RCP-CI-001
     name:
-      en: Urban Mobility Data Product Catalog
+      en: CI Validate Generated Fragments
     description:
-      en: Catalog of data products, use cases, objectives, 
-          and signals related to urban mobility.
-    graph:
-      standard: ODPG
-      version: "1.0"
-      $ref: https://example.org/graphs/urban-mobility.graph.yaml
+      en: Generate and validate draft ODPC fragments during CI.
+  type: ci
+  execution:
+    mode: local
+    providerRef: local-fast
+  context:
+    format: gcf
+    fallback:
+      - toon
+      - yaml
+  steps:
+    - id: generate-signals
+      command: generate
+      with:
+        kind: signal
+        input: source_docs/signals/
+        output: generated/fragments/
+    - id: validate-fragments
+      command: validate
+      with:
+        input: generated/fragments/
+  gates:
+    - id: fragments-valid
+      type: validation
+      required: true
+  review:
+    required: false
 ```
 
-The first version of ODPC focuses on these objects:
+## Specification aims
 
-* ProductReference
-* UseCase
-* BusinessObjective
-* Signal
-* Catalog
+ODPR aims to:
 
-These objects are designed to be reusable across catalogs, tools, AI workflows, and graph models.
+* make data product workflows portable, repeatable, inspectable, and
+  automation-ready
+* support standard development, CI, release, localization, hybrid, and
+  agent-safe workflows
+* let teams switch between local, hosted, and hybrid model execution
+* keep provider execution configurable without making ODPR a provider registry
+* support compact context policy such as YAML, TOON, GCF, or automatic fallback
+* expose safe workflows to AI agents before they run tools
+
+**Note!** In "Open Data Product" the focus is on the latter words and the
+prefix "open" refers to the openness of the standard. Any connotations to open
+data are not intentional, intended, or desirable.

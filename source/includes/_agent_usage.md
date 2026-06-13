@@ -1,64 +1,66 @@
 # AI Agent Usage Patterns
 
-ODPC is designed to be usable by AI agents, catalog tools, retrieval systems, and automation workflows. From an agent perspective, ODPC provides the portfolio operating layer around data products: it names reusable catalog objects, points to authoritative product definitions, separates product metadata from portfolio metadata, and gives tools enough structure to validate, retrieve, compare, and plan.
+ODPR is designed to be usable by AI agents, SDKs, CI/CD systems, and automation
+tools. From an agent perspective, ODPR provides an inspectable workflow contract
+before an action is run: it names the workflow, lists the steps, declares the
+execution mode, points to context policy, and describes gates or review
+expectations.
 
-ODPS defines one data product. ODPC defines the reusable portfolio objects around data products. [ODPG](https://opendataproducts.org/odpg-v1.0/) defines the relationships between those objects. ODPV provides shared vocabulary terms. This separation helps agents choose the right source before acting.
+ODPS defines one data product. ODPC defines catalogs and reusable portfolio
+objects. ODPG defines relationships between data product artifacts. ODPV
+provides shared vocabulary terms. ODPR defines repeatable workflows around
+those artifacts.
 
 <!-- AI_AGENT_USAGE_PATTERNS:
-Use ODPC as the catalog and portfolio layer, not as the full data product definition layer.
-Use ODPS or another referenced product model for detailed data product metadata.
-Use ProductReference.productModel.$ref to resolve the authoritative product definition from a local file path or URL.
-Use ODPG for graph relationships, relationship semantics, traversal, and connected portfolio analysis.
-Use ODPV for stable shared vocabulary terms and relationship names.
+Use ODPR for repeatable workflow recipes, not for defining the data product, catalog, graph, or vocabulary itself.
+Use providerRef as an execution reference only; provider configuration belongs to the SDK, CI system, or platform executing the recipe.
+Prefer declarative steps and gates over arbitrary shell scripts.
+Use context.format to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
 -->
 
-## Agent capabilities enabled by ODPC
+## Agent capabilities enabled by ODPR
 
-Agents can use ODPC to:
+Agents can use ODPR to:
 
-* discover data products by domain, tag, category, standard, status, priority, owner, or governance profile
-* explain portfolio context around a product, including use cases, objectives, signals, ownership, and lifecycle status
-* resolve authoritative product definitions through `ProductReference.productModel.$ref`
-* validate ODPC catalog files against `odpc.yaml` or `odpc.json`
-* repair incomplete or invalid catalog records using the schema and examples
-* generate lightweight `ProductReference` objects from ODPS files or other product models
-* detect portfolio gaps, such as use cases without products, objectives without supporting products, or signals without a response
-* prepare graph-ready object records for ODPG or another graph implementation
-* support governance review by finding missing owners, stale statuses, incomplete references, or inconsistent standards
-* support portfolio planning by combining products, use cases, business objectives, KPIs, signals, and priorities
+* discover safe workflow recipes before running SDK tools
+* explain what a recipe will do before execution
+* validate recipe files against `odpr.yaml` or `odpr.json`
+* select a development, CI, release, localization, hybrid, or agent recipe
+* inspect whether a workflow expects local, hosted, hybrid, or no model execution
+* follow declared gates and review requirements
+* reuse a recipe in CI/CD or production automation
+* preserve stable workflow intent while model providers vary by environment
 
 ## Common agent workflows
 
 | Workflow | Agent behavior |
 |---|---|
-| Catalog generation | Scan ODPS files or other product definitions and create ODPC `ProductReference` entries that point back to the source model. |
-| Catalog validation | Validate catalog files, check required fields, detect broken references, and suggest compliant repairs. |
-| Product discovery | Answer user questions such as which products exist for a domain, use case, objective, or standard. |
-| Portfolio explanation | Summarize why a product exists, what it supports, who owns it, and what objective or signal gives it context. |
-| Gap analysis | Find missing products, unsupported use cases, objectives without measurable support, and signals without planned action. |
-| Graph preparation | Convert ODPC objects into graph node candidates and prepare relationship candidates for ODPG. |
-| Governance review | Identify catalog entries with missing ownership, unclear status, weak governance profile, or inconsistent product model references. |
-| Migration support | Convert existing inventories, ODPS files, vendor catalog records, or internal templates into ODPC catalog objects. |
-| Retrieval and RAG | Use `llms.txt`, `objects.jsonl`, schema files, examples, and include pages to retrieve the correct object definition before generating or editing ODPC content. |
+| Recipe validation | Validate ODPR recipe files and report schema-compliant repairs. |
+| Recipe selection | Choose a recipe based on task type, execution mode, context format, or required review. |
+| CI/CD preparation | Convert a repeatable SDK command sequence into a declared recipe. |
+| Local development | Run draft recipes that use local providers for fast iteration. |
+| Production review | Run release recipes that use hosted providers, validation gates, and review expectations. |
+| Hybrid execution | Combine local generation or graph inference with hosted review or localization. |
+| Agent handoff | Inspect recipe steps and gates before invoking SDK tools. |
 
 ## Agent behavior constraints
 
-Agents using ODPC should keep object boundaries clear:
+Agents using ODPR should keep boundaries clear:
 
-* Do not copy full ODPS product metadata into `ProductReference`.
-* Do not invent graph relationship fields inside ODPC objects.
-* Do not create top-level KPI objects; KPIs belong inside `BusinessObjective.kpis`.
-* Do not treat `Catalog.metadata.graph.$ref` as the graph itself; it points to a graph implementation.
-* Do not assume every referenced product model is ODPS; use `productModel.standard`, `productModel.version`, `productModel.format`, and `productModel.$ref`.
-* Do not make planning decisions from `portfolioPriority` alone; combine it with use cases, objectives, signals, governance context, and graph relationships when available.
+* Do not treat ODPR as a data product definition; use ODPS for product metadata.
+* Do not treat ODPR as a catalog object model; use ODPC for catalogs and
+  portfolio objects.
+* Do not treat ODPR as a graph model; use ODPG for nodes, edges, and
+  relationships.
+* Do not embed secrets or API keys in recipes.
+* Do not assume `providerRef` is globally meaningful; it must be resolved by the
+  executing SDK, CI system, or platform.
+* Do not silently skip required gates or human review requirements.
 
-## Example prompts ODPC enables
+## Example prompts ODPR enables
 
-
-* "Validate this ODPC catalog and suggest schema-compliant repairs."
-* "Generate ProductReference entries for all ODPS files in this folder."
-* "Find active smart-city products that support event demand forecasting."
-* "Identify use cases without matching product references and propose portfolio gaps."
-* "Prepare ODPG node and relationship candidates from this ODPC catalog."
-* "Summarize governance issues across products, owners, lifecycle statuses, and referenced product models."
-
+* "Validate this ODPR recipe and suggest schema-compliant repairs."
+* "Create a CI recipe that generates signal fragments and validates them."
+* "Create a release recipe that refreshes, localizes, and explains a portfolio."
+* "Explain which steps this recipe will run and whether human review is required."
+* "Convert this local development workflow into a hosted production recipe."

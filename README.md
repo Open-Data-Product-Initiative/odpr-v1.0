@@ -1,46 +1,54 @@
-# Open Data Product Catalogs (ODPC)
+# Data Product Recipe Specification (ODPR)
 
-The Open Data Product Catalogs, ODPC, is a vendor-neutral, open-source, machine-readable model for cataloging data product portfolios.
+The Data Product Recipe Specification, ODPR, is a lightweight, vendor-neutral,
+machine-readable standard for reusable data product workflow recipes.
 
-ODPC defines reusable portfolio objects around data products, including product references, use cases, business objectives, KPIs, signals, and catalog items.
+ODPR describes how repeatable data product work gets done: which steps run,
+which inputs and outputs are used, which checks or gates apply, which context
+format is preferred, and which execution mode is expected.
 
-It is designed to help organizations move from isolated data product descriptions to managed portfolios connected to business demand and measurable outcomes.
+The Open Data Product SDK is intended to be the first reference implementation
+for validating and executing ODPR recipes.
 
-# What ODPC Defines
+# What ODPR Defines
 
-ODPC defines the catalog layer around data products. The first version focuses on:
+ODPR defines portable recipes for workflows such as:
 
-* ProductReference
-* UseCase
-* BusinessObjective
-* KPI
-* Signal
-* Catalog
-* CatalogItem
+* local development and fast drafting
+* CI validation and build checks
+* release review packages
+* portfolio refresh, rendering, and localization
+* hybrid local and hosted LLM execution
+* agent-safe data product automation
 
-These objects create a shared structure for discovery, portfolio planning, prioritization, and AI-native automation.
+Recipes are declarative workflow contracts. They are not scripts and they are
+not tied to one SDK, CI/CD system, model provider, or orchestration engine.
 
-# ODPS-Native, Not ODPS-Only
+# Relationship To The Standards Family
 
-ODPC is designed to work naturally with the Open Data Product Specification, ODPS.
+ODPR is part of the OpenDataProducts.org standards family.
 
-ODPS remains the preferred model for defining one data product. ODPC adds the portfolio and catalog layer around it.
+* ODPS describes one data product.
+* ODPC describes catalogs, portfolios, product references, use cases,
+  objectives, and signals.
+* ODPG describes relationships and graphs between data product artifacts.
+* ODPV describes shared vocabulary and terms.
+* ODPR describes repeatable workflows for data product delivery.
 
-ODPC also supports other product models through product references and mapping profiles. This allows organizations using DPDS, internal enterprise schemas, vendor catalogs, or marketplace definitions to participate without immediate migration.
+ODPR does not replace ODPS, ODPC, ODPG, or ODPV. It defines how workflows around
+those artifacts can be declared, inspected, validated, automated, and reused.
 
 # Specification Aims
 
-* Catalog data products, use cases, business objectives, KPIs, and signals in a consistent way.
-* Support portfolio-level data product management.
-* Connect data products to business objectives and measurable value.
-* Enable interoperability between catalogs, platforms, marketplaces, and tools.
-* Support AI-assisted discovery, planning, and portfolio analysis.
-* Provide reusable objects for Open Data Product Graphs, ODPG.
-* Relationship to ODPS and ODPG
-
-ODPS defines one data product. ODPC defines reusable portfolio objects. ODPG defines the relationships between those objects.
-
-Each specification can be used separately. Used together, they create a machine-readable operating model for data product management.
+* Make data product workflows portable, repeatable, inspectable, and
+  automation-ready.
+* Support local development, CI/CD, release, localization, hybrid, and
+  agent-safe workflows.
+* Let workflows stay stable while model runtimes vary by environment, task, or
+  deployment stage.
+* Support compact context policy such as YAML, TOON, GCF, or automatic fallback.
+* Keep provider execution configurable without making ODPR a provider registry.
+* Give AI agents a safe recipe contract they can inspect before running tools.
 
 # Found a Bug?
 
@@ -50,6 +58,5 @@ Submit an issue or propose changes with a pull request.
 
 # Contributors
 
-Open Data Product Catalogs is part of the OpenDataProducts.org standards family under the Open Data Product Initiative.
-
-The project is developed as part of the broader work to expand OpenDataProducts.org from one specification into a modular family of standards for data product management.
+Data Product Recipe Specification is part of the OpenDataProducts.org standards
+family under the Open Data Product Initiative.

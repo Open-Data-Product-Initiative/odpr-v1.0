@@ -4,19 +4,17 @@ import sys
 
 import yaml
 
-from odpc_paths import EXAMPLES_DIR, LLMS_TXT, OBJECTS_JSONL, SCHEMA_JSON, SCHEMA_YAML, SOURCE
+from odpr_paths import EXAMPLES_DIR, LLMS_TXT, RECIPES_JSONL, SCHEMA_JSON, SCHEMA_YAML, SOURCE
 
 
 EXPECTED_EXAMPLES = [
     "minimal.yaml",
-    "full.yaml",
-    "product-reference.yaml",
-    "use-case.yaml",
-    "business-objective-with-kpis.yaml",
-    "signal.yaml",
+    "ci-validate-generated-fragments.yaml",
+    "release-portfolio-review.yaml",
+    "hybrid-graph-review.yaml",
 ]
 
-EXPECTED_OBJECT_IDS = {"Catalog", "ProductReference", "UseCase", "BusinessObjective", "KPI", "Signal"}
+EXPECTED_RECORD_IDS = {"Recipe", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"}
 
 
 def load_yaml(path):
@@ -46,41 +44,37 @@ def assert_lang_string(value, label):
     assert isinstance(value.get("en"), str) and value["en"].strip(), f"{label}.en must be a non-empty string"
 
 
-def assert_named_object(value, prefix, label):
-    assert isinstance(value.get("id"), str) and value["id"].startswith(prefix), f"{label}.id must start with {prefix}"
-    assert_lang_string(value.get("name"), f"{label}.name")
-    assert_lang_string(value.get("description"), f"{label}.description")
+def assert_recipe_document(document, expected_type):
+    assert document["schema"] == "https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml"
+    assert document["version"] == "1.0"
+    assert document["kind"] == "Recipe"
+    recipe = document["recipe"]
+    assert recipe["type"] == expected_type
+    assert isinstance(recipe["metadata"].get("id"), str) and recipe["metadata"]["id"].startswith("RCP-")
+    assert_lang_string(recipe["metadata"].get("name"), "recipe.metadata.name")
+    assert_lang_string(recipe["metadata"].get("description"), "recipe.metadata.description")
+    assert recipe["steps"], "recipe.steps must not be empty"
 
 
 def check_schema():
     schema = load_yaml(SCHEMA_YAML)
     json_schema = load_json(SCHEMA_JSON)
 
-    assert schema["required"] == ["schema", "version", "kind", "catalog"], "YAML schema root must require kind and catalog"
+    assert schema["required"] == ["schema", "version", "kind", "recipe"], "YAML schema root must require recipe"
     assert json_schema["required"] == schema["required"], "JSON schema root requirements must match YAML schema"
-    assert list(schema["properties"]) == ["schema", "version", "kind", "catalog"], "YAML schema root property order changed"
-    assert list(json_schema["properties"]) == ["schema", "version", "kind", "catalog"], "JSON schema root property order changed"
-    assert schema["properties"]["kind"]["const"] == "Catalog", "YAML schema root kind must be Catalog"
-    assert json_schema["properties"]["kind"]["const"] == "Catalog", "JSON schema root kind must be Catalog"
-    assert "catalog" in schema["properties"], "YAML schema must define catalog property"
-    assert "catalog" in json_schema["properties"], "JSON schema must define catalog property"
-    assert "product" not in schema["properties"], "YAML schema must not use product root"
-    assert "product" not in json_schema["properties"], "JSON schema must not use product root"
+    assert list(schema["properties"]) == ["schema", "version", "kind", "recipe"], "YAML schema root property order changed"
+    assert list(json_schema["properties"]) == ["schema", "version", "kind", "recipe"], "JSON schema root property order changed"
+    assert schema["properties"]["kind"]["const"] == "Recipe", "YAML schema root kind must be Recipe"
+    assert json_schema["properties"]["kind"]["const"] == "Recipe", "JSON schema root kind must be Recipe"
+    assert "recipe" in schema["properties"], "YAML schema must define recipe property"
+    assert "catalog" not in schema["properties"], "YAML schema must not use catalog root"
 
-    catalog = schema["$defs"][schema["properties"]["catalog"]["$ref"].split("/")[-1]]
-    assert catalog["required"] == ["metadata"], "Catalog must require metadata"
-    assert "metadata" in catalog["properties"], "Catalog must define metadata"
-    assert "meta" not in catalog["properties"], "Catalog must not define meta"
-    metadata = schema["$defs"][catalog["properties"]["metadata"]["$ref"].split("/")[-1]]
-    assert metadata["required"] == ["id", "name", "description"], "Catalog metadata required fields changed unexpectedly"
-    assert "tags" in metadata["properties"], "Catalog tags must be defined in metadata"
-    assert "tags" not in catalog["properties"], "Catalog tags must not be defined at catalog root"
-    graph_reference = schema["$defs"]["GraphReference"]
-    assert graph_reference["required"] == ["standard", "version", "$ref"], "GraphReference must require $ref"
-    assert "$ref" in graph_reference["properties"], "GraphReference must define $ref"
-    assert "uri" not in graph_reference["properties"], "GraphReference must not define uri"
-    for collection in ["productReferences", "useCases", "businessObjectives", "signals"]:
-        assert collection in catalog["properties"], f"Catalog missing {collection}"
+    recipe = schema["$defs"][schema["properties"]["recipe"]["$ref"].split("/")[-1]]
+    assert recipe["required"] == ["metadata", "type", "steps"], "Recipe required fields changed unexpectedly"
+    assert "execution" in recipe["properties"], "Recipe must define execution policy"
+    assert "context" in recipe["properties"], "Recipe must define context policy"
+    assert "gates" in recipe["properties"], "Recipe must define gates"
+    assert "review" in recipe["properties"], "Recipe must define review"
 
 
 def check_examples():
@@ -89,32 +83,30 @@ def check_examples():
         assert path.is_file(), f"Missing example: {path.relative_to(SOURCE)}"
         load_yaml(path)
 
-    minimal = load_yaml(EXAMPLES_DIR / "minimal.yaml")
-    assert minimal["schema"] == "https://opendataproducts.org/odpc-v1.0/schema/odpc.yaml"
-    assert minimal["version"] == "1.0"
-    assert minimal["kind"] == "Catalog", "minimal catalog example must set kind to Catalog"
-    assert_named_object(minimal["catalog"]["metadata"], "CAT-", "catalog.metadata")
-    assert "meta" not in minimal["catalog"], "minimal catalog example must not use catalog.meta"
+    assert_recipe_document(load_yaml(EXAMPLES_DIR / "minimal.yaml"), "dev")
+    assert_recipe_document(load_yaml(EXAMPLES_DIR / "ci-validate-generated-fragments.yaml"), "ci")
+    assert_recipe_document(load_yaml(EXAMPLES_DIR / "release-portfolio-review.yaml"), "release")
+    assert_recipe_document(load_yaml(EXAMPLES_DIR / "hybrid-graph-review.yaml"), "hybrid")
 
-    full_document = load_yaml(EXAMPLES_DIR / "full.yaml")
-    assert full_document["kind"] == "Catalog", "full catalog example must set kind to Catalog"
-    full = full_document["catalog"]
-    assert_named_object(full["metadata"], "CAT-", "catalog.metadata")
-    assert "tags" in full["metadata"], "full catalog example must put tags in catalog.metadata"
-    assert "meta" not in full, "full catalog example must not use catalog.meta"
-    assert "tags" not in full, "full catalog example must not put tags at catalog root"
-    assert "$ref" in full["metadata"]["graph"], "full catalog example graph must use $ref"
-    assert "uri" not in full["metadata"]["graph"], "full catalog example graph must not use uri"
-    assert_named_object(full["productReferences"][0], "DP-", "productReferences[0]")
-    assert_named_object(full["useCases"][0], "UC-", "useCases[0]")
-    assert_named_object(full["businessObjectives"][0], "BO-", "businessObjectives[0]")
-    assert_named_object(full["signals"][0], "SIG-", "signals[0]")
+    ci_recipe = load_yaml(EXAMPLES_DIR / "ci-validate-generated-fragments.yaml")["recipe"]
+    assert ci_recipe["execution"]["mode"] == "local"
+    assert ci_recipe["context"]["format"] == "gcf"
+    assert ci_recipe["gates"][0]["type"] == "validation"
+
+    release_recipe = load_yaml(EXAMPLES_DIR / "release-portfolio-review.yaml")["recipe"]
+    assert release_recipe["execution"]["mode"] == "hosted"
+    assert release_recipe["review"]["required"] is True
+
+    hybrid_recipe = load_yaml(EXAMPLES_DIR / "hybrid-graph-review.yaml")["recipe"]
+    assert hybrid_recipe["execution"]["mode"] == "hybrid"
+    assert hybrid_recipe["steps"][0]["providerRef"] == "local-graph"
+    assert hybrid_recipe["steps"][1]["providerRef"] == "production-quality"
 
 
-def check_objects_and_llms():
-    records = load_jsonl(OBJECTS_JSONL)
+def check_recipes_and_llms():
+    records = load_jsonl(RECIPES_JSONL)
     ids = {record["id"] for record in records}
-    assert ids == EXPECTED_OBJECT_IDS, f"Unexpected object ids: {sorted(ids)}"
+    assert ids == EXPECTED_RECORD_IDS, f"Unexpected recipe record ids: {sorted(ids)}"
 
     for record in records:
         for key in ["definition", "requiredFields", "doUseFor", "doNotUseFor", "exampleFile"]:
@@ -123,17 +115,17 @@ def check_objects_and_llms():
 
     llms = LLMS_TXT.read_text(encoding="utf-8")
     for fragment in [
-        "/catalog/objects.jsonl",
-        "/catalog/examples/minimal.yaml",
-        "/catalog/examples/full.yaml",
-        "/schema/odpc.yaml",
-        "/schema/odpc.json",
+        "/recipes/recipes.jsonl",
+        "/recipes/examples/minimal.yaml",
+        "/recipes/examples/ci-validate-generated-fragments.yaml",
+        "/schema/odpr.yaml",
+        "/schema/odpr.json",
     ]:
         assert fragment in llms, f"llms.txt missing {fragment}"
 
 
 def main():
-    checks = [check_schema, check_examples, check_objects_and_llms]
+    checks = [check_schema, check_examples, check_recipes_and_llms]
     failures = []
     for check in checks:
         try:
@@ -146,7 +138,7 @@ def main():
             print(f"FAIL {failure}", file=sys.stderr)
         return 1
 
-    print("OK: ODPC agent artifacts are consistent.")
+    print("OK: ODPR agent artifacts are consistent.")
     return 0
 
 
