@@ -8,6 +8,7 @@ from odpr_paths import (
     EXAMPLES_DIR,
     LLMS_TXT,
     PROVIDER_EXAMPLES_DIR,
+    RECIPES_DIR,
     RECIPES_JSONL,
     SCHEMA_JSON,
     SCHEMA_YAML,
@@ -19,6 +20,7 @@ EXPECTED_EXAMPLES = [
     "minimal.yaml",
     "ci-validate-generated-fragments.yaml",
     "release-portfolio-review.yaml",
+    "portfolio-localization.yaml",
     "hybrid-graph-review.yaml",
 ]
 
@@ -29,7 +31,7 @@ EXPECTED_PROVIDER_EXAMPLES = [
     "internal-secure.yaml",
 ]
 
-EXPECTED_RECORD_IDS = {"Recipe", "Provider", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"}
+EXPECTED_RECORD_IDS = {"Recipe", "Provider", "RecipeCatalog", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"}
 
 
 def load_yaml(path):
@@ -81,19 +83,36 @@ def assert_provider_document(document, expected_id):
     assert isinstance(provider["provider"], str) and provider["provider"].strip()
 
 
+def assert_recipe_catalog_document(document):
+    assert document["schema"] == "https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml"
+    assert document["version"] == "1.0"
+    assert document["kind"] == "RecipeCatalog"
+    catalog = document["recipeCatalog"]
+    assert isinstance(catalog["metadata"].get("id"), str) and catalog["metadata"]["id"].startswith("RCP-CATALOG-")
+    assert_lang_string(catalog["metadata"].get("name"), "recipeCatalog.metadata.name")
+    assert catalog["recipes"], "recipeCatalog.recipes must not be empty"
+    for index, entry in enumerate(catalog["recipes"]):
+        forbidden = {"steps", "status", "runId", "logs", "plannedWrites"}
+        assert forbidden.isdisjoint(entry), f"recipeCatalog.recipes[{index}] contains runtime or full-step fields"
+        assert entry["path"].endswith(".yaml"), f"recipeCatalog.recipes[{index}].path must point to YAML"
+        assert isinstance(entry["commands"], list), f"recipeCatalog.recipes[{index}].commands must be a list"
+
+
 def check_schema():
     schema = load_yaml(SCHEMA_YAML)
     json_schema = load_json(SCHEMA_JSON)
 
     assert schema["required"] == ["schema", "version", "kind"], "YAML schema root requirements changed"
     assert json_schema["required"] == schema["required"], "JSON schema root requirements must match YAML schema"
-    assert list(schema["properties"]) == ["schema", "version", "kind", "recipe", "provider"], "YAML schema root property order changed"
-    assert list(json_schema["properties"]) == ["schema", "version", "kind", "recipe", "provider"], "JSON schema root property order changed"
-    assert schema["properties"]["kind"]["enum"] == ["Recipe", "Provider"], "YAML schema root kind must support Recipe and Provider"
-    assert json_schema["properties"]["kind"]["enum"] == ["Recipe", "Provider"], "JSON schema root kind must support Recipe and Provider"
+    assert list(schema["properties"]) == ["schema", "version", "kind", "recipe", "provider", "recipeCatalog"], "YAML schema root property order changed"
+    assert list(json_schema["properties"]) == ["schema", "version", "kind", "recipe", "provider", "recipeCatalog"], "JSON schema root property order changed"
+    assert schema["properties"]["kind"]["enum"] == ["Recipe", "Provider", "RecipeCatalog"], "YAML schema root kind must support Recipe, Provider, and RecipeCatalog"
+    assert json_schema["properties"]["kind"]["enum"] == ["Recipe", "Provider", "RecipeCatalog"], "JSON schema root kind must support Recipe, Provider, and RecipeCatalog"
     assert "recipe" in schema["properties"], "YAML schema must define recipe property"
     assert "provider" in schema["properties"], "YAML schema must define provider property"
-    assert "catalog" not in schema["properties"], "YAML schema must not use catalog root"
+    assert "recipeCatalog" in schema["properties"], "YAML schema must define recipeCatalog property"
+    for runtime_kind in ["RecipeRunPlan", "RecipeRunManifest", "RecipeInspection"]:
+        assert runtime_kind not in schema["properties"]["kind"]["enum"], f"{runtime_kind} must remain outside ODPR v1 roots"
 
     recipe = schema["$defs"][schema["properties"]["recipe"]["$ref"].split("/")[-1]]
     assert recipe["required"] == ["metadata", "version", "type", "steps"], "Recipe required fields changed unexpectedly"
@@ -109,6 +128,9 @@ def check_schema():
     assert "credentialsRef" in provider["properties"], "Provider must define credentialsRef"
     assert "temperature" in provider["properties"], "Provider must define temperature"
 
+    catalog = schema["$defs"][schema["properties"]["recipeCatalog"]["$ref"].split("/")[-1]]
+    assert catalog["required"] == ["metadata", "recipes"], "RecipeCatalog required fields changed unexpectedly"
+
 
 def check_examples():
     for filename in EXPECTED_EXAMPLES:
@@ -119,7 +141,9 @@ def check_examples():
     assert_recipe_document(load_yaml(EXAMPLES_DIR / "minimal.yaml"), "dev")
     assert_recipe_document(load_yaml(EXAMPLES_DIR / "ci-validate-generated-fragments.yaml"), "ci")
     assert_recipe_document(load_yaml(EXAMPLES_DIR / "release-portfolio-review.yaml"), "release")
+    assert_recipe_document(load_yaml(EXAMPLES_DIR / "portfolio-localization.yaml"), "localization")
     assert_recipe_document(load_yaml(EXAMPLES_DIR / "hybrid-graph-review.yaml"), "hybrid")
+    assert_recipe_catalog_document(load_yaml(RECIPES_DIR / "catalog.yaml"))
 
     for filename in EXPECTED_PROVIDER_EXAMPLES:
         path = PROVIDER_EXAMPLES_DIR / filename
@@ -145,6 +169,9 @@ def check_examples():
     assert hybrid_recipe["steps"][0]["providerRef"] == "local-graph"
     assert hybrid_recipe["steps"][1]["providerRef"] == "production-quality"
 
+    localization_recipe = load_yaml(EXAMPLES_DIR / "portfolio-localization.yaml")["recipe"]
+    assert isinstance(localization_recipe["steps"][0]["with"]["languages"], list)
+
 
 def check_recipes_and_llms():
     records = load_jsonl(RECIPES_JSONL)
@@ -161,6 +188,8 @@ def check_recipes_and_llms():
         "/recipes/recipes.jsonl",
         "/recipes/examples/minimal.yaml",
         "/recipes/examples/ci-validate-generated-fragments.yaml",
+        "/recipes/examples/portfolio-localization.yaml",
+        "/recipes/catalog.yaml",
         "/providers/examples/production-quality.yaml",
         "/schema/odpr.yaml",
         "/schema/odpr.json",

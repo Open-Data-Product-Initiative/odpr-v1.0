@@ -85,7 +85,7 @@ def find_embedded_secrets(value, path=None):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description="Validate an ODPR Recipe or Provider file against the ODPR schema.",
+        description="Validate an ODPR Recipe, Provider, or RecipeCatalog file against the ODPR schema.",
     )
     parser.add_argument("recipe", help="Path to an ODPR YAML or JSON file")
     args = parser.parse_args(argv)

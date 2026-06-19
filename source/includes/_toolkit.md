@@ -31,7 +31,7 @@ specification provides the human-readable documentation, while the schema,
 recipe records, provider records, and example files provide machine-readable
 resources for validation, workflow automation, AI retrieval, and agent use.
 
-Use `odpr.yaml` or `odpr.json` to validate Recipe and Provider files,
+Use `odpr.yaml` or `odpr.json` to validate Recipe, Provider, and RecipeCatalog files,
 `recipes.jsonl` for lightweight object selection and retrieval, and the
 examples when generating or repairing ODPR YAML.
 
@@ -43,8 +43,9 @@ with other conforming SDKs, CI/CD systems, MCP servers, or platform
 implementations.
 
 <!-- AI_AGENT_GUIDANCE:
-Use /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe and Provider files.
+Use /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe, Provider, and RecipeCatalog files.
 Use /recipes/recipes.jsonl for retrieval, classification, ODPR object selection, and lightweight tool calls.
+Use /recipes/catalog.yaml for metadata-only discovery of complete Recipe files.
 Use /recipes/examples/*.yaml when generating or repairing ODPR recipe content.
 Use /providers/examples/*.yaml when generating or repairing ODPR Provider content.
 Use the ODP Agent SDK as the first reference implementation for validating and executing ODPR recipes; do not treat it as the only possible ODPR implementation.
@@ -59,9 +60,11 @@ Keep Provider objects free of raw secrets and provider-specific API schemas.
 | [`odpr.yaml`](/schema/odpr.yaml) | YAML Schema | YAML representation of the ODPR validation schema |
 | [`odpr.json`](/schema/odpr.json) | JSON Schema | JSON representation of the ODPR validation schema |
 | [`recipes.jsonl`](/recipes/recipes.jsonl) | JSONL | Agent-friendly one-recipe-per-line file for retrieval and lightweight tools |
+| [`catalog.yaml`](/recipes/catalog.yaml) | YAML | Metadata-only RecipeCatalog that points to canonical recipe examples |
 | [`minimal.yaml`](/recipes/examples/minimal.yaml) | YAML | Minimal valid ODPR recipe example |
 | [`ci-validate-generated-fragments.yaml`](/recipes/examples/ci-validate-generated-fragments.yaml) | YAML | CI recipe that generates and validates fragments |
 | [`release-portfolio-review.yaml`](/recipes/examples/release-portfolio-review.yaml) | YAML | Release recipe for portfolio refresh, localization, and explanation |
+| [`portfolio-localization.yaml`](/recipes/examples/portfolio-localization.yaml) | YAML | Localization recipe with YAML list language targets |
 | [`hybrid-graph-review.yaml`](/recipes/examples/hybrid-graph-review.yaml) | YAML | Hybrid recipe that mixes local and hosted execution |
 | [`production-quality.yaml`](/providers/examples/production-quality.yaml) | YAML | Hosted Provider profile for production-quality generation |
 | [`local-fast.yaml`](/providers/examples/local-fast.yaml) | YAML | Local Provider profile for fast development runs |
@@ -74,7 +77,7 @@ maintaining and using recipe artifacts.
 <!-- AI_AGENT_SCRIPT_GUIDANCE:
 When working from the source repository, use scripts/search_recipes.py for repeatable local ODPR recipe lookup.
 Use scripts/search_recipes.py --json when another tool or agent will consume the result.
-Use scripts/validate_recipe.py to validate ODPR YAML or JSON Recipe or Provider files against source/schema/odpr.yaml and reject embedded secrets or API keys.
+Use scripts/validate_recipe.py to validate ODPR YAML or JSON Recipe, Provider, or RecipeCatalog files against source/schema/odpr.yaml and reject embedded secrets or API keys.
 Use scripts/check_agent_artifacts.py in CI or review workflows to detect drift between schema, recipe artifacts, examples, and llms.txt.
 Use scripts/generate_recipe_artifacts.py after editing source/schema/odpr.yaml to regenerate source/schema/odpr.json; use --check in CI or review workflows.
 Install script dependencies with python -m pip install -r scripts/requirements-agent.txt.
@@ -86,7 +89,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 | [`check_agent_artifacts.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/check_agent_artifacts.py) | Checks schema alignment, example files, recipe JSONL records, and `llms.txt` references |
 | [`generate_recipe_artifacts.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/generate_recipe_artifacts.py) | Regenerates derived recipe artifacts such as `source/schema/odpr.json` from canonical source files; use `--check` to detect drift |
 | [`search_recipes.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/search_recipes.py) | Searches ODPR recipe records by keyword or exact recipe id; use `--json` for machine-readable results |
-| [`validate_recipe.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/validate_recipe.py) | Validates ODPR YAML or JSON Recipe or Provider files against the ODPR schema and rejects embedded secrets or API keys |
+| [`validate_recipe.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/validate_recipe.py) | Validates ODPR YAML or JSON Recipe, Provider, or RecipeCatalog files against the ODPR schema and rejects embedded secrets or API keys |
 
 The Markdown tables in this specification are intended for human readers. The
 schema, JSONL, and YAML example files are intended for programmable use,

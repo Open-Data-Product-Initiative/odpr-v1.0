@@ -14,6 +14,7 @@ those artifacts.
 <!-- AI_AGENT_USAGE_PATTERNS:
 Use ODPR for repeatable workflow recipes, not for defining the data product, catalog, graph, or vocabulary itself.
 Use providerRef as an execution reference only; provider configuration belongs to the SDK, CI system, or platform executing the recipe.
+Use RecipeCatalog only for metadata-only discovery; load and validate the referenced Recipe before execution.
 Prefer declarative steps and gates over arbitrary shell scripts.
 Use context.format to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
 -->
@@ -23,6 +24,7 @@ Use context.format to decide whether YAML, TOON, GCF, or automatic fallback shou
 Agents can use ODPR to:
 
 * discover safe workflow recipes before running SDK tools
+* use a `RecipeCatalog` to find complete recipe files
 * explain what a recipe will do before execution
 * validate recipe files against `odpr.yaml` or `odpr.json`
 * select a development, CI, release, localization, hybrid, or agent recipe
@@ -53,6 +55,8 @@ Agents using ODPR should keep boundaries clear:
 * Do not treat ODPR as a graph model; use ODPG for nodes, edges, and
   relationships.
 * Do not embed secrets or API keys in recipes.
+* Do not put dry-run responses, run manifests, provider readiness results,
+  planned writes, write-scope checks, run ids, or logs in ODPR documents.
 * Do not assume `providerRef` is globally meaningful; it must be resolved by the
   executing SDK, CI system, or platform.
 * Do not silently skip required gates or human review requirements.

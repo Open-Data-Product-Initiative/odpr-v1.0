@@ -9,11 +9,16 @@ Agents and tools can also use `/recipes/recipes.jsonl` as a lightweight lookup
 file for selecting the right recipe pattern before loading the full YAML
 example.
 
+Use `/recipes/catalog.yaml` when a tool needs metadata-only discovery of
+available recipe files. Catalog entries point to complete recipes; they do not
+embed step bodies or runtime output.
+
 | Recipe | Use when | What happens |
 |---|---|---|
 | [`minimal.yaml`](/recipes/examples/minimal.yaml) | A developer wants the smallest valid local recipe for fast iteration. | The executor labels the run as `development`, prepares the local provider `local-fast`, runs one `generate` step for `signal` fragments, reads `source_docs/signals/`, writes draft fragments to `generated/fragments/`, and exposes that folder as `draft-fragments`. |
-| [`ci-validate-generated-fragments.yaml`](/recipes/examples/ci-validate-generated-fragments.yaml) | CI must generate draft fragments and fail if the generated output is invalid. | The executor labels the run as `ci`, generates `signal` fragments, exposes `generated/fragments/` as `generated-fragments`, validates those files, and enforces the required `fragments-valid` validation gate before the CI job can pass. |
+| [`ci-validate-generated-fragments.yaml`](/recipes/examples/ci-validate-generated-fragments.yaml) | CI must generate draft fragments and fail if the generated output is invalid. | The executor labels the run as `ci`, generates `signal` fragments, exposes `generated/fragments/` as `generated-fragments`, validates `generated/fragments/signal.yaml`, and enforces the required `fragments-valid` validation gate before the CI job can pass. |
 | [`release-portfolio-review.yaml`](/recipes/examples/release-portfolio-review.yaml) | A release process must refresh, localize, explain, and review a portfolio before publication. | The executor labels the run as `production`, uses a hosted `production-quality` provider, refreshes `portfolio/`, localizes it to Finnish and Swedish, generates an explanation, exposes localized pages and explanation output paths, applies a release timeout, and requires human review before publishing. |
+| [`portfolio-localization.yaml`](/recipes/examples/portfolio-localization.yaml) | A portfolio workspace must be localized into configured target languages. | The executor uses the hosted `production-quality` provider, localizes `portfolio/` to Finnish and Swedish using a YAML language list, exposes the localized HTML paths, and requires release-owner review. |
 | [`hybrid-graph-review.yaml`](/recipes/examples/hybrid-graph-review.yaml) | A workflow should combine local graph work with hosted review or explanation. | The executor labels the run as `staging`, builds graph context locally from `generated/fragments/`, exposes `generated/graph.yaml` as `graph-context`, then uses a hosted `production-quality` provider to explain the portfolio, with both automated and human review expected. |
 
 The library is intentionally small. Each example should demonstrate a distinct

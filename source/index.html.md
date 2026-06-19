@@ -11,8 +11,9 @@ toc_footers:
 
 includes:
 - toolkit
-- recipe_library
 - agent_usage
+- recipe_library
+- recipe_catalog
 - recipe
 - provider
 - extensions
@@ -84,7 +85,7 @@ A recipe describes:
 * which checks or gates apply
 * which context format is preferred
 * which execution mode is expected
-* which provider reference or provider class is used
+* which execution mode and provider reference are expected
 * whether human review is required
 
 ## Core design principle
@@ -95,9 +96,10 @@ A recipe is a portable, declarative workflow contract. Scripts tell one tool
 what to do. Recipes tell teams, tools, agents, and automation systems how a data
 product workflow should run.
 
-## Recipe and provider configuration
+## Recipe, provider, and catalog configuration
 
-ODPR standardizes two clear root objects: `Recipe` and `Provider`.
+ODPR standardizes three clear root objects: `Recipe`, `Provider`, and
+`RecipeCatalog`.
 
 A `Recipe` declares workflow intent: which steps run, which inputs and outputs
 matter, which gates apply, and which provider profile should be used.
@@ -106,6 +108,11 @@ A `Provider` declares a named runtime profile: provider family, model,
 provider class, endpoint reference, credentials reference, and safe default
 settings such as temperature. This prevents each SDK, CI system, MCP server, or
 agent runtime from inventing a different provider shape.
+
+A `RecipeCatalog` is a metadata-only discovery document. It lists available
+recipes and points to their full `Recipe` files. It does not embed full steps,
+credentials, runtime status, planned writes, run ids, logs, or provider
+readiness results.
 
 In an ODPR recipe, a provider is referenced by name:
 
@@ -136,9 +143,10 @@ This two-part model keeps recipes portable and safe to share. The same recipe
 can use `providerRef: production-quality` in development, CI, staging, or
 production while each environment resolves that reference to the right local
 model, hosted model, internal gateway, credentials, and operational settings.
-ODPR standardizes both the workflow contract and the provider profile shape;
-the executing implementation owns runtime resolution, credentials, and provider
-connectivity.
+ODPR standardizes the workflow contract, provider profile shape, and recipe
+discovery metadata; the executing implementation owns runtime resolution,
+credentials, provider connectivity, invocation mode, readiness checks, write
+scope checks, run manifests, and logs.
 
 ## Relationship to the standards family
 
@@ -187,7 +195,7 @@ recipe:
     - id: validate-fragments
       command: validate
       with:
-        input: generated/fragments/
+        document: generated/fragments/signal.yaml
   outputs:
     - id: generated-fragments
       path: generated/fragments/
@@ -218,7 +226,7 @@ documents for signals change. The expected run is:
    operation with `kind: signal`, reading inputs from `source_docs/signals/`,
    and writing generated fragments to `generated/fragments/`.
 8. It runs the `validate-fragments` step by invoking the executor's `validate`
-   operation against `generated/fragments/`.
+   operation against `generated/fragments/signal.yaml`.
 9. It exposes `generated-fragments` as the durable output path that CI jobs or
    agents can inspect after the run.
 10. It evaluates the `fragments-valid` validation gate. Because the gate is

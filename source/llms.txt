@@ -1,10 +1,11 @@
 # Data Product Recipe Specification (ODPR)
 
 ODPR is a lightweight, vendor-neutral, machine-readable standard for reusable
-data product workflow recipes and named provider profiles. It defines portable
-recipes for creating, validating, reviewing, localizing, publishing, and
-refreshing data product artifacts, plus portable Provider objects that recipes
-can reference through `providerRef`.
+data product workflow recipes, named provider profiles, and metadata-only
+recipe catalogs. It defines portable recipes for creating, validating,
+reviewing, localizing, publishing, and refreshing data product artifacts, plus
+portable Provider objects that recipes can reference through `providerRef`, and
+RecipeCatalog objects for discovery.
 
 Base URL:
 - https://opendataproducts.org/odpr-v1.0
@@ -24,6 +25,9 @@ Family-level toolkit:
   together with the ODP Agent SDK when the task focuses on recipe documents.
 - When explaining or running a recipe, inspect command names, step `with`
   arguments, declared outputs, gates, review policy, environment, and runPolicy.
+- Do not model SDK invocation mode, dry-run responses, run manifests, logs,
+  provider readiness, planned writes, write-scope checks, or run ids as ODPR
+  root objects.
 - Do not put concrete LLM model settings, endpoints, credentials, or
   temperature values in ODPR recipes. Resolve those through ODPR Provider
   objects and the executing SDK, CI/CD system, MCP server, agent runtime, or
@@ -49,10 +53,14 @@ Canonical schema files:
 Agent-friendly retrieval file:
 - /recipes/recipes.jsonl (https://opendataproducts.org/odpr-v1.0/recipes/recipes.jsonl)
 
+Recipe catalog file:
+- /recipes/catalog.yaml (https://opendataproducts.org/odpr-v1.0/recipes/catalog.yaml)
+
 Recipe example files:
 - /recipes/examples/minimal.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/minimal.yaml)
 - /recipes/examples/ci-validate-generated-fragments.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/ci-validate-generated-fragments.yaml)
 - /recipes/examples/release-portfolio-review.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/release-portfolio-review.yaml)
+- /recipes/examples/portfolio-localization.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/portfolio-localization.yaml)
 - /recipes/examples/hybrid-graph-review.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/hybrid-graph-review.yaml)
 
 Provider example files:
@@ -69,8 +77,9 @@ Agent-oriented source scripts:
   `python scripts/generate_recipe_artifacts.py --check` to detect drift.
 - scripts/search_recipes.py searches /recipes/recipes.jsonl by keyword or exact
   recipe id. Use `--json` for machine-readable results.
-- scripts/validate_recipe.py validates ODPR YAML or JSON Recipe or Provider
-  files against /schema/odpr.yaml and rejects embedded secrets or API keys.
+- scripts/validate_recipe.py validates ODPR YAML or JSON Recipe, Provider, or
+  RecipeCatalog files against /schema/odpr.yaml and rejects embedded secrets or
+  API keys.
   Install dependencies with
   `python -m pip install -r scripts/requirements-agent.txt`.
 
@@ -86,6 +95,8 @@ Core ODPR concepts:
 - Provider: root provider profile document that declares the provider family,
   model, provider class, endpoint reference, credentials reference, and safe
   runtime defaults for a named `providerRef`.
+- RecipeCatalog: root metadata-only discovery document that lists available
+  recipes and points to complete Recipe files.
 - Step: one operation in a recipe, such as generate, validate, portfolio.build,
   portfolio.localize, portfolio.explain, or odpg.build.
 - Execution: runtime policy for local, hosted, hybrid, or model-free execution.
@@ -100,31 +111,38 @@ Recommended agent workflow:
 2. Use the ODP Agent SDK for implementation work that validates or executes
    recipes.
 3. Load /recipes/recipes.jsonl for recipe selection and lightweight lookup.
-4. Load /recipes/examples/*.yaml when generating ODPR content.
-5. Load /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe and
-   Provider files.
-6. Use provider references in recipes as references only; load matching
+4. Load /recipes/catalog.yaml when metadata-only discovery of complete Recipe
+   files is needed.
+5. Load /recipes/examples/*.yaml when generating ODPR content.
+6. Load /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe,
+   Provider, and RecipeCatalog files.
+7. Use provider references in recipes as references only; load matching
    Provider objects by `provider.id` to resolve model and provider defaults.
-7. Inspect declared outputs, gates, review policy, environment, and runPolicy
+8. Inspect declared outputs, gates, review policy, environment, and runPolicy
    before running recipe steps.
-8. Keep recipes declarative. Do not turn ODPR into a shell scripting language or
+9. Keep recipes declarative. Do not turn ODPR into a shell scripting language or
    Provider objects into raw secret stores.
 
 Modeling constraints:
-- ODPR defines workflow recipes and provider profile documents. It does not
-  define data products, catalogs, graphs, vocabularies, SDK internals, CI/CD
-  engines, or provider-specific APIs.
+- ODPR defines workflow recipes, provider profile documents, and metadata-only
+  recipe catalogs. It does not define data products, ODPC catalog object models,
+  graphs, vocabularies, SDK internals, CI/CD engines, or provider-specific APIs.
 - Recipe documents use `kind: Recipe`. Provider documents use `kind: Provider`.
-- Recipe metadata requires stable id, name, and description fields. Recipe
-  objects also require `recipe.version`, which is separate from the top-level
-  ODPR specification version.
+  Recipe catalog documents use `kind: RecipeCatalog`.
+- ODPR v1 root kinds do not include `RecipeRunPlan`, `RecipeRunManifest`, or
+  `RecipeInspection`.
+- Recipe metadata requires stable id and name fields. Description is
+  recommended for human readability. Recipe objects also require
+  `recipe.version`, which is separate from the top-level ODPR specification
+  version.
 - Provider profiles require stable `provider.id` and a provider family in
   `provider.provider`.
 - Recipe steps should describe SDK or platform operations, not arbitrary shell
   scripts.
-- Execution mode should be one of local, hosted, hybrid, or none.
+- Execution mode should be one of local, hosted, hybrid, or none. It is not SDK
+  invocation mode such as validate, dry-run, execute, or resume.
 - Context format should be one of yaml, toon, gcf, or auto.
 - Provider profiles should use `credentialsRef` instead of raw credentials.
-- Validation should reject embedded secrets or API keys in Recipe and Provider
-  documents.
+- Validation should reject embedded secrets or API keys in Recipe, Provider,
+  and RecipeCatalog documents.
 - Use extension fields beginning with `x-` for local implementation details.

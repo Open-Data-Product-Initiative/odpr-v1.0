@@ -38,7 +38,7 @@ recipe:
     - id: validate-fragments
       command: validate
       with:
-        input: generated/fragments/
+        document: generated/fragments/signal.yaml
       x-ci-job-name: validate-generated-fragments
 ```
 

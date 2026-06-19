@@ -42,20 +42,38 @@ def assert_provider_document(document, expected_id):
     assert provider["provider"]
 
 
+def assert_recipe_catalog_document(document):
+    assert document["schema"] == "https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml"
+    assert document["version"] == "1.0"
+    assert document["kind"] == "RecipeCatalog"
+    catalog = document["recipeCatalog"]
+    assert catalog["metadata"]["id"].startswith("RCP-CATALOG-")
+    assert_lang_string(catalog["metadata"]["name"])
+    assert catalog["recipes"]
+    for entry in catalog["recipes"]:
+        assert set(entry).isdisjoint({"steps", "status", "runId", "logs", "plannedWrites"})
+        assert entry["path"].endswith(".yaml")
+        assert entry["id"].startswith("RCP-")
+        assert_lang_string(entry["name"])
+
+
 class AgentArtifactsTest(unittest.TestCase):
-    def test_schema_uses_recipe_and_provider_roots(self):
+    def test_schema_uses_recipe_provider_and_catalog_roots(self):
         schema = load_yaml(SOURCE / "schema" / "odpr.yaml")
         json_schema = json.loads((SOURCE / "schema" / "odpr.json").read_text(encoding="utf-8"))
 
         self.assertEqual(schema["required"], ["schema", "version", "kind"])
-        self.assertEqual(list(schema["properties"]), ["schema", "version", "kind", "recipe", "provider"])
-        self.assertEqual(schema["properties"]["kind"]["enum"], ["Recipe", "Provider"])
+        self.assertEqual(list(schema["properties"]), ["schema", "version", "kind", "recipe", "provider", "recipeCatalog"])
+        self.assertEqual(schema["properties"]["kind"]["enum"], ["Recipe", "Provider", "RecipeCatalog"])
         self.assertIn("recipe", schema["properties"])
         self.assertIn("provider", schema["properties"])
-        self.assertNotIn("catalog", schema["properties"])
+        self.assertIn("recipeCatalog", schema["properties"])
+        self.assertNotIn("RecipeRunPlan", schema["properties"]["kind"]["enum"])
+        self.assertNotIn("RecipeRunManifest", schema["properties"]["kind"]["enum"])
+        self.assertNotIn("RecipeInspection", schema["properties"]["kind"]["enum"])
         self.assertEqual(json_schema["required"], schema["required"])
-        self.assertEqual(list(json_schema["properties"]), ["schema", "version", "kind", "recipe", "provider"])
-        self.assertEqual(json_schema["properties"]["kind"]["enum"], ["Recipe", "Provider"])
+        self.assertEqual(list(json_schema["properties"]), ["schema", "version", "kind", "recipe", "provider", "recipeCatalog"])
+        self.assertEqual(json_schema["properties"]["kind"]["enum"], ["Recipe", "Provider", "RecipeCatalog"])
 
         recipe_ref = schema["properties"]["recipe"]["$ref"].split("/")[-1]
         recipe = schema["$defs"][recipe_ref]
@@ -73,11 +91,16 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertIn("credentialsRef", provider["properties"])
         self.assertIn("temperature", provider["properties"])
 
+        catalog_ref = schema["properties"]["recipeCatalog"]["$ref"].split("/")[-1]
+        catalog = schema["$defs"][catalog_ref]
+        self.assertEqual(catalog["required"], ["metadata", "recipes"])
+
     def test_examples_cover_minimal_ci_release_and_hybrid_recipes(self):
         expected = [
             "minimal.yaml",
             "ci-validate-generated-fragments.yaml",
             "release-portfolio-review.yaml",
+            "portfolio-localization.yaml",
             "hybrid-graph-review.yaml",
         ]
 
@@ -107,6 +130,17 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertEqual(release_recipe["recipe"]["execution"]["mode"], "hosted")
         self.assertTrue(release_recipe["recipe"]["review"]["required"])
         self.assertEqual(hybrid_recipe["recipe"]["execution"]["mode"], "hybrid")
+
+        localization_recipe = load_yaml(
+            SOURCE / "recipes" / "examples" / "portfolio-localization.yaml"
+        )
+        assert_recipe_document(localization_recipe, "localization")
+        languages = localization_recipe["recipe"]["steps"][0]["with"]["languages"]
+        self.assertIsInstance(languages, list)
+
+    def test_examples_cover_recipe_catalog(self):
+        document = load_yaml(SOURCE / "recipes" / "catalog.yaml")
+        assert_recipe_catalog_document(document)
 
     def test_examples_cover_provider_profiles(self):
         expected = [
@@ -147,7 +181,7 @@ class AgentArtifactsTest(unittest.TestCase):
         ]
 
         ids = {record["id"] for record in records}
-        self.assertEqual(ids, {"Recipe", "Provider", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"})
+        self.assertEqual(ids, {"Recipe", "Provider", "RecipeCatalog", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"})
 
         for record in records:
             self.assertTrue(record["definition"])
@@ -159,6 +193,22 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertIn("/recipes/recipes.jsonl", llms)
         self.assertIn("/schema/odpr.yaml", llms)
         self.assertIn("/providers/examples/production-quality.yaml", llms)
+
+    def test_agent_guidance_has_current_recipe_contract_wording(self):
+        llms = (SOURCE / "llms.txt").read_text(encoding="utf-8")
+        llms_words = " ".join(llms.split())
+        index = (SOURCE / "index.html.md").read_text(encoding="utf-8")
+        library = (SOURCE / "includes" / "_recipe_library.md").read_text(encoding="utf-8")
+
+        self.assertNotIn("6. Use provider references", llms)
+        self.assertNotIn("metadata requires stable id, name, and description", llms_words)
+        self.assertNotIn("define data products, catalogs, graphs", llms_words)
+        self.assertIn("define data products, ODPC catalog object models, graphs", llms_words)
+
+        self.assertNotIn("provider reference or provider class", index)
+        self.assertNotIn("operation against `generated/fragments/`", index)
+        self.assertIn("operation against `generated/fragments/signal.yaml`", index)
+        self.assertIn("validates `generated/fragments/signal.yaml`", library)
 
 
 if __name__ == "__main__":

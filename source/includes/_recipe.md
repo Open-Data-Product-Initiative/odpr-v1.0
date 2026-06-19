@@ -24,7 +24,13 @@ recipe:
       en: Generate draft fragments locally.
   version: "1.0.0"
   type: dev
-  steps: []
+  steps:
+    - id: generate-signals
+      command: generate
+      with:
+        kind: signal
+        input: source_docs/signals/
+        output: generated/fragments/
 ```
 
 | Element | Type | Required | Description |
@@ -59,7 +65,7 @@ recipe:
     - id: validate-fragments
       command: validate
       with:
-        input: generated/fragments/
+        document: generated/fragments/signal.yaml
   outputs:
     - id: generated-fragments
       path: generated/fragments/
@@ -75,14 +81,14 @@ recipe:
 
 | Element | Type | Required | Description |
 |---|---|---|---|
-| `metadata` | object | required | Stable recipe identity, name, description, owner, and tags. |
+| `metadata` | object | required | Stable recipe identity, name, optional description, owner, and tags. |
 | `version` | string | required | Version of this recipe workflow. This is separate from the top-level ODPR specification version. |
 | `type` | string | required | Recipe type such as `dev`, `ci`, `release`, `localization`, `hybrid`, or `agent`. |
 | `steps` | array | required | Ordered workflow operations. |
 | `inputs` | array | optional | Named workflow inputs. |
 | `outputs` | array | optional | Named workflow outputs. |
 | `context` | object | optional | Context format policy such as YAML, TOON, GCF, or automatic fallback. |
-| `execution` | object | optional | Execution policy such as local, hosted, hybrid, or model-free. |
+| `execution` | object | optional | Workflow intent such as local, hosted, hybrid, or model-free runtime/provider class. |
 | `gates` | array | optional | Validation, quality, or review gates. |
 | `review` | object | optional | Human or agent review expectations. |
 | `environment` | string | optional | Environment label such as development, CI, staging, or production. |
@@ -100,6 +106,13 @@ recipe:
 | `agent` | Agent-safe workflows that AI agents can inspect and run. |
 
 ## Execution modes
+
+A `Recipe` is the portable workflow contract. The same recipe document can be
+validated, dry-run, executed, or resumed by an SDK or platform. ODPR does not
+store invocation mode in the recipe body. Invocation mode belongs to the
+executing tool, for example an SDK command using `--dry-run` or `--execute`.
+`recipe.execution.mode` describes runtime/provider class such as local, hosted,
+hybrid, or none.
 
 | Mode | Meaning |
 |---|---|
@@ -131,6 +144,11 @@ The referenced `Provider` object defines the provider family, model, provider
 class, endpoint reference, credentials reference, and safe runtime defaults.
 Raw secrets MUST NOT be stored in recipes or provider documents.
 
+`execution.providerRef` is the default provider profile for LLM-backed steps.
+Step-level `providerRef` overrides `execution.providerRef`. Step-level `model`
+overrides the provider model for that step. Deterministic and report commands
+MUST NOT use `providerRef` or `model`.
+
 ODPR validation tools SHOULD reject embedded secrets or API keys in recipes.
 Use `providerRef` in recipes and `credentialsRef` in Provider documents instead
 of fields such as `apiKey`, `token`, `password`, or inline secret values.
@@ -141,28 +159,44 @@ ODPR keeps commands lightweight so recipes stay portable across implementations.
 Implementations SHOULD support the recommended command names where the
 underlying capability exists. Implementations MAY support additional commands.
 
-| Command | Typical use |
-|---|---|
-| `generate` | Generate draft data product, catalog, graph, or vocabulary fragments. |
-| `validate` | Validate generated or source artifacts against a schema or rule set. |
-| `odpc.build` | Build catalog or portfolio objects. |
-| `odpg.build` | Build graph context or graph artifacts. |
-| `portfolio.build` | Build a portfolio package or site. |
-| `portfolio.refresh` | Refresh portfolio source material or generated fragments. |
-| `portfolio.render` | Render portfolio output. |
-| `portfolio.localize` | Localize portfolio content into target languages. |
-| `portfolio.explain` | Generate explanation or review material for a portfolio. |
+| Command | Classification | Required `with` | Optional `with` |
+|---|---|---|---|
+| `generate` | `llm-backed` | `input`, `kind`, `output` | `config`, `prompts`, `profile`, `includeComponents`, `maxSourceChars`, `ollamaUrl` |
+| `odpc.build` | `deterministic` | `input`, `output` | `html`, `toon`, `gcf`, `id`, `name`, `description`, `recursive`, `validate` |
+| `odpg.build` | `llm-backed` | `input`, `output` | `toon`, `gcf`, `contextGraph`, `id`, `name`, `description`, `recursive`, `validate`, `config`, `prompts`, `ollamaUrl` |
+| `odpg.render` | `deterministic` | `graph`, `output` | none |
+| `portfolio.build` | `llm-backed` | at least one of `objectives`, `useCases`, `signals`, or `products`; and `output`, `workspace`, or both | `title`, `config`, `prompts`, `ollamaUrl`, `strictValidation` |
+| `portfolio.refresh` | `llm-backed` | `workspace` | `objectives`, `useCases`, `signals`, `products`, `title`, `config`, `allSources`, `prompts`, `ollamaUrl`, `strictValidation` |
+| `portfolio.sync` | `deterministic` | `workspace` | `strictValidation` |
+| `portfolio.localize` | `llm-backed` | `workspace`, `languages` | `defaultLanguage`, `config`, `prompts`, `ollamaUrl`, `strictValidation` |
+| `portfolio.render` | `deterministic` | `workspace` | `output`, `strictValidation` |
+| `portfolio.explain` | `report` | `workspace` | none |
+| `validate` | `deterministic` | `document` | none |
+| `explain` | `report` | `document` | none |
 
-`with` is the argument object for the selected command. ODPR standardizes where
-command arguments live, but v1.0 does not define the complete argument schema
-for every command.
+`with` is the argument object for the selected command. `providerRef` and
+`model` stay beside `command`; they do not belong inside `with`.
+`portfolio.localize.with.languages` SHOULD be written as a YAML list of BCP 47
+language tags.
+
+| Classification | Meaning |
+|---|---|
+| `deterministic` | No provider needed; repeatable from files and options. |
+| `llm-backed` | Calls a configured provider and model. |
+| `review` | Requires human or external approval. |
+| `report` | Reads artifacts and produces summaries, diagnostics, or review material. |
 
 ## Outputs
 
-Use `outputs` when a workflow creates durable artifacts that later steps, CI
+Use `inputs` and `outputs` when a workflow uses or creates durable artifacts
+that later steps, CI
 jobs, reviewers, or agents should inspect. Outputs are named paths. They do not
 replace the command-specific `with.output` argument; they make expected durable
 results visible at the recipe level.
+
+Recipe-level paths should be project-relative. Recipes should not use absolute
+paths or `..` traversal. ODPR states this safety expectation; SDKs and
+platforms enforce write-scope policy.
 
 ## Gates, review, and runtime policy
 
@@ -172,9 +206,10 @@ SHOULD NOT silently skip required gates.
 `review.required` declares whether a recipe expects review after automated
 steps complete. `review.mode` can be `human`, `agent`, `both`, or `none`.
 
-`runPolicy` gives lightweight runtime guidance such as timeout and retry
-expectations. It is useful for CI jobs, local model calls, portfolio
-localization, and hosted provider calls.
+`runPolicy` gives lightweight runtime guidance such as timeout, stop-on-failure
+behavior, and retry expectations. It is useful for CI jobs, local model calls,
+portfolio localization, and hosted provider calls. ODPR v1 does not define
+approval records, workflow pauses, run manifests, or gate status storage.
 
 ## Environment labels
 

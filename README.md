@@ -1,8 +1,8 @@
 # Data Product Recipe Specification (ODPR)
 
 The Data Product Recipe Specification, ODPR, is a lightweight, vendor-neutral,
-machine-readable standard for reusable data product workflow recipes and named
-provider profiles.
+machine-readable standard for reusable data product workflow recipes, named
+provider profiles, and metadata-only recipe catalogs.
 
 ODPR describes how repeatable data product work gets done: which steps run,
 which inputs and outputs are used, which checks or gates apply, which context
@@ -32,9 +32,13 @@ configuration. Provider profiles standardize names, provider family, model,
 provider class, endpoint reference, credentials reference, and safe defaults
 such as temperature. They do not store raw secrets.
 
-Validation should reject embedded secrets or API keys in Recipe and Provider
-documents. Use `providerRef` and `credentialsRef` instead of raw keys, tokens,
-passwords, or inline secret values.
+ODPR also defines `RecipeCatalog` documents for discovery. Catalogs list recipe
+metadata and paths to complete recipe files; they do not contain full step
+bodies, runtime status, planned writes, run ids, logs, or readiness results.
+
+Validation should reject embedded secrets or API keys in Recipe, Provider, and
+RecipeCatalog documents. Use `providerRef` and `credentialsRef` instead of raw
+keys, tokens, passwords, or inline secret values.
 
 # Relationship To The Standards Family
 
