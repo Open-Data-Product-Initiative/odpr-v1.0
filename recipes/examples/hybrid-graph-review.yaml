@@ -30,14 +30,22 @@ recipe:
       with:
         input: generated/fragments/
         output: generated/graph.yaml
+    - id: generate-review-notes
+      command: generate
+      providerRef: production-quality
+      with:
+        kind: objective
+        input: generated/graph.yaml
+        output: generated/review-notes/
     - id: explain-portfolio
       command: portfolio.explain
-      providerRef: production-quality
       with:
         workspace: portfolio/
   outputs:
     - id: graph-context
       path: generated/graph.yaml
+    - id: review-notes
+      path: generated/review-notes/
   review:
     required: true
     mode: both

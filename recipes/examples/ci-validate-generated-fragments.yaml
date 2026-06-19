@@ -32,7 +32,7 @@ recipe:
     - id: validate-fragments
       command: validate
       with:
-        input: generated/fragments/
+        document: generated/fragments/signal.yaml
   outputs:
     - id: generated-fragments
       path: generated/fragments/
