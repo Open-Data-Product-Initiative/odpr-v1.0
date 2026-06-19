@@ -859,6 +859,7 @@ maintaining and using recipe artifacts.</p>
 When working from the source repository, use scripts/search_recipes.py for repeatable local ODPR recipe lookup.
 Use scripts/search_recipes.py --json when another tool or agent will consume the result.
 Use scripts/validate_recipe.py to validate ODPR YAML or JSON Recipe, Provider, or RecipeCatalog files against source/schema/odpr.yaml and reject embedded secrets or API keys.
+Use scripts/build_recipe_catalog.py to regenerate source/recipes/catalog.yaml from canonical recipe examples; use --check in CI or review workflows.
 Use scripts/check_agent_artifacts.py in CI or review workflows to detect drift between schema, recipe artifacts, examples, and llms.txt.
 Use scripts/generate_recipe_artifacts.py after editing source/schema/odpr.yaml to regenerate source/schema/odpr.json; use --check in CI or review workflows.
 Install script dependencies with python -m pip install -r scripts/requirements-agent.txt.
@@ -871,6 +872,10 @@ Do not edit generated or derived artifacts without checking alignment across llm
 <th>Purpose</th>
 </tr>
 </thead><tbody>
+<tr>
+<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/build_recipe_catalog.py"><code>build_recipe_catalog.py</code></a></td>
+<td>Regenerates the metadata-only <code>source/recipes/catalog.yaml</code> from canonical recipe examples; use <code>--check</code> to detect catalog drift</td>
+</tr>
 <tr>
 <td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/check_agent_artifacts.py"><code>check_agent_artifacts.py</code></a></td>
 <td>Checks schema alignment, example files, recipe JSONL records, and <code>llms.txt</code> references</td>

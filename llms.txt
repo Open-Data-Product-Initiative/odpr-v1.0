@@ -70,6 +70,9 @@ Provider example files:
 - /providers/examples/internal-secure.yaml (https://opendataproducts.org/odpr-v1.0/providers/examples/internal-secure.yaml)
 
 Agent-oriented source scripts:
+- scripts/build_recipe_catalog.py regenerates source/recipes/catalog.yaml from
+  canonical recipe examples. Use
+  `python scripts/build_recipe_catalog.py --check` to detect catalog drift.
 - scripts/check_agent_artifacts.py checks schema alignment, example files,
   recipe JSONL records, and llms.txt references.
 - scripts/generate_recipe_artifacts.py regenerates derived recipe artifacts such
