@@ -193,6 +193,7 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertIn("/recipes/recipes.jsonl", llms)
         self.assertIn("/schema/odpr.yaml", llms)
         self.assertIn("/providers/examples/production-quality.yaml", llms)
+        self.assertIn("scripts/build_recipe_catalog.py", llms)
 
     def test_agent_guidance_has_current_recipe_contract_wording(self):
         llms = (SOURCE / "llms.txt").read_text(encoding="utf-8")

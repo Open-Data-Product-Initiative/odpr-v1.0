@@ -78,6 +78,7 @@ maintaining and using recipe artifacts.
 When working from the source repository, use scripts/search_recipes.py for repeatable local ODPR recipe lookup.
 Use scripts/search_recipes.py --json when another tool or agent will consume the result.
 Use scripts/validate_recipe.py to validate ODPR YAML or JSON Recipe, Provider, or RecipeCatalog files against source/schema/odpr.yaml and reject embedded secrets or API keys.
+Use scripts/build_recipe_catalog.py to regenerate source/recipes/catalog.yaml from canonical recipe examples; use --check in CI or review workflows.
 Use scripts/check_agent_artifacts.py in CI or review workflows to detect drift between schema, recipe artifacts, examples, and llms.txt.
 Use scripts/generate_recipe_artifacts.py after editing source/schema/odpr.yaml to regenerate source/schema/odpr.json; use --check in CI or review workflows.
 Install script dependencies with python -m pip install -r scripts/requirements-agent.txt.
@@ -86,6 +87,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 
 | Script | Purpose |
 |---|---|
+| [`build_recipe_catalog.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/build_recipe_catalog.py) | Regenerates the metadata-only `source/recipes/catalog.yaml` from canonical recipe examples; use `--check` to detect catalog drift |
 | [`check_agent_artifacts.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/check_agent_artifacts.py) | Checks schema alignment, example files, recipe JSONL records, and `llms.txt` references |
 | [`generate_recipe_artifacts.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/generate_recipe_artifacts.py) | Regenerates derived recipe artifacts such as `source/schema/odpr.json` from canonical source files; use `--check` to detect drift |
 | [`search_recipes.py`](https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/search_recipes.py) | Searches ODPR recipe records by keyword or exact recipe id; use `--json` for machine-readable results |

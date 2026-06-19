@@ -193,6 +193,7 @@ def check_recipes_and_llms():
         "/providers/examples/production-quality.yaml",
         "/schema/odpr.yaml",
         "/schema/odpr.json",
+        "scripts/build_recipe_catalog.py",
     ]:
         assert fragment in llms, f"llms.txt missing {fragment}"
 
