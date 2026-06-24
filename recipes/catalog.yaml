@@ -8,9 +8,16 @@ recipeCatalog:
       en: ODPR Example Recipe Catalog
     description:
       en: Metadata-only discovery catalog for canonical ODPR recipe examples.
+  groups:
+    - id: examples
+      name:
+        en: Example Recipes
+      description:
+        en: Complete learning and demonstration recipes.
   recipes:
     - path: recipes/examples/minimal.yaml
       id: RCP-DEV-001
+      groupRef: examples
       version: 1.0.0
       type: dev
       name:
@@ -24,6 +31,7 @@ recipeCatalog:
         - generate
     - path: recipes/examples/ci-validate-generated-fragments.yaml
       id: RCP-CI-001
+      groupRef: examples
       version: 1.0.0
       type: ci
       name:
@@ -43,6 +51,7 @@ recipeCatalog:
         - validate
     - path: recipes/examples/release-portfolio-review.yaml
       id: RCP-RELEASE-001
+      groupRef: examples
       version: 1.0.0
       type: release
       name:
@@ -63,6 +72,7 @@ recipeCatalog:
         - portfolio.explain
     - path: recipes/examples/portfolio-localization.yaml
       id: RCP-LOCALIZATION-001
+      groupRef: examples
       version: 1.0.0
       type: localization
       name:
@@ -81,6 +91,7 @@ recipeCatalog:
         - portfolio.localize
     - path: recipes/examples/hybrid-graph-review.yaml
       id: RCP-HYBRID-001
+      groupRef: examples
       version: 1.0.0
       type: hybrid
       name:

@@ -413,6 +413,9 @@
                     <a href="#recipecatalog-fields" class="toc-h2 toc-link" data-title="RecipeCatalog fields">RecipeCatalog fields</a>
                   </li>
                   <li>
+                    <a href="#catalog-group-fields" class="toc-h2 toc-link" data-title="Catalog group fields">Catalog group fields</a>
+                  </li>
+                  <li>
                     <a href="#catalog-entry-fields" class="toc-h2 toc-link" data-title="Catalog entry fields">Catalog entry fields</a>
                   </li>
               </ul>
@@ -1091,9 +1094,16 @@ recipe file is loaded and validated.</p>
     <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-CATALOG-001</span>
     <span class="na">name</span><span class="pi">:</span>
       <span class="na">en</span><span class="pi">:</span> <span class="s">ODPR Example Recipe Catalog</span>
+  <span class="na">groups</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">examples</span>
+      <span class="na">name</span><span class="pi">:</span>
+        <span class="na">en</span><span class="pi">:</span> <span class="s">Example Recipes</span>
+      <span class="na">description</span><span class="pi">:</span>
+        <span class="na">en</span><span class="pi">:</span> <span class="s">Complete learning and demonstration recipes.</span>
   <span class="na">recipes</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">recipes/examples/release-portfolio-review.yaml</span>
       <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-RELEASE-001</span>
+      <span class="na">groupRef</span><span class="pi">:</span> <span class="s">examples</span>
       <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
       <span class="na">type</span><span class="pi">:</span> <span class="s">release</span>
       <span class="na">name</span><span class="pi">:</span>
@@ -1168,10 +1178,44 @@ recipe file is loaded and validated.</p>
 <td>Human-readable catalog name.</td>
 </tr>
 <tr>
+<td><code>groups</code></td>
+<td>array</td>
+<td>optional</td>
+<td>Metadata-only group definitions for organizing catalog entries.</td>
+</tr>
+<tr>
 <td><code>recipes</code></td>
 <td>array</td>
 <td>required</td>
 <td>Metadata entries pointing to complete recipe files.</td>
+</tr>
+</tbody></table>
+<h2 id='catalog-group-fields'>Catalog group fields</h2>
+<table><thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>required</td>
+<td>Stable group id, unique within the catalog.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>language map</td>
+<td>required</td>
+<td>Human-readable group name.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>language map</td>
+<td>optional</td>
+<td>Short group description.</td>
 </tr>
 </tbody></table>
 <h2 id='catalog-entry-fields'>Catalog entry fields</h2>
@@ -1194,6 +1238,12 @@ recipe file is loaded and validated.</p>
 <td>string</td>
 <td>required</td>
 <td>Recipe id copied from the referenced recipe metadata.</td>
+</tr>
+<tr>
+<td><code>groupRef</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Reference to a declared catalog group id. Entries without <code>groupRef</code> are ungrouped.</td>
 </tr>
 <tr>
 <td><code>version</code></td>
