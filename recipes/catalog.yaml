@@ -8,6 +8,7 @@ recipeCatalog:
       en: ODPR Example Recipe Catalog
     description:
       en: Metadata-only discovery catalog for canonical ODPR recipe examples.
+  version: 1.0.0
   groups:
     - id: examples
       name:
