@@ -52,6 +52,7 @@ def test_recipe_catalog_validates_and_stays_metadata_only(validator):
                 "id": "RCP-CATALOG-001",
                 "name": {"en": "SDK Recipe Catalog"},
             },
+            "version": "1.0.0",
             "groups": [
                 {
                     "id": "examples",
@@ -92,6 +93,7 @@ def test_recipe_catalog_group_requires_id_and_name(validator):
                 "id": "RCP-CATALOG-001",
                 "name": {"en": "SDK Recipe Catalog"},
             },
+            "version": "1.0.0",
             "groups": [{"id": "examples"}],
             "recipes": [
                 {

@@ -90,6 +90,7 @@ def assert_recipe_catalog_document(document):
     catalog = document["recipeCatalog"]
     assert isinstance(catalog["metadata"].get("id"), str) and catalog["metadata"]["id"].startswith("RCP-CATALOG-")
     assert_lang_string(catalog["metadata"].get("name"), "recipeCatalog.metadata.name")
+    assert isinstance(catalog.get("version"), str) and catalog["version"].strip(), "recipeCatalog.version must be set"
     groups = catalog.get("groups", [])
     group_ids = []
     for index, group in enumerate(groups):
@@ -140,7 +141,8 @@ def check_schema():
     assert "temperature" in provider["properties"], "Provider must define temperature"
 
     catalog = schema["$defs"][schema["properties"]["recipeCatalog"]["$ref"].split("/")[-1]]
-    assert catalog["required"] == ["metadata", "recipes"], "RecipeCatalog required fields changed unexpectedly"
+    assert catalog["required"] == ["metadata", "version", "recipes"], "RecipeCatalog required fields changed unexpectedly"
+    assert "version" in catalog["properties"], "RecipeCatalog must define catalog version"
     assert "groups" in catalog["properties"], "RecipeCatalog must define optional groups"
     entry = schema["$defs"]["RecipeCatalogEntry"]
     assert "groupRef" in entry["properties"], "RecipeCatalogEntry must define optional groupRef"

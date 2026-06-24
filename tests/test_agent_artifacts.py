@@ -49,6 +49,7 @@ def assert_recipe_catalog_document(document):
     catalog = document["recipeCatalog"]
     assert catalog["metadata"]["id"].startswith("RCP-CATALOG-")
     assert_lang_string(catalog["metadata"]["name"])
+    assert catalog["version"]
     groups = catalog.get("groups", [])
     group_ids = []
     for group in groups:
@@ -103,7 +104,8 @@ class AgentArtifactsTest(unittest.TestCase):
 
         catalog_ref = schema["properties"]["recipeCatalog"]["$ref"].split("/")[-1]
         catalog = schema["$defs"][catalog_ref]
-        self.assertEqual(catalog["required"], ["metadata", "recipes"])
+        self.assertEqual(catalog["required"], ["metadata", "version", "recipes"])
+        self.assertIn("version", catalog["properties"])
         self.assertIn("groups", catalog["properties"])
         self.assertIn("groupRef", schema["$defs"]["RecipeCatalogEntry"]["properties"])
 

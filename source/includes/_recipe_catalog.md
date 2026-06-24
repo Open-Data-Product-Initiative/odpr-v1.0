@@ -19,6 +19,7 @@ recipeCatalog:
     id: RCP-CATALOG-001
     name:
       en: ODPR Example Recipe Catalog
+  version: "1.0.0"
   groups:
     - id: examples
       name:
@@ -62,6 +63,7 @@ recipeCatalog:
 |---|---|---|---|
 | `metadata.id` | string | required | Stable catalog id. |
 | `metadata.name` | language map | required | Human-readable catalog name. |
+| `version` | string | required | Catalog artifact version. This is separate from the root ODPR specification `version`. |
 | `groups` | array | optional | Metadata-only group definitions for organizing catalog entries. |
 | `recipes` | array | required | Metadata entries pointing to complete recipe files. |
 

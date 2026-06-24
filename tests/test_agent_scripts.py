@@ -66,6 +66,7 @@ class AgentScriptsTest(unittest.TestCase):
             document = __import__("yaml").safe_load(output.read_text(encoding="utf-8"))
 
         self.assertEqual(document["kind"], "RecipeCatalog")
+        self.assertEqual(document["recipeCatalog"]["version"], "1.0.0")
         groups = document["recipeCatalog"]["groups"]
         self.assertEqual(groups[0]["id"], "examples")
         self.assertEqual(groups[0]["name"], {"en": "Example Recipes"})

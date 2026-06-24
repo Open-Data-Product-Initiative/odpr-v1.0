@@ -16,6 +16,7 @@ from validate_recipe import load_data
 
 
 SCHEMA_URI = "https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml"
+DEFAULT_CATALOG_VERSION = "1.0.0"
 DEFAULT_METADATA = {
     "id": "RCP-CATALOG-001",
     "name": {"en": "ODPR Example Recipe Catalog"},
@@ -122,6 +123,7 @@ def build_catalog(input_dir):
         "kind": "RecipeCatalog",
         "recipeCatalog": {
             "metadata": DEFAULT_METADATA,
+            "version": DEFAULT_CATALOG_VERSION,
             "groups": DEFAULT_GROUPS,
             "recipes": entries,
         },

@@ -42,6 +42,7 @@ recipeCatalog:
     id: RCP-CATALOG-001
     name:
       en: ODPR Example Recipe Catalog
+  version: "1.0.0"
 
   groups:
     - id: project
@@ -93,6 +94,11 @@ recipeCatalog:
 Optional array of metadata-only group definitions for organizing catalog
 entries.
 
+`recipeCatalog.version`
+
+Catalog artifact version. This is separate from the root ODPR specification
+`version`.
+
 `groups[].id`
 
 Stable group identifier. Must be unique within the catalog.
@@ -115,16 +121,17 @@ recipe entry to that group.
 Recommended schema and semantic rules:
 
 1. `recipeCatalog.groups` is optional.
-2. Existing catalogs without groups remain valid.
-3. `groups[].id` is required when a group is declared.
-4. `groups[].id` values must be unique within one catalog.
-5. `groups[].name` is required.
-6. `groups[].description` is optional.
-7. `recipes[].groupRef` is optional.
-8. If `recipes[].groupRef` is present, it must match one declared
+2. `recipeCatalog.version` is required.
+3. Existing catalogs without groups remain valid.
+4. `groups[].id` is required when a group is declared.
+5. `groups[].id` values must be unique within one catalog.
+6. `groups[].name` is required.
+7. `groups[].description` is optional.
+8. `recipes[].groupRef` is optional.
+9. If `recipes[].groupRef` is present, it must match one declared
    `groups[].id`.
-9. A recipe entry without `groupRef` is ungrouped.
-10. Groups must not contain recipe step bodies, credentials, provider readiness
+10. A recipe entry without `groupRef` is ungrouped.
+11. Groups must not contain recipe step bodies, credentials, provider readiness
     results, runtime status, planned writes, run IDs, or logs.
 
 ## Why Not Tags
@@ -156,8 +163,10 @@ the workflow type.
 
 ## Implementation Scope
 
-This update only adds grouping support to the ODPR RecipeCatalog model:
+This update adds catalog versioning and grouping support to the ODPR
+RecipeCatalog model:
 
+- schema support for `recipeCatalog.version`
 - schema support for `recipeCatalog.groups[]`
 - schema support for `recipeCatalog.recipes[].groupRef`
 - canonical docs and examples that demonstrate grouped catalogs
@@ -192,6 +201,7 @@ ODPR:
           "en": "ODPR Example Recipe Catalog"
         }
       },
+      "version": "1.0.0",
       "groups": [
         {
           "id": "starters",
@@ -231,9 +241,10 @@ This is backward compatible if both new fields are optional:
 Existing flat catalogs can be migrated incrementally:
 
 1. Add `recipeCatalog.groups`.
-2. Add `groupRef` to selected recipe entries.
-3. Leave ungrouped recipes unchanged.
-4. Update docs and generated catalog artifacts.
+2. Add `recipeCatalog.version` if the catalog does not already have one.
+3. Add `groupRef` to selected recipe entries.
+4. Leave ungrouped recipes unchanged.
+5. Update docs and generated catalog artifacts.
 
 ## Open Questions
 
@@ -250,6 +261,7 @@ Existing flat catalogs can be migrated incrementally:
 Add flat optional groups now:
 
 - `recipeCatalog.groups[]`
+- `recipeCatalog.version`
 - `groups[].id`
 - `groups[].name`
 - `groups[].description`

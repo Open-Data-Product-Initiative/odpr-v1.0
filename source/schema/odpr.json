@@ -1394,11 +1394,16 @@
       },
       "required": [
         "metadata",
+        "version",
         "recipes"
       ],
       "properties": {
         "metadata": {
           "$ref": "#/$defs/Metadata"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([A-Za-z0-9.+-]*)?$"
         },
         "groups": {
           "type": "array",
