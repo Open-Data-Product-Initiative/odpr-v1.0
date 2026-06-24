@@ -66,11 +66,15 @@ class AgentScriptsTest(unittest.TestCase):
             document = __import__("yaml").safe_load(output.read_text(encoding="utf-8"))
 
         self.assertEqual(document["kind"], "RecipeCatalog")
+        groups = document["recipeCatalog"]["groups"]
+        self.assertEqual(groups[0]["id"], "examples")
+        self.assertEqual(groups[0]["name"], {"en": "Example Recipes"})
         recipes = document["recipeCatalog"]["recipes"]
         self.assertGreaterEqual(len(recipes), 5)
 
         ci_entry = next(entry for entry in recipes if entry["id"] == "RCP-CI-001")
         self.assertEqual(ci_entry["path"], "recipes/examples/ci-validate-generated-fragments.yaml")
+        self.assertEqual(ci_entry["groupRef"], "examples")
         self.assertEqual(ci_entry["executionMode"], "local")
         self.assertEqual(ci_entry["providerRef"], "local-fast")
         self.assertEqual(ci_entry["contextFormat"], "gcf")

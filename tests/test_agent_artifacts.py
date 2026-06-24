@@ -49,12 +49,22 @@ def assert_recipe_catalog_document(document):
     catalog = document["recipeCatalog"]
     assert catalog["metadata"]["id"].startswith("RCP-CATALOG-")
     assert_lang_string(catalog["metadata"]["name"])
+    groups = catalog.get("groups", [])
+    group_ids = []
+    for group in groups:
+        assert set(group).isdisjoint({"steps", "status", "runId", "logs", "plannedWrites"})
+        assert group["id"]
+        assert_lang_string(group["name"])
+        group_ids.append(group["id"])
+    assert len(group_ids) == len(set(group_ids))
     assert catalog["recipes"]
     for entry in catalog["recipes"]:
         assert set(entry).isdisjoint({"steps", "status", "runId", "logs", "plannedWrites"})
         assert entry["path"].endswith(".yaml")
         assert entry["id"].startswith("RCP-")
         assert_lang_string(entry["name"])
+        if "groupRef" in entry:
+            assert entry["groupRef"] in group_ids
 
 
 class AgentArtifactsTest(unittest.TestCase):
@@ -94,6 +104,8 @@ class AgentArtifactsTest(unittest.TestCase):
         catalog_ref = schema["properties"]["recipeCatalog"]["$ref"].split("/")[-1]
         catalog = schema["$defs"][catalog_ref]
         self.assertEqual(catalog["required"], ["metadata", "recipes"])
+        self.assertIn("groups", catalog["properties"])
+        self.assertIn("groupRef", schema["$defs"]["RecipeCatalogEntry"]["properties"])
 
     def test_examples_cover_minimal_ci_release_and_hybrid_recipes(self):
         expected = [

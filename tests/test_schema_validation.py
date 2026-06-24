@@ -52,10 +52,18 @@ def test_recipe_catalog_validates_and_stays_metadata_only(validator):
                 "id": "RCP-CATALOG-001",
                 "name": {"en": "SDK Recipe Catalog"},
             },
+            "groups": [
+                {
+                    "id": "examples",
+                    "name": {"en": "Example Recipes"},
+                    "description": {"en": "Complete learning and demonstration recipes."},
+                }
+            ],
             "recipes": [
                 {
                     "path": "recipes/release-portfolio-review.yaml",
                     "id": "RCP-RELEASE-001",
+                    "groupRef": "examples",
                     "version": "1.0.0",
                     "type": "release",
                     "name": {"en": "Release Portfolio Review"},
@@ -71,6 +79,32 @@ def test_recipe_catalog_validates_and_stays_metadata_only(validator):
     catalog["recipeCatalog"]["recipes"][0]["steps"] = [
         {"id": "refresh", "command": "portfolio.refresh"}
     ]
+    assert_invalid(validator, catalog)
+
+
+def test_recipe_catalog_group_requires_id_and_name(validator):
+    catalog = {
+        "schema": SCHEMA_URI,
+        "version": "1.0",
+        "kind": "RecipeCatalog",
+        "recipeCatalog": {
+            "metadata": {
+                "id": "RCP-CATALOG-001",
+                "name": {"en": "SDK Recipe Catalog"},
+            },
+            "groups": [{"id": "examples"}],
+            "recipes": [
+                {
+                    "path": "recipes/release-portfolio-review.yaml",
+                    "id": "RCP-RELEASE-001",
+                    "version": "1.0.0",
+                    "type": "release",
+                    "name": {"en": "Release Portfolio Review"},
+                }
+            ],
+        },
+    }
+
     assert_invalid(validator, catalog)
 
 

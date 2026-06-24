@@ -90,12 +90,23 @@ def assert_recipe_catalog_document(document):
     catalog = document["recipeCatalog"]
     assert isinstance(catalog["metadata"].get("id"), str) and catalog["metadata"]["id"].startswith("RCP-CATALOG-")
     assert_lang_string(catalog["metadata"].get("name"), "recipeCatalog.metadata.name")
+    groups = catalog.get("groups", [])
+    group_ids = []
+    for index, group in enumerate(groups):
+        forbidden = {"steps", "status", "runId", "logs", "plannedWrites"}
+        assert forbidden.isdisjoint(group), f"recipeCatalog.groups[{index}] contains runtime or full-step fields"
+        assert isinstance(group.get("id"), str) and group["id"].strip(), f"recipeCatalog.groups[{index}].id must be set"
+        assert_lang_string(group.get("name"), f"recipeCatalog.groups[{index}].name")
+        group_ids.append(group["id"])
+    assert len(group_ids) == len(set(group_ids)), "recipeCatalog.groups ids must be unique"
     assert catalog["recipes"], "recipeCatalog.recipes must not be empty"
     for index, entry in enumerate(catalog["recipes"]):
         forbidden = {"steps", "status", "runId", "logs", "plannedWrites"}
         assert forbidden.isdisjoint(entry), f"recipeCatalog.recipes[{index}] contains runtime or full-step fields"
         assert entry["path"].endswith(".yaml"), f"recipeCatalog.recipes[{index}].path must point to YAML"
         assert isinstance(entry["commands"], list), f"recipeCatalog.recipes[{index}].commands must be a list"
+        if "groupRef" in entry:
+            assert entry["groupRef"] in group_ids, f"recipeCatalog.recipes[{index}].groupRef must reference a declared group"
 
 
 def check_schema():
@@ -130,6 +141,9 @@ def check_schema():
 
     catalog = schema["$defs"][schema["properties"]["recipeCatalog"]["$ref"].split("/")[-1]]
     assert catalog["required"] == ["metadata", "recipes"], "RecipeCatalog required fields changed unexpectedly"
+    assert "groups" in catalog["properties"], "RecipeCatalog must define optional groups"
+    entry = schema["$defs"]["RecipeCatalogEntry"]
+    assert "groupRef" in entry["properties"], "RecipeCatalogEntry must define optional groupRef"
 
 
 def check_examples():

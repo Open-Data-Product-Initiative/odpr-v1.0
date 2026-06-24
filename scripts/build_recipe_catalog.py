@@ -21,6 +21,13 @@ DEFAULT_METADATA = {
     "name": {"en": "ODPR Example Recipe Catalog"},
     "description": {"en": "Metadata-only discovery catalog for canonical ODPR recipe examples."},
 }
+DEFAULT_GROUPS = [
+    {
+        "id": "examples",
+        "name": {"en": "Example Recipes"},
+        "description": {"en": "Complete learning and demonstration recipes."},
+    },
+]
 DEFAULT_EXAMPLE_ORDER = [
     "minimal.yaml",
     "ci-validate-generated-fragments.yaml",
@@ -76,6 +83,7 @@ def extract_entry(path):
     entry = {
         "path": relative_recipe_path(path),
         "id": metadata.get("id"),
+        "groupRef": "examples",
         "version": recipe.get("version"),
         "type": recipe.get("type"),
         "name": metadata.get("name"),
@@ -114,6 +122,7 @@ def build_catalog(input_dir):
         "kind": "RecipeCatalog",
         "recipeCatalog": {
             "metadata": DEFAULT_METADATA,
+            "groups": DEFAULT_GROUPS,
             "recipes": entries,
         },
     }

@@ -19,9 +19,16 @@ recipeCatalog:
     id: RCP-CATALOG-001
     name:
       en: ODPR Example Recipe Catalog
+  groups:
+    - id: examples
+      name:
+        en: Example Recipes
+      description:
+        en: Complete learning and demonstration recipes.
   recipes:
     - path: recipes/examples/release-portfolio-review.yaml
       id: RCP-RELEASE-001
+      groupRef: examples
       version: "1.0.0"
       type: release
       name:
@@ -55,7 +62,16 @@ recipeCatalog:
 |---|---|---|---|
 | `metadata.id` | string | required | Stable catalog id. |
 | `metadata.name` | language map | required | Human-readable catalog name. |
+| `groups` | array | optional | Metadata-only group definitions for organizing catalog entries. |
 | `recipes` | array | required | Metadata entries pointing to complete recipe files. |
+
+## Catalog group fields
+
+| Element | Type | Required | Description |
+|---|---|---|---|
+| `id` | string | required | Stable group id, unique within the catalog. |
+| `name` | language map | required | Human-readable group name. |
+| `description` | language map | optional | Short group description. |
 
 ## Catalog entry fields
 
@@ -63,6 +79,7 @@ recipeCatalog:
 |---|---|---|---|
 | `path` | string | required | Project-relative path to the complete `Recipe` file. |
 | `id` | string | required | Recipe id copied from the referenced recipe metadata. |
+| `groupRef` | string | optional | Reference to a declared catalog group id. Entries without `groupRef` are ungrouped. |
 | `version` | string | required | Recipe version copied from the referenced recipe. |
 | `type` | string | required | Recipe type such as `dev`, `ci`, `release`, `localization`, `hybrid`, or `agent`. |
 | `name` | language map | required | Human-readable recipe name. |
