@@ -67,57 +67,23 @@ platforms, CI/CD systems, SDKs, and agent tools to implement the product. The
 source product specification remains an ODPS file referenced by the data product
 recipe.
 
-## Typical folder structure
+## Manifest boundary
 
-> Folder structure example:
+`data-product-recipe.yaml` is mostly structure and metadata. More precisely, it
+is the manifest index for the handoff artifact. It answers these questions:
 
-```text
-customer-analytics-data-product-recipe/
-├── data-product-recipe.yaml
-├── README.md
-├── product-context/
-│   └── odps.yaml
-├── context/
-│   └── odpg.yaml
-├── plans/
-│   ├── product-summary.md
-│   └── delivery-plan.md
-├── governance/
-│   └── open-questions.md
-└── agent/
-    └── ai-agent-brief.md
-```
+- What is this Data Product Recipe?
+- What version, status, readiness, and review state does it have?
+- Which required files are included?
+- Where are those files?
+- What format are they?
+- Is there optional provenance, such as `recipeRef`?
 
-A typical data product recipe is a small manifest-led folder. The root contains
-the `data-product-recipe.yaml` manifest and the `README.md` entrypoint. The
-remaining files are grouped by purpose so that humans, SDKs, CI checks, and AI
-agents can find the same mandatory sections predictably.
-
-The core folder structure usually separates source context, relationship
-context, planning notes, governance questions, and agent guidance:
-
-| Folder or file | Typical content |
-|---|---|
-| `data-product-recipe.yaml` | Root `DataProductRecipe` manifest. |
-| `README.md` | `recipe-readme` section and first reader entrypoint. |
-| `product-context/` | Source ODPS product specification. |
-| `context/` | ODPG graph or relationship context. |
-| `plans/` | Product summary, delivery plan, and optional planning sections. |
-| `governance/` | Open questions, risks, and review checklists. |
-| `agent/` | AI agent brief and agent-facing handoff guidance. |
-
-Optional sections extend the same folder structure when needed. For example,
-`plans/` may include `pricing-plan.md`, `quality-plan.md`, `sla-plan.md`,
-`access-plan.md`, `contract-plan.md`, `validation-plan.md`, or `test-plan.md`.
-`governance/` may include `risk-register.md` or
-`developer-review-checklist.md`. Implementation-oriented optional sections may
-use an `implementation/` folder, and portfolio context may use a `portfolio/`
-folder.
-
-The schema validates the section IDs, paths, and formats declared in
-`dataProductRecipe.sections`. It does not require every data product recipe to
-use identical directory names. The folder structure is a recommended convention
-that keeps packages easy to review without making ODPR a filesystem standard.
+The manifest MUST NOT contain the full plan content, product specification,
+relationship graph, pricing details, implementation instructions, or AI-agent
+operating brief. Those details belong in referenced files such as
+`plans/delivery-plan.md`, `product-context/odps.yaml`, `context/odpg.yaml`,
+optional plan sections, and `agent/ai-agent-brief.md`.
 
 ## Root structure
 
@@ -164,7 +130,106 @@ includes every schema-required field and every mandatory section ID, including
 `relationship-context`, but omits optional metadata and optional sections such
 as `pricing-plan`, `sla-plan`, and `relationship-plan`.
 
+## Minimum folder structure
 
+> Minimum folder structure example:
+
+```text
+customer-analytics-data-product-recipe/
+├── data-product-recipe.yaml
+├── README.md
+├── product-context/
+│   └── odps.yaml
+├── context/
+│   └── odpg.yaml
+├── plans/
+│   ├── product-summary.md
+│   └── delivery-plan.md
+├── governance/
+│   └── open-questions.md
+└── agent/
+    └── ai-agent-brief.md
+```
+
+A minimum valid data product recipe is a small manifest-led folder. The root
+contains the `data-product-recipe.yaml` manifest and the `README.md` entrypoint.
+The remaining files are the mandatory core sections referenced from
+`dataProductRecipe.sections`, including the source ODPS product specification,
+relationship context, planning notes, governance questions, and AI-agent brief.
+
+This folder structure is the recommended minimum convention. It keeps the
+schema-required section IDs discoverable without making ODPR a filesystem
+standard.
+
+| Folder or file | Typical content |
+|---|---|
+| `data-product-recipe.yaml` | Root `DataProductRecipe` manifest. |
+| `README.md` | `recipe-readme` section and first reader entrypoint. |
+| `product-context/` | Source ODPS product specification. |
+| `context/` | Mandatory ODPG graph or relationship context. |
+| `plans/` | Mandatory product summary and delivery plan. |
+| `governance/` | Mandatory open questions. |
+| `agent/` | Mandatory AI agent brief and agent-facing handoff guidance. |
+
+The schema validates the section IDs, paths, and formats declared in
+`dataProductRecipe.sections`. It does not require every data product recipe to
+use identical directory names, but using the minimum structure makes packages
+predictable for humans, SDKs, CI checks, and AI agents.
+
+## Full folder structure
+
+> Full folder structure example:
+
+```text
+customer-analytics-data-product-recipe/
+├── data-product-recipe.yaml
+├── README.md
+├── product-context/
+│   └── odps.yaml
+├── context/
+│   └── odpg.yaml
+├── plans/
+│   ├── product-summary.md
+│   ├── delivery-plan.md
+│   ├── product-interface-plan.md
+│   ├── access-plan.md
+│   ├── contract-plan.yaml
+│   ├── pricing-plan.md
+│   ├── quality-plan.md
+│   ├── sla-plan.md
+│   ├── lifecycle-plan.md
+│   ├── relationship-plan.md
+│   ├── validation-plan.md
+│   └── test-plan.md
+├── readiness/
+│   └── operational-readiness.md
+├── governance/
+│   ├── open-questions.md
+│   ├── risk-register.md
+│   └── developer-review-checklist.md
+├── implementation/
+│   ├── implementation-constraints.md
+│   └── backlog-items.md
+├── portfolio/
+│   └── portfolio-context.md
+└── agent/
+    └── ai-agent-brief.md
+```
+
+The full structure shows one conventional placement for every standardized
+optional section. It is an example for complete or highly governed data product
+recipes, not the minimum required package.
+
+Optional planning sections can live under `plans/` when they describe product
+interfaces, access, contracts, pricing, quality, SLA, lifecycle, relationships,
+validation, or tests. Readiness-specific material may use `readiness/`.
+Governance material may use `governance/`. Implementation-oriented optional
+sections may use `implementation/`, and portfolio context may use `portfolio/`.
+
+The manifest remains the source of truth. A full folder is valid only when the
+corresponding optional section IDs, paths, and formats are declared in
+`dataProductRecipe.sections`. Files that are not declared in the manifest are
+supporting material, not standardized Data Product Recipe sections.
 
 ## Mandatory data product recipe fields
 
@@ -681,28 +746,31 @@ Markdown bodies.
 
 ## Optional standardized section IDs
 
-| Element name | Type | Options | Description |
-|---|---|---|---|
-| `product-interface-plan` | string | standardized optional section id | APIs, files, events, query endpoints, semantic layers, catalog entries, AI-agent context, or other interfaces. |
-| `access-plan` | string | standardized optional section id | Consumers, access methods, authentication, authorization, approval flow, and onboarding. |
-| `contract-plan` | string | standardized optional section id | Schema, consumer expectations, producer commitments, compatibility, versioning, and breaking-change handling. |
-| `pricing-plan` | string | standardized optional section id | Pricing model, chargeback/showback model, entitlement tiers, cost drivers, billing owner, and review requirements. |
-| `quality-plan` | string | standardized optional section id | Quality dimensions, validation rules, blocking checks, warning checks, freshness, completeness, and accuracy. |
-| `sla-plan` | string | standardized optional section id | Availability, refresh, response, incident response, support model, escalation, and measurement. |
-| `lifecycle-plan` | string | standardized optional section id | Product status, development stage, review stage, publication stage, operation stage, deprecation, versioning, and change process. |
-| `relationship-plan` | string | standardized optional section id | Upstream products, downstream products, shared objectives, shared signals, dependencies, conflicts, and portfolio gaps. |
-| `validation-plan` | string | standardized optional section id | Specification, contract, quality, access, SLA, relationship, documentation, and readiness validation. |
-| `test-plan` | string | standardized optional section id | Schema, contract, quality, access, SLA, lifecycle, integration, consumer acceptance, and AI-agent context tests. |
-| `operational-readiness` | string | standardized optional section id | Readiness score, readiness dimensions, missing ingredients, and launch blockers. |
-| `risk-register` | string | standardized optional section id | Product, access, contract, quality, SLA, lifecycle, dependency, dashboard-confusion, and AI-agent-context risks. |
-| `developer-review-checklist` | string | standardized optional section id | Human approval checklist before implementation, publication, automation, or agent-assisted code work. |
-| `implementation-constraints` | string | standardized optional section id | Product-specific implementation boundaries that complement the AI-agent brief. |
-| `backlog-items` | string | standardized optional section id | Reviewable implementation backlog items without creating external tickets automatically. |
-| `portfolio-context` | string | standardized optional section id | ODPC catalog or portfolio context included when the product belongs to a portfolio. |
-
-Optional section details:
+Optional standardized section IDs add detail only when the data product recipe
+needs it. They are not required for a valid handoff artifact, but when present
+they MUST use one of the standardized IDs below in `dataProductRecipe.sections`.
+Each optional section entry still declares its own relative `path` and `format`
+in the manifest.
 
 ### product-interface-plan
+
+> Product interface plan example:
+
+```markdown
+## Interfaces
+
+- REST API: customer segment lookup
+- Table: analytics.customer_segments
+
+## Consumers
+
+- Customer success
+- Marketing analytics
+
+## Constraints
+
+- No direct access to raw customer events.
+```
 
 `product-interface-plan` describes how consumers, platforms, tools, and agents
 will interact with the data product. Use it when the data product recipe needs to clarify
@@ -715,6 +783,23 @@ constraints that affect implementation.
 
 ### access-plan
 
+> Access plan example:
+
+```markdown
+## Consumer Groups
+
+- Customer success analysts
+
+## Access Method
+
+- Approved catalog request
+- Read-only warehouse role
+
+## Open Decisions
+
+- Confirm external partner access.
+```
+
 `access-plan` describes how consumers get permission to use the product. Use it
 when access decisions, approval flow, identity model, entitlement, onboarding,
 or revocation must be understood before implementation.
@@ -725,15 +810,56 @@ access decisions that are still unresolved.
 
 ### contract-plan
 
-`contract-plan` describes the consumer-facing product contract. Use it when the
-data product recipe must clarify schemas, compatibility expectations, versioning behavior,
-breaking-change handling, or commitments between producers and consumers.
+> Contract plan example:
 
-Expected content includes contract scope, schema or payload expectations,
-consumer obligations, producer obligations, compatibility policy, and the
-review path for contract changes.
+```yaml
+# Abbreviated ODCS-compatible YAML data contract.
+# Use Open Data Contract Standard v3.1.0 for the complete shape.
+id: customer-analytics-contract
+version: 1.0.0
+name: Customer Analytics Contract
+schema:
+  - name: customer_id
+    type: string
+  - name: segment
+    type: string
+quality:
+  - dimension: completeness
+    rule: customer_id must be present
+```
+
+`contract-plan` is a YAML data contract aligned with the
+[Open Data Contract Standard v3.1.0](https://bitol-io.github.io/open-data-contract-standard/v3.1.0/).
+Use it when the data product recipe must clarify schemas, compatibility
+expectations, versioning behavior, breaking-change handling, or commitments
+between producers and consumers.
+
+Expected content includes an ODCS-compatible contract structure, contract
+scope, schema or payload expectations, consumer obligations, producer
+obligations, compatibility policy, quality expectations when relevant, SLA or
+support expectations when relevant, and the review path for contract changes.
+
+The `contract-plan` section entry MUST use `format: yaml`.
 
 ### pricing-plan
+
+> Pricing plan example:
+
+```markdown
+## Model
+
+Internal showback by monthly active consumer team.
+
+## Cost Drivers
+
+- Storage
+- Query volume
+- Refresh frequency
+
+## Review
+
+Finance owner reviews quarterly.
+```
 
 `pricing-plan` describes the commercial, chargeback, or showback model for the
 data product. Use it when the product has pricing, internal cost allocation,
@@ -746,6 +872,23 @@ and unresolved pricing decisions.
 
 ### quality-plan
 
+> Quality plan example:
+
+```markdown
+## Dimensions
+
+- Completeness: customer_id must be present
+- Freshness: daily refresh before 08:00 UTC
+
+## Blocking Checks
+
+- Reject publish when required fields are missing.
+
+## Warning Checks
+
+- Warn when segment coverage drops below 95%.
+```
+
 `quality-plan` describes the quality expectations that implementation must
 support. Use it when freshness, completeness, accuracy, validity, uniqueness,
 or other quality dimensions need explicit checks.
@@ -755,6 +898,24 @@ warning-level checks, expected thresholds, data owner responsibilities, and how
 quality failures should be surfaced.
 
 ### sla-plan
+
+> SLA plan example:
+
+```markdown
+## Targets
+
+- Availability: 99 percent monthly
+- Refresh: daily
+
+## Support
+
+- Owner: analytics operations
+- Escalation: data product owner
+
+## Measurement
+
+- Monitor refresh completion and access errors.
+```
 
 `sla-plan` describes operational commitments for the product. Use it when the
 data product recipe needs to clarify availability, refresh timing, response expectations,
@@ -766,6 +927,24 @@ assumptions that need approval.
 
 ### lifecycle-plan
 
+> Lifecycle plan example:
+
+```markdown
+## Current State
+
+development
+
+## Transition Gates
+
+- Contract approved
+- Access reviewed
+- Validation checks passing
+
+## Change Process
+
+Breaking changes require consumer review.
+```
+
 `lifecycle-plan` describes how the product moves through status changes over
 time. Use it when development, testing, acceptance, production, sunset, retired
 state, versioning, deprecation, or change process needs explicit guidance.
@@ -775,6 +954,22 @@ release or publication expectations, versioning approach, deprecation process,
 and owners for lifecycle decisions.
 
 ### relationship-plan
+
+> Relationship plan example:
+
+```markdown
+## Upstream Products
+
+- Customer master data
+
+## Downstream Consumers
+
+- Retention dashboard
+
+## Delivery Impact
+
+- Confirm upstream freshness before implementation.
+```
 
 `relationship-plan` describes product relationships that affect delivery. Use
 it when upstream products, downstream consumers, shared objectives, shared
@@ -787,6 +982,21 @@ type, relationship impact, unresolved conflicts, and how the required
 
 ### validation-plan
 
+> Validation plan example:
+
+```markdown
+## Required Checks
+
+- Validate Data Product Recipe manifest
+- Validate ODPS source product specification
+- Validate ODCS contract plan when present
+
+## Pass Criteria
+
+- No schema errors
+- No unresolved blocking questions
+```
+
 `validation-plan` describes how the data product recipe and resulting implementation should
 be checked before approval, publication, automation, or agent-assisted work.
 Use it when validation goes beyond the core data product recipe manifest checks.
@@ -796,6 +1006,24 @@ quality validation, access validation, SLA validation, relationship validation,
 documentation validation, readiness validation, and pass/fail expectations.
 
 ### test-plan
+
+> Test plan example:
+
+```markdown
+## Test Scope
+
+- Contract tests
+- Quality checks
+- Access checks
+
+## Fixtures
+
+- Approved sample customer segment records
+
+## Acceptance
+
+- Consumers can query approved fields only.
+```
 
 `test-plan` describes implementation-oriented tests derived from the data product recipe.
 Use it when developers need to convert the product intent into repeatable
@@ -807,6 +1035,23 @@ agent-assisted implementation is expected.
 
 ### operational-readiness
 
+> Operational readiness example:
+
+```markdown
+## Readiness Score
+
+60
+
+## Missing Inputs
+
+- Final access owner
+- SLA approval
+
+## Launch Blockers
+
+- Contract not approved
+```
+
 `operational-readiness` describes whether the data product recipe is ready to move toward
 production use. Use it when the readiness score needs supporting detail beyond
 the numeric `readiness.score` field.
@@ -816,6 +1061,21 @@ missing inputs, launch blockers, required approvals, and the conditions needed
 to move from partial readiness to ready.
 
 ### risk-register
+
+> Risk register example:
+
+```markdown
+## Risks
+
+- Risk: unclear external consumer access
+  Impact: implementation delay
+  Owner: product owner
+  Status: open
+
+## Blocking
+
+- External access decision blocks launch.
+```
 
 `risk-register` records risks that could affect implementation or operation.
 Use it when known product, access, contract, quality, SLA, lifecycle,
@@ -827,6 +1087,18 @@ mitigation, current status, and whether the risk blocks implementation.
 
 ### developer-review-checklist
 
+> Developer review checklist example:
+
+```markdown
+## Checklist
+
+- [ ] Mandatory sections are present
+- [ ] ODPS source product is valid
+- [ ] Open questions are reviewed
+- [ ] Contract impact is understood
+- [ ] Agent boundaries are clear
+```
+
 `developer-review-checklist` gives human developers a compact approval checklist
 before implementation, publication, automation, or agent-assisted code work.
 Use it when the data product recipe should support a repeatable engineering review.
@@ -836,6 +1108,24 @@ sections, unresolved questions, contract impact, access impact, validation
 expectations, implementation boundaries, and approval status.
 
 ### implementation-constraints
+
+> Implementation constraints example:
+
+```markdown
+## Allowed
+
+- Use existing warehouse platform
+- Add read-only serving interface
+
+## Prohibited
+
+- Move raw customer events
+- Change source product identity
+
+## Assumptions
+
+- Access is role-based.
+```
 
 `implementation-constraints` describes product-specific boundaries that affect
 implementation. Use it when the data product recipe needs constraints that are more
@@ -847,6 +1137,20 @@ limits, and assumptions that must not be changed without review.
 
 ### backlog-items
 
+> Backlog items example:
+
+```markdown
+## Items
+
+- Title: Create contract validation
+  Priority: high
+  Depends on: contract approval
+
+- Title: Add access role
+  Priority: medium
+  Depends on: access owner decision
+```
+
 `backlog-items` lists reviewable work items without requiring ODPR to create
 external tickets. Use it when the data product recipe should expose likely implementation
 tasks while remaining independent of Jira, GitHub Issues, or another work
@@ -857,6 +1161,23 @@ or sequencing hint, owner when known, and acceptance notes. External ticket IDs
 may be included as references but are not required.
 
 ### portfolio-context
+
+> Portfolio context example:
+
+```markdown
+## Portfolio
+
+Customer analytics portfolio
+
+## Related Products
+
+- Customer master data
+- Customer engagement events
+
+## Decision Impact
+
+- Avoid duplicate customer segmentation products.
+```
 
 `portfolio-context` includes ODPC catalog or portfolio context when the product
 belongs to a broader portfolio. Use it when portfolio placement, catalog entry,
@@ -894,6 +1215,7 @@ The model is aligned with these non-normative practice references:
 | [GitHub Actions workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax) | Keep execution terms such as workflow, job, run, and step distinct from data product recipe manifest terms. |
 | [GitHub workflow artifacts](https://docs.github.com/en/actions/tutorials/store-and-share-data) | Treat generated outputs as named artifacts that can be archived, shared, downloaded, and validated. |
 | [SLSA provenance v1.0](https://slsa.dev/spec/v1.0/provenance) | Separate what was produced from how it was produced and which inputs were used. |
+| [Open Data Contract Standard v3.1.0](https://bitol-io.github.io/open-data-contract-standard/v3.1.0/) | Align `contract-plan` with a YAML data contract standard instead of inventing an ODPR-specific contract shape. |
 | [Agentic AI Foundation and AGENTS.md](https://www.wired.com/story/openai-anthropic-and-block-are-teaming-up-on-ai-agent-standards) | Treat agent instructions as an interoperable guidance artifact, but keep ODPR's data product recipe brief product-specific and implementation-neutral. |
 | [AGENTS.md efficiency study](https://arxiv.org/abs/2601.20404) | Provide agent-readable guidance as a dedicated data product recipe section. |
 | [AGENTS.md evaluation study](https://arxiv.org/abs/2602.11988) | Keep agent instructions minimal and avoid broad, unnecessary requirements in the manifest. |

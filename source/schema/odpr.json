@@ -1498,7 +1498,28 @@
             "directory"
           ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "id": {
+                "const": "contract-plan"
+              }
+            },
+            "required": [
+              "id"
+            ]
+          },
+          "then": {
+            "properties": {
+              "format": {
+                "const": "yaml"
+              }
+            }
+          }
+        }
+      ]
     },
     "DataProductRecipeReadiness": {
       "type": "object",

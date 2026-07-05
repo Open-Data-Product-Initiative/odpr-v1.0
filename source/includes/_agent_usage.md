@@ -1,20 +1,23 @@
 # AI Agent Usage Patterns
 
 ODPR is designed to be usable by AI agents, SDKs, CI/CD systems, and automation
-tools. From an agent perspective, ODPR provides an inspectable workflow contract
-before an action is run: it names the workflow, lists the steps, declares the
-execution mode, points to context policy, and describes gates or review
-expectations.
+tools. From an agent perspective, ODPR provides inspectable workflow contracts,
+named provider profiles, recipe discovery metadata, and Data Product Recipe
+handoff manifests. These objects let agents understand intended work before an
+action is run, resolve runtime references through approved configuration, and
+find the files needed for review or implementation.
 
 ODPS defines one data product. ODPC defines catalogs and reusable portfolio
 objects. ODPG defines relationships between data product artifacts. ODPV
-provides shared vocabulary terms. ODPR defines repeatable workflows around
+provides shared vocabulary terms. ODPR defines workflow recipes, provider
+profiles, recipe catalogs, and Data Product Recipe handoff manifests around
 those artifacts.
 
 <!-- AI_AGENT_USAGE_PATTERNS:
-Use ODPR for repeatable workflow recipes, not for defining the data product, catalog, graph, or vocabulary itself.
+Use ODPR for repeatable workflow recipes, provider profiles, recipe discovery, and Data Product Recipe handoff manifests; do not use it for defining the data product, catalog, graph, or vocabulary model itself.
 Use providerRef as an execution reference only; provider configuration belongs to the SDK, CI system, or platform executing the recipe.
 Use RecipeCatalog only for metadata-only discovery; load and validate the referenced Recipe before execution.
+Use DataProductRecipe as a handoff manifest for one data product; do not treat it as a workflow execution script.
 Prefer declarative steps and gates over arbitrary shell scripts.
 Use context.format to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
 -->
@@ -25,6 +28,8 @@ Agents can use ODPR to:
 
 * discover safe workflow recipes before running SDK tools
 * use a `RecipeCatalog` to find complete recipe files
+* read a `DataProductRecipe` to understand mandatory handoff files, readiness,
+  review state, and agent instructions
 * explain what a recipe will do before execution
 * validate recipe files against `odpr.yaml` or `odpr.json`
 * select a development, CI, release, localization, hybrid, or agent recipe

@@ -235,6 +235,17 @@ def test_data_product_recipe_rejects_unknown_section_id(validator):
     assert_invalid(validator, document)
 
 
+def test_data_product_recipe_contract_plan_requires_yaml_format(validator):
+    document = minimal_data_product_recipe()
+    document["dataProductRecipe"]["sections"].append(
+        {"id": "contract-plan", "path": "plans/contract-plan.yaml", "format": "yaml"}
+    )
+    assert_valid(validator, document)
+
+    document["dataProductRecipe"]["sections"][-1]["format"] = "markdown"
+    assert_invalid(validator, document)
+
+
 @pytest.mark.parametrize("score", [-1, 101])
 def test_data_product_recipe_readiness_score_is_zero_to_one_hundred(validator, score):
     document = minimal_data_product_recipe()

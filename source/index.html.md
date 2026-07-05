@@ -27,7 +27,7 @@ code_clipboard: true
 
 meta:
   - name: description
-    content: Open Data Product Recipe Specification (ODPR) version 1.0 is a lightweight, vendor-neutral, machine-readable standard for reusable data product workflow recipes.
+    content: Open Data Product Recipe Specification (ODPR) version 1.0 defines workflow recipes, provider profiles, recipe catalogs, and Data Product Recipe handoff manifests.
   - name: spec-version
     content: "1.0"
   - name: llms
@@ -59,15 +59,25 @@ Development of the specification is under the umbrella of the Linux Foundation.
 # Introduction
 
 The Data Product Recipe Specification, ODPR, is a lightweight, vendor-neutral,
-machine-readable recipe model for repeatable data product delivery workflows.
+machine-readable standard for repeatable data product delivery.
 
 ODPR is part of the OpenDataProducts.org standards family. It complements the
 Open Data Product Specification, ODPS, Open Data Product Catalogs, ODPC, Open
 Data Product Graphs, ODPG, and Open Data Product Vocabulary, ODPV, by defining
-how workflows around those artifacts can be declared and automated.
+how delivery work around those artifacts can be declared, discovered,
+configured, validated, reviewed, and handed off.
 
 ODPR standardizes how data product work gets done, not only what the final
-artifact looks like.
+artifact looks like. In version 1.0, ODPR defines four root objects:
+
+| Root object | What it defines |
+|---|---|
+| `Recipe` | Portable workflow intent: steps, inputs, outputs, gates, execution class, provider references, and review expectations. |
+| `Provider` | Named runtime profile that recipes can reference without embedding credentials or provider-specific configuration in the workflow. |
+| `RecipeCatalog` | Metadata-only discovery index for available `Recipe` files. |
+| `DataProductRecipe` | Reviewable handoff manifest for developers and AI agents implementing one data product. |
+
+![ODPR root objects and standards-family boundary.](images/odpr-scope.svg)
 
 ## Why ODPR is needed
 
@@ -76,8 +86,10 @@ prompts, and local habits. That creates delivery variation, makes validation
 and review steps easy to skip, hides model-provider choices, and forces CI/CD
 automation and AI agents to guess the intended workflow.
 
-ODPR solves this by turning repeatable data product work into declared recipes.
-A recipe describes:
+ODPR solves this by giving teams and tools a small set of declared objects:
+recipes for workflow intent, provider profiles for runtime references, catalogs
+for recipe discovery, and data product recipes for implementation handoff. A
+recipe describes:
 
 * what workflow runs
 * which inputs it uses
@@ -86,7 +98,7 @@ A recipe describes:
 * which checks or gates apply
 * which context format is preferred
 * which execution mode is expected
-* which execution mode and provider reference are expected
+* which provider reference is expected
 * whether human review is required
 
 ## Core design principle
@@ -97,7 +109,7 @@ A recipe is a portable, declarative workflow contract. Scripts tell one tool
 what to do. Recipes tell teams, tools, agents, and automation systems how a data
 product workflow should run.
 
-## Recipe, provider, and catalog configuration
+## Root object model
 
 ODPR standardizes four clear root objects: `Recipe`, `Provider`,
 `RecipeCatalog`, and `DataProductRecipe`.
@@ -115,10 +127,11 @@ recipes and points to their full `Recipe` files. It does not embed full steps,
 credentials, runtime status, planned writes, run ids, logs, or provider
 readiness results.
 
-A `DataProductRecipe` is a machine-readable recipe result created by `Recipe`
-documents that use `recipe.scope: data-product`. It indexes the recipe README,
-source ODPS product spec, plans, governance files, agent brief, readiness
-confidence, and review status.
+A `DataProductRecipe` is a machine-readable handoff artifact for developers and
+AI agents planning and implementing one data product. It indexes the recipe
+README, source ODPS product spec, plans, governance files, agent brief,
+readiness confidence, and review status. Optional `recipeRef` may record
+provenance or generation context, but it is not an implementation dependency.
 
 In an ODPR recipe, a provider is referenced by name:
 
@@ -162,10 +175,11 @@ The OpenDataProducts.org standards family follows a separation of concerns:
 * **ODPC defines catalogs and reusable portfolio objects.**
 * **ODPG defines relationships and graphs.**
 * **ODPV defines shared vocabulary and terms.**
-* **ODPR defines repeatable workflows for data product delivery.**
+* **ODPR defines workflow recipes, provider profiles, recipe catalogs, and data
+  product recipe handoff manifests around those artifacts.**
 
 ODPR does not define the product, catalog, graph, or vocabulary model. It
-defines the workflow contract around those artifacts.
+defines delivery workflow and handoff contracts around those artifacts.
 
 ## Example recipe
 

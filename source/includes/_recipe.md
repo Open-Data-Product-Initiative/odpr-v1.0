@@ -115,13 +115,16 @@ describes what kind of artifact or standards-family area the recipe is for.
 
 | Scope | Meaning |
 |---|---|
-| `data-product` | Delivery planning, validation, implementation guidance, readiness, and review for one data product. |
+| `data-product` | Workflow automation that generates, validates, or reviews Data Product Recipe handoff artifacts for one data product. |
 | `catalog` | Catalog or portfolio catalog generation, validation, publication, synchronization, or review. |
 | `graph` | Graph/context generation, relationship extraction, validation, rendering, or review. |
 | `portfolio` | Portfolio assembly, refresh, localization, rendering, explanation, review, or release work. |
 
-A Data Product Recipe is an ODPR `Recipe` with `recipe.scope: data-product`.
-ODPR does not define a separate `ProductRecipe` root kind.
+`recipe.scope: data-product` does not make the `Recipe` itself a Data Product
+Recipe. A scoped recipe can generate, validate, or review a handoff artifact,
+but the handoff artifact uses the `DataProductRecipe` root kind and
+`dataProductRecipe` manifest object. ODPR does not define a separate
+`ProductRecipe` root kind.
 
 ## Execution modes
 
