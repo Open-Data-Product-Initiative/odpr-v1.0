@@ -84,6 +84,7 @@ recipeCatalog:
 | `groupRef` | string | optional | Reference to a declared catalog group id. Entries without `groupRef` are ungrouped. |
 | `version` | string | required | Recipe version copied from the referenced recipe. |
 | `type` | string | required | Recipe type such as `dev`, `ci`, `release`, `localization`, `hybrid`, or `agent`. |
+| `scope` | string | optional | Recipe scope copied from the referenced recipe when present. Allowed values are `data-product`, `catalog`, `graph`, and `portfolio`. |
 | `name` | language map | required | Human-readable recipe name. |
 | `description` | language map | optional | Short recipe description. |
 | `tags` | array | optional | Discovery tags. |

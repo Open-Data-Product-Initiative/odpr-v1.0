@@ -85,6 +85,11 @@ class AgentScriptsTest(unittest.TestCase):
         self.assertNotIn("runId", ci_entry)
         self.assertNotIn("logs", ci_entry)
 
+        data_product_entry = next(entry for entry in recipes if entry["id"] == "RCP-DATA-PRODUCT-001")
+        self.assertEqual(data_product_entry["type"], "agent")
+        self.assertEqual(data_product_entry["scope"], "data-product")
+        self.assertEqual(data_product_entry["commands"], ["explain", "generate", "validate"])
+
     def test_build_recipe_catalog_check_passes_for_current_catalog(self):
         result = run_script("scripts/build_recipe_catalog.py", "--check")
 

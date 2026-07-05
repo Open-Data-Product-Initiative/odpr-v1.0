@@ -10,6 +10,7 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | Term | ODPR usage |
 |---|---|
 | Recipe | A portable, declarative workflow contract for repeatable data product work. |
+| Data Product Recipe | A `Recipe` with `recipe.scope: data-product`, used for delivery planning, readiness, validation, implementation guidance, and review around one data product. |
 | Workflow | A sequence of steps that creates, validates, reviews, localizes, publishes, or refreshes data product artifacts. |
 | Step | One declared operation in a recipe. |
 | Gate | A required validation, quality, publication, or review condition. |
@@ -25,6 +26,7 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | `Recipe` | The ODPR root object that declares one repeatable data product workflow. |
 | `Provider` | The ODPR root object that declares one named provider profile. |
 | `RecipeCatalog` | The ODPR root object that lists recipe metadata and paths to full recipe files. |
+| `DataProductRecipe` | The ODPR root object that describes the result created for a Data Product Recipe. |
 | `providerRef` | A reference from a recipe to `Provider.provider.id`. |
 | `context.format` | The preferred context format for a recipe, such as `yaml`, `toon`, `gcf`, or `auto`. |
 | `execution.mode` | Runtime/provider class such as local, hosted, hybrid, or none; not SDK invocation mode. |

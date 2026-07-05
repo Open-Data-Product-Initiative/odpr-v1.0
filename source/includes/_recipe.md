@@ -52,6 +52,7 @@ recipe:
       en: Generate and validate fragments.
   version: "1.0.0"
   type: ci
+  scope: catalog
   environment: ci
   execution:
     mode: local
@@ -84,6 +85,7 @@ recipe:
 | `metadata` | object | required | Stable recipe identity, name, optional description, owner, and tags. |
 | `version` | string | required | Version of this recipe workflow. This is separate from the top-level ODPR specification version. |
 | `type` | string | required | Recipe type such as `dev`, `ci`, `release`, `localization`, `hybrid`, or `agent`. |
+| `scope` | string | optional | Standards-family target governed by the recipe. Allowed values are `data-product`, `catalog`, `graph`, and `portfolio`. |
 | `steps` | array | required | Ordered workflow operations. |
 | `inputs` | array | optional | Named workflow inputs. |
 | `outputs` | array | optional | Named workflow outputs. |
@@ -104,6 +106,22 @@ recipe:
 | `localization` | Translation and multilingual portfolio or product work. |
 | `hybrid` | Workflows that mix local and hosted execution. |
 | `agent` | Agent-safe workflows that AI agents can inspect and run. |
+
+## Recipe scopes
+
+`recipe.scope` identifies the standards-family target the recipe primarily
+governs. `recipe.type` describes the workflow category, while `recipe.scope`
+describes what kind of artifact or standards-family area the recipe is for.
+
+| Scope | Meaning |
+|---|---|
+| `data-product` | Delivery planning, validation, implementation guidance, readiness, and review for one data product. |
+| `catalog` | Catalog or portfolio catalog generation, validation, publication, synchronization, or review. |
+| `graph` | Graph/context generation, relationship extraction, validation, rendering, or review. |
+| `portfolio` | Portfolio assembly, refresh, localization, rendering, explanation, review, or release work. |
+
+A Data Product Recipe is an ODPR `Recipe` with `recipe.scope: data-product`.
+ODPR does not define a separate `ProductRecipe` root kind.
 
 ## Execution modes
 

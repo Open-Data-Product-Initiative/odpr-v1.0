@@ -22,6 +22,8 @@ EXPECTED_EXAMPLES = [
     "release-portfolio-review.yaml",
     "portfolio-localization.yaml",
     "hybrid-graph-review.yaml",
+    "data-product-delivery.yaml",
+    "data-product-recipe.yaml",
 ]
 
 EXPECTED_PROVIDER_EXAMPLES = [
@@ -31,7 +33,7 @@ EXPECTED_PROVIDER_EXAMPLES = [
     "internal-secure.yaml",
 ]
 
-EXPECTED_RECORD_IDS = {"Recipe", "Provider", "RecipeCatalog", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"}
+EXPECTED_RECORD_IDS = {"Recipe", "Provider", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"}
 
 
 def load_yaml(path):
@@ -110,16 +112,29 @@ def assert_recipe_catalog_document(document):
             assert entry["groupRef"] in group_ids, f"recipeCatalog.recipes[{index}].groupRef must reference a declared group"
 
 
+def assert_data_product_recipe_document(document):
+    assert document["schema"] == "https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml"
+    assert document["version"] == "1.0"
+    assert document["kind"] == "DataProductRecipe"
+    data_product_recipe = document["dataProductRecipe"]
+    assert data_product_recipe["recipeRef"] == "recipe.yaml"
+    section_ids = {section["id"] for section in data_product_recipe["sections"]}
+    assert "source-product-spec" in section_ids
+    assert "ai-agent-brief" in section_ids
+    assert "relationship-context" in section_ids
+    assert 0 <= data_product_recipe["readiness"]["score"] <= 100
+
+
 def check_schema():
     schema = load_yaml(SCHEMA_YAML)
     json_schema = load_json(SCHEMA_JSON)
 
     assert schema["required"] == ["schema", "version", "kind"], "YAML schema root requirements changed"
     assert json_schema["required"] == schema["required"], "JSON schema root requirements must match YAML schema"
-    assert list(schema["properties"]) == ["schema", "version", "kind", "recipe", "provider", "recipeCatalog"], "YAML schema root property order changed"
-    assert list(json_schema["properties"]) == ["schema", "version", "kind", "recipe", "provider", "recipeCatalog"], "JSON schema root property order changed"
-    assert schema["properties"]["kind"]["enum"] == ["Recipe", "Provider", "RecipeCatalog"], "YAML schema root kind must support Recipe, Provider, and RecipeCatalog"
-    assert json_schema["properties"]["kind"]["enum"] == ["Recipe", "Provider", "RecipeCatalog"], "JSON schema root kind must support Recipe, Provider, and RecipeCatalog"
+    assert list(schema["properties"]) == ["schema", "version", "kind", "recipe", "provider", "recipeCatalog", "dataProductRecipe"], "YAML schema root property order changed"
+    assert list(json_schema["properties"]) == ["schema", "version", "kind", "recipe", "provider", "recipeCatalog", "dataProductRecipe"], "JSON schema root property order changed"
+    assert schema["properties"]["kind"]["enum"] == ["Recipe", "Provider", "RecipeCatalog", "DataProductRecipe"], "YAML schema root kind must support Recipe, Provider, RecipeCatalog, and DataProductRecipe"
+    assert json_schema["properties"]["kind"]["enum"] == ["Recipe", "Provider", "RecipeCatalog", "DataProductRecipe"], "JSON schema root kind must support Recipe, Provider, RecipeCatalog, and DataProductRecipe"
     assert "recipe" in schema["properties"], "YAML schema must define recipe property"
     assert "provider" in schema["properties"], "YAML schema must define provider property"
     assert "recipeCatalog" in schema["properties"], "YAML schema must define recipeCatalog property"
@@ -129,6 +144,7 @@ def check_schema():
     recipe = schema["$defs"][schema["properties"]["recipe"]["$ref"].split("/")[-1]]
     assert recipe["required"] == ["metadata", "version", "type", "steps"], "Recipe required fields changed unexpectedly"
     assert "version" in recipe["properties"], "Recipe must define recipe version"
+    assert recipe["properties"]["scope"]["$ref"] == "#/$defs/RecipeScope", "Recipe must define optional scope"
     assert "execution" in recipe["properties"], "Recipe must define execution policy"
     assert "context" in recipe["properties"], "Recipe must define context policy"
     assert "gates" in recipe["properties"], "Recipe must define gates"
@@ -147,6 +163,9 @@ def check_schema():
     entry = schema["$defs"]["RecipeCatalogEntry"]
     assert "groupRef" in entry["properties"], "RecipeCatalogEntry must define optional groupRef"
 
+    data_product_recipe = schema["$defs"][schema["properties"]["dataProductRecipe"]["$ref"].split("/")[-1]]
+    assert data_product_recipe["properties"]["readiness"]["$ref"] == "#/$defs/DataProductRecipeReadiness", "DataProductRecipe must define readiness"
+
 
 def check_examples():
     for filename in EXPECTED_EXAMPLES:
@@ -159,6 +178,10 @@ def check_examples():
     assert_recipe_document(load_yaml(EXAMPLES_DIR / "release-portfolio-review.yaml"), "release")
     assert_recipe_document(load_yaml(EXAMPLES_DIR / "portfolio-localization.yaml"), "localization")
     assert_recipe_document(load_yaml(EXAMPLES_DIR / "hybrid-graph-review.yaml"), "hybrid")
+    data_product_recipe = load_yaml(EXAMPLES_DIR / "data-product-delivery.yaml")
+    assert_recipe_document(data_product_recipe, "agent")
+    assert data_product_recipe["recipe"]["scope"] == "data-product"
+    assert_data_product_recipe_document(load_yaml(EXAMPLES_DIR / "data-product-recipe.yaml"))
     assert_recipe_catalog_document(load_yaml(RECIPES_DIR / "catalog.yaml"))
 
     for filename in EXPECTED_PROVIDER_EXAMPLES:
@@ -205,6 +228,8 @@ def check_recipes_and_llms():
         "/recipes/examples/minimal.yaml",
         "/recipes/examples/ci-validate-generated-fragments.yaml",
         "/recipes/examples/portfolio-localization.yaml",
+        "/recipes/examples/data-product-delivery.yaml",
+        "/recipes/examples/data-product-recipe.yaml",
         "/recipes/catalog.yaml",
         "/providers/examples/production-quality.yaml",
         "/schema/odpr.yaml",

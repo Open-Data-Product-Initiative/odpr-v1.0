@@ -15,6 +15,7 @@ includes:
 - recipe_library
 - recipe_catalog
 - recipe
+- data_product_recipe
 - provider
 - extensions
 - contributors
@@ -98,8 +99,8 @@ product workflow should run.
 
 ## Recipe, provider, and catalog configuration
 
-ODPR standardizes three clear root objects: `Recipe`, `Provider`, and
-`RecipeCatalog`.
+ODPR standardizes four clear root objects: `Recipe`, `Provider`,
+`RecipeCatalog`, and `DataProductRecipe`.
 
 A `Recipe` declares workflow intent: which steps run, which inputs and outputs
 matter, which gates apply, and which provider profile should be used.
@@ -113,6 +114,11 @@ A `RecipeCatalog` is a metadata-only discovery document. It lists available
 recipes and points to their full `Recipe` files. It does not embed full steps,
 credentials, runtime status, planned writes, run ids, logs, or provider
 readiness results.
+
+A `DataProductRecipe` is a machine-readable recipe result created by `Recipe`
+documents that use `recipe.scope: data-product`. It indexes the recipe README,
+source ODPS product spec, plans, governance files, agent brief, readiness
+confidence, and review status.
 
 In an ODPR recipe, a provider is referenced by name:
 

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Mandatory core data product recipe sections</title>
+  <desc id="desc">Illustration showing the DataProductRecipe sections array pointing to the seven mandatory core recipe files.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F3F7F9"/>
+      <stop offset="1" stop-color="#fff5f7"/>
+    </linearGradient>
+    <linearGradient id="manifest" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f001f"/>
+      <stop offset="1" stop-color="#650016"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#35000c" flood-opacity="0.14"/>
+    </filter>
+    <style>
+      .label { font-family: Inter, Arial, sans-serif; fill: #230336; }
+      .title { font-size: 34px; font-weight: 700; }
+      .section-title { font-size: 22px; font-weight: 700; }
+      .small { font-size: 18px; }
+      .tiny { font-size: 15px; }
+      .micro { font-size: 13px; }
+      .muted { fill: #6b4b55; }
+      .white { fill: #ffffff; }
+      .group-card { fill: #ffffff; stroke: #e3b8c2; stroke-width: 1.5; }
+      .file-card { fill: #ffffff; stroke: #8f001f; stroke-width: 2; }
+      .context-card { fill: #ffffff; stroke: #650016; stroke-width: 2; }
+      .pill { fill: #f8e5ea; stroke: #650016; stroke-width: 1; }
+      .connector { fill: none; stroke: #c97a7e; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 7 9; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="620" rx="26" fill="url(#bg)"/>
+  <rect x="42" y="42" width="1116" height="536" rx="24" fill="#ffffff" stroke="#ead2d8"/>
+
+  <text x="88" y="98" class="label title">Mandatory Core</text>
+  <text x="88" y="128" class="label small muted">A valid manifest indexes these files before optional delivery detail is added.</text>
+
+  <rect x="82" y="174" width="312" height="236" rx="22" fill="url(#manifest)" filter="url(#shadow)"/>
+  <text x="238" y="222" text-anchor="middle" class="label section-title white">DataProductRecipe</text>
+  <text x="238" y="254" text-anchor="middle" class="label small white">dataProductRecipe.sections</text>
+  <line x1="128" y1="276" x2="348" y2="276" stroke="#ffffff" stroke-opacity="0.45"/>
+  <text x="128" y="314" class="label tiny white">id</text>
+  <text x="226" y="314" class="label tiny white">path</text>
+  <text x="310" y="314" class="label tiny white">format</text>
+  <text x="128" y="346" class="label tiny white">section ID</text>
+  <text x="226" y="346" class="label tiny white">file</text>
+  <text x="310" y="346" class="label tiny white">md/yaml</text>
+
+  <path class="connector" d="M394 284 C458 250 500 226 548 212"/>
+  <path class="connector" d="M394 306 C470 372 516 444 548 512"/>
+
+  <rect x="512" y="160" width="606" height="390" rx="22" fill="#fff8fa" stroke="#e3b8c2"/>
+  <text x="548" y="202" class="label section-title">Core recipe files</text>
+  <text x="548" y="230" class="label tiny muted">Every valid data product recipe includes these section IDs, grouped by file format.</text>
+
+  <g>
+    <rect x="548" y="258" width="328" height="286" rx="16" class="group-card"/>
+    <text x="576" y="292" class="label tiny">Markdown sections</text>
+    <rect x="802" y="274" width="42" height="22" rx="11" class="pill"/>
+    <text x="823" y="290" text-anchor="middle" class="label micro">md</text>
+
+    <rect x="576" y="314" width="272" height="32" rx="9" class="file-card"/>
+    <text x="596" y="336" class="label micro">recipe-readme</text>
+
+    <rect x="576" y="354" width="272" height="32" rx="9" class="file-card"/>
+    <text x="596" y="376" class="label micro">product-summary</text>
+
+    <rect x="576" y="394" width="272" height="32" rx="9" class="file-card"/>
+    <text x="596" y="416" class="label micro">delivery-plan</text>
+
+    <rect x="576" y="434" width="272" height="32" rx="9" class="file-card"/>
+    <text x="596" y="456" class="label micro">open-questions</text>
+
+    <rect x="576" y="474" width="272" height="32" rx="9" class="file-card"/>
+    <text x="596" y="496" class="label micro">ai-agent-brief</text>
+
+    <rect x="892" y="258" width="200" height="286" rx="16" class="group-card"/>
+    <text x="920" y="292" class="label tiny">YAML sections</text>
+    <rect x="1022" y="274" width="50" height="22" rx="11" class="pill"/>
+    <text x="1047" y="290" text-anchor="middle" class="label micro">yaml</text>
+
+    <rect x="924" y="326" width="140" height="58" rx="9" class="context-card"/>
+    <text x="992" y="350" text-anchor="middle" class="label micro">source</text>
+    <text x="992" y="370" text-anchor="middle" class="label micro">product spec</text>
+
+    <rect x="924" y="416" width="140" height="58" rx="9" class="context-card"/>
+    <text x="992" y="440" text-anchor="middle" class="label micro">relationship</text>
+    <text x="992" y="460" text-anchor="middle" class="label micro">context</text>
+  </g>
+
+  <rect x="102" y="438" width="292" height="42" rx="21" fill="#fff0f3" stroke="#e3b8c2"/>
+  <text x="248" y="464" text-anchor="middle" class="label tiny">Schema validation checks the IDs.</text>
+</svg>

@@ -21,12 +21,15 @@ properties:
       - Recipe
       - Provider
       - RecipeCatalog
+      - DataProductRecipe
   recipe:
     $ref: "#/$defs/Recipe"
   provider:
     $ref: "#/$defs/Provider"
   recipeCatalog:
     $ref: "#/$defs/RecipeCatalog"
+  dataProductRecipe:
+    $ref: "#/$defs/DataProductRecipe"
 oneOf:
   - required:
       - recipe
@@ -39,6 +42,8 @@ oneOf:
             - provider
         - required:
             - recipeCatalog
+        - required:
+            - dataProductRecipe
   - required:
       - provider
     properties:
@@ -50,6 +55,8 @@ oneOf:
             - recipe
         - required:
             - recipeCatalog
+        - required:
+            - dataProductRecipe
   - required:
       - recipeCatalog
     properties:
@@ -61,6 +68,21 @@ oneOf:
             - recipe
         - required:
             - provider
+        - required:
+            - dataProductRecipe
+  - required:
+      - dataProductRecipe
+    properties:
+      kind:
+        const: DataProductRecipe
+    not:
+      anyOf:
+        - required:
+            - recipe
+        - required:
+            - provider
+        - required:
+            - recipeCatalog
 $defs:
   LocalizedText:
     type: object
@@ -127,6 +149,13 @@ $defs:
     type: string
     minLength: 1
     pattern: "^(?!/)(?!.*(^|/)\\.\\.(/|$)).+"
+  RecipeScope:
+    type: string
+    enum:
+      - data-product
+      - catalog
+      - graph
+      - portfolio
   ContextPolicy:
     type: object
     additionalProperties: false
@@ -816,17 +845,19 @@ $defs:
       id:
         type: string
         minLength: 1
+      groupRef:
+        type: string
+        minLength: 1
       version:
         type: string
         pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+([A-Za-z0-9.+-]*)?$"
       type:
         type: string
         minLength: 1
+      scope:
+        $ref: "#/$defs/RecipeScope"
       name:
         $ref: "#/$defs/LocalizedText"
-      groupRef:
-        type: string
-        minLength: 1
       description:
         $ref: "#/$defs/LocalizedText"
       tags:
@@ -875,6 +906,182 @@ $defs:
         $ref: "#/$defs/LocalizedText"
       description:
         $ref: "#/$defs/LocalizedText"
+  DataProductRecipeSection:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    required:
+      - id
+      - path
+      - format
+    properties:
+      id:
+        type: string
+        enum:
+          - recipe-readme
+          - source-product-spec
+          - product-summary
+          - delivery-plan
+          - product-interface-plan
+          - access-plan
+          - contract-plan
+          - pricing-plan
+          - quality-plan
+          - sla-plan
+          - lifecycle-plan
+          - relationship-plan
+          - validation-plan
+          - test-plan
+          - operational-readiness
+          - risk-register
+          - open-questions
+          - developer-review-checklist
+          - ai-agent-brief
+          - implementation-constraints
+          - backlog-items
+          - portfolio-context
+          - relationship-context
+      path:
+        $ref: "#/$defs/RelativePath"
+      format:
+        type: string
+        enum:
+          - markdown
+          - yaml
+          - json
+          - directory
+  DataProductRecipeReadiness:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    required:
+      - score
+      - status
+    properties:
+      score:
+        type: number
+        minimum: 0
+        maximum: 100
+      status:
+        type: string
+        enum:
+          - missing
+          - partial
+          - ready
+  DataProductRecipeReview:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    required:
+      - required
+      - status
+    properties:
+      required:
+        type: boolean
+      status:
+        type: string
+        enum:
+          - pending
+          - approved
+          - changes-requested
+  DataProductRecipe:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    required:
+      - metadata
+      - version
+      - recipeRef
+      - status
+      - sections
+      - readiness
+      - review
+    properties:
+      metadata:
+        allOf:
+          - $ref: "#/$defs/Metadata"
+          - type: object
+            required:
+              - description
+      version:
+        type: string
+        pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+([A-Za-z0-9.+-]*)?$"
+      recipeRef:
+        $ref: "#/$defs/RelativePath"
+      status:
+        type: string
+        enum:
+          - announcement
+          - draft
+          - development
+          - testing
+          - acceptance
+          - production
+          - sunset
+          - retired
+      sections:
+        type: array
+        minItems: 7
+        items:
+          $ref: "#/$defs/DataProductRecipeSection"
+        allOf:
+          - contains:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  const: recipe-readme
+          - contains:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  const: source-product-spec
+          - contains:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  const: product-summary
+          - contains:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  const: delivery-plan
+          - contains:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  const: open-questions
+          - contains:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  const: ai-agent-brief
+          - contains:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  const: relationship-context
+      readiness:
+        $ref: "#/$defs/DataProductRecipeReadiness"
+      review:
+        $ref: "#/$defs/DataProductRecipeReview"
   RecipeCatalog:
     type: object
     additionalProperties: false
@@ -924,6 +1131,8 @@ $defs:
           - localization
           - hybrid
           - agent
+      scope:
+        $ref: "#/$defs/RecipeScope"
       inputs:
         type: array
         items:

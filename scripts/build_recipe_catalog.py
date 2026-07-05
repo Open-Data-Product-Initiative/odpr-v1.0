@@ -35,6 +35,7 @@ DEFAULT_EXAMPLE_ORDER = [
     "release-portfolio-review.yaml",
     "portfolio-localization.yaml",
     "hybrid-graph-review.yaml",
+    "data-product-delivery.yaml",
 ]
 
 
@@ -68,6 +69,8 @@ def relative_recipe_path(path):
 
 def extract_entry(path):
     document = load_document(path)
+    if isinstance(document, dict) and document.get("kind") == "DataProductRecipe":
+        return None
     if not isinstance(document, dict) or document.get("kind") != "Recipe":
         raise ValueError(f"{path}: expected an ODPR Recipe document")
 
@@ -91,6 +94,7 @@ def extract_entry(path):
     }
 
     optional_fields = [
+        ("scope", recipe.get("scope")),
         ("description", metadata.get("description")),
         ("tags", metadata.get("tags")),
         ("environment", recipe.get("environment")),
@@ -116,7 +120,11 @@ def extract_entry(path):
 
 
 def build_catalog(input_dir):
-    entries = [extract_entry(path) for path in iter_recipe_files(input_dir)]
+    entries = [
+        entry
+        for entry in (extract_entry(path) for path in iter_recipe_files(input_dir))
+        if entry is not None
+    ]
     return {
         "schema": SCHEMA_URI,
         "version": "1.0",
