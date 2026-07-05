@@ -361,6 +361,9 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#specification-aims" class="toc-h2 toc-link" data-title="Specification aims">Specification aims</a>
+                  </li>
+                  <li>
                     <a href="#why-odpr-is-needed" class="toc-h2 toc-link" data-title="Why ODPR is needed">Why ODPR is needed</a>
                   </li>
                   <li>
@@ -374,9 +377,6 @@
                   </li>
                   <li>
                     <a href="#example-recipe" class="toc-h2 toc-link" data-title="Example recipe">Example recipe</a>
-                  </li>
-                  <li>
-                    <a href="#specification-aims" class="toc-h2 toc-link" data-title="Specification aims">Specification aims</a>
                   </li>
               </ul>
           </li>
@@ -609,6 +609,26 @@ artifact looks like. In version 1.0, ODPR defines four root objects:</p>
 </tbody></table>
 
 <p><img src="images/odpr-scope-76b3143c.svg" alt="ODPR root objects and standards-family boundary." /></p>
+<h2 id='specification-aims'>Specification aims</h2>
+<p>ODPR aims to:</p>
+
+<ul>
+<li>make data product workflows portable, repeatable, inspectable, and
+automation-ready</li>
+<li>support standard development, CI, release, localization, hybrid, and
+agent-safe workflows</li>
+<li>let teams switch between local, hosted, and hybrid model execution</li>
+<li>standardize provider profile shape without storing raw secrets or defining
+provider-specific APIs</li>
+<li>standardize Data Product Recipe handoff manifests for developer and AI-agent
+collaboration</li>
+<li>support compact context policy such as YAML, TOON, GCF, or automatic fallback</li>
+<li>expose safe workflows and handoff context to AI agents before they run tools</li>
+</ul>
+
+<p><strong>Note!</strong> In &quot;Open Data Product&quot; the focus is on the latter words and the
+prefix &quot;open&quot; refers to the openness of the standard. Any connotations to open
+data are not intentional, intended, or desirable.</p>
 <h2 id='why-odpr-is-needed'>Why ODPR is needed</h2>
 <p>Data product work often depends on manual command sequences, scripts, notebooks,
 prompts, and local habits. That creates delivery variation, makes validation
@@ -771,24 +791,6 @@ required, failed validation means the CI workflow fails.</li>
 <li>It does not pause for manual review after the gate passes, because
 <code>review.required</code> is <code>false</code>.</li>
 </ol>
-<h2 id='specification-aims'>Specification aims</h2>
-<p>ODPR aims to:</p>
-
-<ul>
-<li>make data product workflows portable, repeatable, inspectable, and
-automation-ready</li>
-<li>support standard development, CI, release, localization, hybrid, and
-agent-safe workflows</li>
-<li>let teams switch between local, hosted, and hybrid model execution</li>
-<li>standardize provider profile shape without storing raw secrets or defining
-provider-specific APIs</li>
-<li>support compact context policy such as YAML, TOON, GCF, or automatic fallback</li>
-<li>expose safe workflows to AI agents before they run tools</li>
-</ul>
-
-<p><strong>Note!</strong> In &quot;Open Data Product&quot; the focus is on the latter words and the
-prefix &quot;open&quot; refers to the openness of the standard. Any connotations to open
-data are not intentional, intended, or desirable.</p>
 <h1 id='recipe-toolkit'>Recipe Toolkit</h1>
 <blockquote>
 <p>Snippet of YAML version:</p>
