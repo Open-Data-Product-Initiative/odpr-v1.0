@@ -79,6 +79,26 @@ artifact looks like. In version 1.0, ODPR defines four root objects:
 
 ![ODPR root objects and standards-family boundary.](images/odpr-scope.svg)
 
+## Specification aims
+
+ODPR aims to:
+
+* make data product workflows portable, repeatable, inspectable, and
+  automation-ready
+* support standard development, CI, release, localization, hybrid, and
+  agent-safe workflows
+* let teams switch between local, hosted, and hybrid model execution
+* standardize provider profile shape without storing raw secrets or defining
+  provider-specific APIs
+* standardize Data Product Recipe handoff manifests for developer and AI-agent
+  collaboration
+* support compact context policy such as YAML, TOON, GCF, or automatic fallback
+* expose safe workflows and handoff context to AI agents before they run tools
+
+**Note!** In "Open Data Product" the focus is on the latter words and the
+prefix "open" refers to the openness of the standard. Any connotations to open
+data are not intentional, intended, or desirable.
+
 ## Why ODPR is needed
 
 Data product work often depends on manual command sequences, scripts, notebooks,
@@ -253,21 +273,3 @@ documents for signals change. The expected run is:
    required, failed validation means the CI workflow fails.
 11. It does not pause for manual review after the gate passes, because
    `review.required` is `false`.
-
-## Specification aims
-
-ODPR aims to:
-
-* make data product workflows portable, repeatable, inspectable, and
-  automation-ready
-* support standard development, CI, release, localization, hybrid, and
-  agent-safe workflows
-* let teams switch between local, hosted, and hybrid model execution
-* standardize provider profile shape without storing raw secrets or defining
-  provider-specific APIs
-* support compact context policy such as YAML, TOON, GCF, or automatic fallback
-* expose safe workflows to AI agents before they run tools
-
-**Note!** In "Open Data Product" the focus is on the latter words and the
-prefix "open" refers to the openness of the standard. Any connotations to open
-data are not intentional, intended, or desirable.
