@@ -2,11 +2,11 @@
 
 ODPR is a lightweight, vendor-neutral, machine-readable standard for reusable
 data product workflow recipes, named provider profiles, metadata-only recipe
-catalogs, and Data Product Recipes. It defines portable recipes for creating,
-validating, reviewing, localizing, publishing, and refreshing data product
-artifacts, plus portable Provider objects that recipes can reference through
-`providerRef`, RecipeCatalog objects for discovery, and DataProductRecipe
-objects for reviewable data product delivery work.
+catalogs, and Data Product Recipe handoff manifests. It defines portable
+recipes for creating, validating, reviewing, localizing, publishing, and
+refreshing data product artifacts, plus portable Provider objects that recipes
+can reference through `providerRef`, RecipeCatalog objects for discovery, and
+DataProductRecipe objects for reviewable data product delivery work.
 
 Base URL:
 - https://opendataproducts.org/odpr-v1.0
