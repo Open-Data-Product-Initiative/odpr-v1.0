@@ -110,3 +110,24 @@ recipeCatalog:
         - odpg.build
         - generate
         - portfolio.explain
+    - path: recipes/examples/data-product-delivery.yaml
+      id: RCP-DATA-PRODUCT-001
+      groupRef: examples
+      version: 1.0.0
+      type: agent
+      name:
+        en: Data Product Recipe Delivery
+      scope: data-product
+      description:
+        en: Generate a reviewable Data Product Recipe for one data product.
+      tags:
+        - data-product
+        - delivery
+        - agent
+      environment: development
+      executionMode: none
+      requiresReview: true
+      commands:
+        - explain
+        - generate
+        - validate

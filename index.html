@@ -312,7 +312,7 @@
   color: #859900;
 }
     </style>
-    <link href="stylesheets/screen-a392f7a3.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/screen-4e6b3b0e.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print-953e3353.css" rel="stylesheet" media="print" />
       <script src="javascripts/all-b12a2749.js"></script>
 
@@ -433,6 +433,9 @@
                     <a href="#recipe-types" class="toc-h2 toc-link" data-title="Recipe types">Recipe types</a>
                   </li>
                   <li>
+                    <a href="#recipe-scopes" class="toc-h2 toc-link" data-title="Recipe scopes">Recipe scopes</a>
+                  </li>
+                  <li>
                     <a href="#execution-modes" class="toc-h2 toc-link" data-title="Execution modes">Execution modes</a>
                   </li>
                   <li>
@@ -455,6 +458,29 @@
                   </li>
                   <li>
                     <a href="#example" class="toc-h2 toc-link" data-title="Example">Example</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#data-product-recipe" class="toc-h1 toc-link" data-title="Data Product Recipe">Data Product Recipe</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#root-structure" class="toc-h2 toc-link" data-title="Root structure">Root structure</a>
+                  </li>
+                  <li>
+                    <a href="#mandatory-data-product-recipe-fields" class="toc-h2 toc-link" data-title="Mandatory data product recipe fields">Mandatory data product recipe fields</a>
+                  </li>
+                  <li>
+                    <a href="#mandatory-core-section-ids" class="toc-h2 toc-link" data-title="Mandatory core section IDs">Mandatory core section IDs</a>
+                  </li>
+                  <li>
+                    <a href="#optional-standardized-section-ids" class="toc-h2 toc-link" data-title="Optional standardized section IDs">Optional standardized section IDs</a>
+                  </li>
+                  <li>
+                    <a href="#recommended-markdown-headings" class="toc-h2 toc-link" data-title="Recommended Markdown headings">Recommended Markdown headings</a>
+                  </li>
+                  <li>
+                    <a href="#practice-alignment" class="toc-h2 toc-link" data-title="Practice alignment">Practice alignment</a>
                   </li>
               </ul>
           </li>
@@ -574,8 +600,8 @@ A recipe describes:</p>
 what to do. Recipes tell teams, tools, agents, and automation systems how a data
 product workflow should run.</p>
 <h2 id='recipe-provider-and-catalog-configuration'>Recipe, provider, and catalog configuration</h2>
-<p>ODPR standardizes three clear root objects: <code>Recipe</code>, <code>Provider</code>, and
-<code>RecipeCatalog</code>.</p>
+<p>ODPR standardizes four clear root objects: <code>Recipe</code>, <code>Provider</code>,
+<code>RecipeCatalog</code>, and <code>DataProductRecipe</code>.</p>
 
 <p>A <code>Recipe</code> declares workflow intent: which steps run, which inputs and outputs
 matter, which gates apply, and which provider profile should be used.</p>
@@ -589,6 +615,11 @@ agent runtime from inventing a different provider shape.</p>
 recipes and points to their full <code>Recipe</code> files. It does not embed full steps,
 credentials, runtime status, planned writes, run ids, logs, or provider
 readiness results.</p>
+
+<p>A <code>DataProductRecipe</code> is a machine-readable recipe result created by <code>Recipe</code>
+documents that use <code>recipe.scope: data-product</code>. It indexes the recipe README,
+source ODPS product spec, plans, governance files, agent brief, readiness
+confidence, and review status.</p>
 
 <p>In an ODPR recipe, a provider is referenced by name:</p>
 <div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">execution</span><span class="pi">:</span>
@@ -749,9 +780,10 @@ specification provides the human-readable documentation, while the schema,
 recipe records, provider records, and example files provide machine-readable
 resources for validation, workflow automation, AI retrieval, and agent use.</p>
 
-<p>Use <code>odpr.yaml</code> or <code>odpr.json</code> to validate Recipe, Provider, and RecipeCatalog files,
-<code>recipes.jsonl</code> for lightweight object selection and retrieval, and the
-examples when generating or repairing ODPR YAML.</p>
+<p>Use <code>odpr.yaml</code> or <code>odpr.json</code> to validate Recipe, Provider, RecipeCatalog, and
+DataProductRecipe files, <code>recipes.jsonl</code> for lightweight object
+selection and retrieval, and the examples when generating or repairing ODPR
+YAML.</p>
 
 <p>The <a href="https://opendataproducts.org/sdk/">ODP Agent SDK</a> supports ODPR and is the
 first reference implementation for validating and executing ODPR recipes. Use
@@ -761,7 +793,7 @@ with other conforming SDKs, CI/CD systems, MCP servers, or platform
 implementations.</p>
 
 <!-- AI_AGENT_GUIDANCE:
-Use /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe, Provider, and RecipeCatalog files.
+Use /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe, Provider, RecipeCatalog, and DataProductRecipe files.
 Use /recipes/recipes.jsonl for retrieval, classification, ODPR object selection, and lightweight tool calls.
 Use /recipes/catalog.yaml for metadata-only discovery of complete Recipe files.
 Use /recipes/examples/*.yaml when generating or repairing ODPR recipe content.
@@ -834,6 +866,16 @@ Keep Provider objects free of raw secrets and provider-specific API schemas.
 <td>Hybrid recipe that mixes local and hosted execution</td>
 </tr>
 <tr>
+<td><a href="recipes/examples/data-product-delivery.yaml"><code>data-product-delivery.yaml</code></a></td>
+<td>YAML</td>
+<td>Data Product Recipe example using <code>recipe.scope: data-product</code></td>
+</tr>
+<tr>
+<td><a href="recipes/examples/data-product-recipe.yaml"><code>data-product-recipe.yaml</code></a></td>
+<td>YAML</td>
+<td>Minimal DataProductRecipe manifest example</td>
+</tr>
+<tr>
 <td><a href="providers/examples/production-quality.yaml"><code>production-quality.yaml</code></a></td>
 <td>YAML</td>
 <td>Hosted Provider profile for production-quality generation</td>
@@ -861,7 +903,7 @@ maintaining and using recipe artifacts.</p>
 <!-- AI_AGENT_SCRIPT_GUIDANCE:
 When working from the source repository, use scripts/search_recipes.py for repeatable local ODPR recipe lookup.
 Use scripts/search_recipes.py --json when another tool or agent will consume the result.
-Use scripts/validate_recipe.py to validate ODPR YAML or JSON Recipe, Provider, or RecipeCatalog files against source/schema/odpr.yaml and reject embedded secrets or API keys.
+Use scripts/validate_recipe.py to validate ODPR YAML or JSON Recipe, Provider, RecipeCatalog, or DataProductRecipe files against source/schema/odpr.yaml and reject embedded secrets or API keys.
 Use scripts/build_recipe_catalog.py to regenerate source/recipes/catalog.yaml from canonical recipe examples; use --check in CI or review workflows.
 Use scripts/check_agent_artifacts.py in CI or review workflows to detect drift between schema, recipe artifacts, examples, and llms.txt.
 Use scripts/generate_recipe_artifacts.py after editing source/schema/odpr.yaml to regenerate source/schema/odpr.json; use --check in CI or review workflows.
@@ -893,7 +935,7 @@ Do not edit generated or derived artifacts without checking alignment across llm
 </tr>
 <tr>
 <td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/validate_recipe.py"><code>validate_recipe.py</code></a></td>
-<td>Validates ODPR YAML or JSON Recipe, Provider, or RecipeCatalog files against the ODPR schema and rejects embedded secrets or API keys</td>
+<td>Validates ODPR YAML or JSON Recipe, Provider, RecipeCatalog, or DataProductRecipe files against the ODPR schema and rejects embedded secrets or API keys</td>
 </tr>
 </tbody></table>
 
@@ -1265,6 +1307,12 @@ recipe file is loaded and validated.</p>
 <td>Recipe type such as <code>dev</code>, <code>ci</code>, <code>release</code>, <code>localization</code>, <code>hybrid</code>, or <code>agent</code>.</td>
 </tr>
 <tr>
+<td><code>scope</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Recipe scope copied from the referenced recipe when present. Allowed values are <code>data-product</code>, <code>catalog</code>, <code>graph</code>, and <code>portfolio</code>.</td>
+</tr>
+<tr>
 <td><code>name</code></td>
 <td>language map</td>
 <td>required</td>
@@ -1390,6 +1438,7 @@ binding the standard to one implementation.</p>
       <span class="na">en</span><span class="pi">:</span> <span class="s">Generate and validate fragments.</span>
   <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
   <span class="na">type</span><span class="pi">:</span> <span class="s">ci</span>
+  <span class="na">scope</span><span class="pi">:</span> <span class="s">catalog</span>
   <span class="na">environment</span><span class="pi">:</span> <span class="s">ci</span>
   <span class="na">execution</span><span class="pi">:</span>
     <span class="na">mode</span><span class="pi">:</span> <span class="s">local</span>
@@ -1441,6 +1490,12 @@ binding the standard to one implementation.</p>
 <td>string</td>
 <td>required</td>
 <td>Recipe type such as <code>dev</code>, <code>ci</code>, <code>release</code>, <code>localization</code>, <code>hybrid</code>, or <code>agent</code>.</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Standards-family target governed by the recipe. Allowed values are <code>data-product</code>, <code>catalog</code>, <code>graph</code>, and <code>portfolio</code>.</td>
 </tr>
 <tr>
 <td><code>steps</code></td>
@@ -1529,6 +1584,37 @@ binding the standard to one implementation.</p>
 <td>Agent-safe workflows that AI agents can inspect and run.</td>
 </tr>
 </tbody></table>
+<h2 id='recipe-scopes'>Recipe scopes</h2>
+<p><code>recipe.scope</code> identifies the standards-family target the recipe primarily
+governs. <code>recipe.type</code> describes the workflow category, while <code>recipe.scope</code>
+describes what kind of artifact or standards-family area the recipe is for.</p>
+
+<table><thead>
+<tr>
+<th>Scope</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>data-product</code></td>
+<td>Delivery planning, validation, implementation guidance, readiness, and review for one data product.</td>
+</tr>
+<tr>
+<td><code>catalog</code></td>
+<td>Catalog or portfolio catalog generation, validation, publication, synchronization, or review.</td>
+</tr>
+<tr>
+<td><code>graph</code></td>
+<td>Graph/context generation, relationship extraction, validation, rendering, or review.</td>
+</tr>
+<tr>
+<td><code>portfolio</code></td>
+<td>Portfolio assembly, refresh, localization, rendering, explanation, review, or release work.</td>
+</tr>
+</tbody></table>
+
+<p>A Data Product Recipe is an ODPR <code>Recipe</code> with <code>recipe.scope: data-product</code>.
+ODPR does not define a separate <code>ProductRecipe</code> root kind.</p>
 <h2 id='execution-modes'>Execution modes</h2>
 <p>A <code>Recipe</code> is the portable workflow contract. The same recipe document can be
 validated, dry-run, executed, or resumed by an SDK or platform. ODPR does not
@@ -1820,6 +1906,915 @@ Swedish localized outputs.</li>
 the refreshed portfolio.</li>
 <li>Require human review before the release workflow is considered complete.</li>
 </ol>
+<h1 id='data-product-recipe'>Data Product Recipe</h1><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">DataProductRecipe</span>
+<span class="na">dataProductRecipe</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">DPR-001</span>
+    <span class="na">name</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Customer Analytics Data Product Recipe</span>
+    <span class="na">description</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Reviewable recipe for delivering the Customer Analytics data product.</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+  <span class="na">recipeRef</span><span class="pi">:</span> <span class="s">recipe.yaml</span>
+  <span class="na">status</span><span class="pi">:</span> <span class="s">draft</span>
+  <span class="na">sections</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">recipe-readme</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">README.md</span>
+      <span class="na">format</span><span class="pi">:</span> <span class="s">markdown</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">source-product-spec</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">product-context/odps.yaml</span>
+      <span class="na">format</span><span class="pi">:</span> <span class="s">yaml</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">product-summary</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">plans/product-summary.md</span>
+      <span class="na">format</span><span class="pi">:</span> <span class="s">markdown</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">delivery-plan</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">plans/delivery-plan.md</span>
+      <span class="na">format</span><span class="pi">:</span> <span class="s">markdown</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">open-questions</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">governance/open-questions.md</span>
+      <span class="na">format</span><span class="pi">:</span> <span class="s">markdown</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">ai-agent-brief</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">agent/ai-agent-brief.md</span>
+      <span class="na">format</span><span class="pi">:</span> <span class="s">markdown</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">relationship-context</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">context/odpg.yaml</span>
+      <span class="na">format</span><span class="pi">:</span> <span class="s">yaml</span>
+  <span class="na">readiness</span><span class="pi">:</span>
+    <span class="na">score</span><span class="pi">:</span> <span class="m">0</span>
+    <span class="na">status</span><span class="pi">:</span> <span class="s">missing</span>
+  <span class="na">review</span><span class="pi">:</span>
+    <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">status</span><span class="pi">:</span> <span class="s">pending</span>
+</code></pre></div>
+<p>The data product recipe manifest indexes a reviewable set of files. Mandatory
+core sections make every data product recipe understandable and validatable,
+including the graph context for the product. Optional standardized sections add
+detail only when the product needs them.</p>
+
+<p><img src="images/data-product-recipe-1910b2cd.svg" alt="Data Product Recipe manifest with mandatory core sections and optional standardized sections." /></p>
+
+<p><code>DataProductRecipe</code> is the ODPR root object for the reviewable data product recipe
+created by a <code>Recipe</code> with <code>recipe.scope: data-product</code>.</p>
+
+<p>The data product recipe manifest describes what was produced. It does not
+replace the <code>Recipe</code> contract and it does not define the ODPS product itself.
+The source product specification remains an ODPS file referenced by the data
+product recipe.</p>
+<h2 id='root-structure'>Root structure</h2>
+<blockquote>
+<p>Root shape example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">&lt;ODPR schema URI&gt;</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">DataProductRecipe</span>
+<span class="na">dataProductRecipe</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">&lt;data product recipe id&gt;</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">&lt;localized data product recipe name&gt;</span>
+    <span class="na">description</span><span class="pi">:</span> <span class="s">&lt;localized data product recipe description&gt;</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s">&lt;data product recipe artifact version&gt;</span>
+  <span class="na">recipeRef</span><span class="pi">:</span> <span class="s">&lt;recipe path&gt;</span>
+  <span class="na">status</span><span class="pi">:</span> <span class="s">draft</span>
+  <span class="na">sections</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">readiness</span><span class="pi">:</span> <span class="pi">{}</span>
+  <span class="na">review</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div>
+<p>The data product recipe root uses the same ODPR document envelope as other ODPR
+objects: <code>schema</code>, <code>version</code>, and <code>kind</code> identify the document, and
+<code>dataProductRecipe</code> contains the manifest.</p>
+
+<p>The manifest is intentionally an index, not the full delivery plan. It points to
+the files that developers, reviewers, SDKs, CI checks, and AI agents should
+inspect:</p>
+
+<ul>
+<li><code>recipeRef</code> points to the reusable ODPR recipe that governs this data product
+recipe.</li>
+<li><code>version</code> identifies the data product recipe artifact version, separate from
+the ODPR specification version.</li>
+<li><code>sections</code> lists the stable section IDs, paths, and formats. The source ODPS
+product specification and recipe README are referenced through mandatory
+section entries instead of duplicate top-level fields.</li>
+<li><code>readiness.score</code> is a confidence value from <code>0</code> to <code>100</code>.</li>
+<li><code>review.status</code> records whether the data product recipe is still pending,
+approved, or needs changes.</li>
+</ul>
+
+<p>The YAML example shows the minimal valid data product recipe manifest. It
+includes every schema-required field and every mandatory section ID, including
+<code>relationship-context</code>, but omits optional metadata and optional sections such
+as <code>pricing-plan</code>, <code>sla-plan</code>, and <code>relationship-plan</code>.</p>
+<h2 id='mandatory-data-product-recipe-fields'>Mandatory data product recipe fields</h2>
+<table><thead>
+<tr>
+<th>Element name</th>
+<th>Type</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>metadata</code></td>
+<td>object</td>
+<td>-</td>
+<td>Stable data product recipe identity and name.</td>
+</tr>
+<tr>
+<td><code>metadata.id</code></td>
+<td>string</td>
+<td>-</td>
+<td>Stable data product recipe identifier.</td>
+</tr>
+<tr>
+<td><code>metadata.name</code></td>
+<td>object</td>
+<td>localized text object</td>
+<td>Human-readable data product recipe name.</td>
+</tr>
+<tr>
+<td><code>metadata.description</code></td>
+<td>object</td>
+<td>localized text object</td>
+<td>Short data product recipe description for human readers.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>semantic version</td>
+<td>Version of this data product recipe artifact. This is separate from the top-level ODPR specification version.</td>
+</tr>
+<tr>
+<td><code>recipeRef</code></td>
+<td>relative path</td>
+<td>-</td>
+<td>Path to the reusable ODPR recipe that produced or governs this data product recipe.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>string</td>
+<td><code>announcement</code>, <code>draft</code>, <code>development</code>, <code>testing</code>, <code>acceptance</code>, <code>production</code>, <code>sunset</code>, <code>retired</code></td>
+<td>Data product recipe lifecycle status aligned with ODPS status values.</td>
+</tr>
+<tr>
+<td><code>sections</code></td>
+<td>array</td>
+<td>mandatory section IDs</td>
+<td>Data product recipe section index with stable section IDs, paths, and formats.</td>
+</tr>
+<tr>
+<td><code>readiness.score</code></td>
+<td>number</td>
+<td><code>0</code>-<code>100</code></td>
+<td>Readiness confidence; <code>0</code> means no readiness confidence.</td>
+</tr>
+<tr>
+<td><code>readiness.status</code></td>
+<td>string</td>
+<td><code>missing</code>, <code>partial</code>, <code>ready</code></td>
+<td>Readiness status.</td>
+</tr>
+<tr>
+<td><code>review.required</code></td>
+<td>boolean</td>
+<td><code>true</code>, <code>false</code></td>
+<td>Whether human review is required before implementation, publication, automation, or agent-assisted code work.</td>
+</tr>
+<tr>
+<td><code>review.status</code></td>
+<td>string</td>
+<td><code>pending</code>, <code>approved</code>, <code>changes-requested</code></td>
+<td>Review status.</td>
+</tr>
+</tbody></table>
+<h2 id='mandatory-core-section-ids'>Mandatory core section IDs</h2>
+<p>The following core section IDs define the minimum data product recipe that a
+developer, reviewer, SDK, CI check, or AI agent can rely on. A valid
+<code>DataProductRecipe</code> manifest MUST include each one in <code>dataProductRecipe.sections</code>.</p>
+
+<p><img src="images/data-product-recipe-core-6f656e7b.svg" alt="Mandatory Data Product Recipe core section files." /></p>
+
+<p>Each entry in <code>dataProductRecipe.sections</code> is an index record with a stable
+<code>id</code>, a path relative to the data product recipe root, and a <code>format</code>. The
+schema validates that the required IDs are present; tooling can then use the
+paths and formats to locate the actual Markdown or YAML files.</p>
+
+<p>The mandatory core is intentionally small. Markdown sections carry the human
+delivery narrative, open decisions, and agent instructions. YAML sections carry
+the machine-readable source product specification and relationship graph
+context. Optional data product recipe sections may add more detail, but they do
+not replace these core files.</p>
+<h3 id='recipe-readme'>recipe-readme</h3>
+<blockquote>
+<p>Recipe README example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="gu">## Recipe Status</span>
+
+Status: draft
+Readiness score: 0
+Review status: pending
+
+<span class="gu">## Read Order</span>
+<span class="p">
+1.</span> product-context/odps.yaml
+<span class="p">2.</span> plans/product-summary.md
+<span class="p">3.</span> plans/delivery-plan.md
+<span class="p">4.</span> governance/open-questions.md
+<span class="p">5.</span> agent/ai-agent-brief.md
+<span class="p">6.</span> context/odpg.yaml
+
+<span class="gu">## Mandatory Sections</span>
+<span class="p">
+-</span> recipe-readme
+<span class="p">-</span> source-product-spec
+<span class="p">-</span> product-summary
+<span class="p">-</span> delivery-plan
+<span class="p">-</span> open-questions
+<span class="p">-</span> ai-agent-brief
+<span class="p">-</span> relationship-context
+
+<span class="gu">## Optional Sections Present</span>
+<span class="p">
+-</span> None
+
+<span class="gu">## Blocking Questions</span>
+<span class="p">
+-</span> See governance/open-questions.md.
+
+<span class="gu">## Approval Gates</span>
+<span class="p">
+-</span> Human review is required before implementation.
+
+<span class="gu">## Next Action</span>
+
+Resolve delivery-blocking questions.
+</code></pre></div>
+<p><code>recipe-readme</code> is the required human and agent entrypoint for the data product
+recipe. It summarizes data product recipe status, read order, mandatory
+sections, optional sections present, blocking questions, approval gates, and the
+next action.</p>
+
+<p>Use this section to orient a reviewer before they inspect the data product
+recipe details. The README should make the data product recipe state obvious
+without requiring the reader to open every referenced file.</p>
+
+<p>Expected content:</p>
+
+<ul>
+<li>Current <code>dataProductRecipe.status</code>, <code>readiness.score</code>, and <code>review.status</code>.</li>
+<li>Recommended read order for humans, developers, and agents.</li>
+<li>Core sections that are present and optional sections that were included.</li>
+<li>Blocking questions and approval gates.</li>
+<li>One concrete next action.</li>
+</ul>
+
+<p>Do not use this section for the full delivery plan, backlog, risk register, or
+implementation details. It should point to those sections when they exist.</p>
+
+<p>Path: <code>README.md</code></p>
+
+<p>Format: <code>markdown</code></p>
+<h3 id='source-product-spec'>source-product-spec</h3>
+<blockquote>
+<p>Source product specification example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="c1"># Abbreviated ODPS product specification.</span>
+<span class="c1"># Use the current ODPS schema and required ODPS fields.</span>
+<span class="na">schema</span><span class="pi">:</span> <span class="s">&lt;current ODPS schema URI&gt;</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s">&lt;ODPS specification version&gt;</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">DataProduct</span>
+<span class="na">product</span><span class="pi">:</span>
+  <span class="na">productId</span><span class="pi">:</span> <span class="s">customer-analytics</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Customer Analytics</span>
+</code></pre></div>
+<p><code>source-product-spec</code> is the source ODPS product specification included for
+traceability. It is the product definition the data product recipe is about;
+ODPR does not redefine the product model.</p>
+
+<p>Use this section as the authoritative product input. Developers and agents
+should treat it as the product contract and avoid inventing product facts that
+are not present in the ODPS source or in approved data product recipe sections.</p>
+
+<p>Expected content:</p>
+
+<ul>
+<li>A valid ODPS product specification.</li>
+<li>Stable product identity, name, owner/domain, consumers, and product metadata
+as defined by ODPS.</li>
+<li>Any product-level fields required by the ODPS version used by the data product
+recipe.</li>
+</ul>
+
+<p>Do not convert the ODPS product spec into ODPR fields. Do not use this file for
+delivery tasks, implementation notes, or agent instructions.</p>
+
+<p>Path: <code>product-context/odps.yaml</code></p>
+
+<p>Format: <code>yaml</code></p>
+<h3 id='product-summary'>product-summary</h3>
+<blockquote>
+<p>Product summary example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="gu">## Product Identity</span>
+
+Customer Analytics
+
+<span class="gu">## Purpose</span>
+
+Provide reusable customer analytics data for approved consumers.
+
+<span class="gu">## Owner And Domain</span>
+
+Customer domain, analytics owner.
+
+<span class="gu">## Consumers</span>
+<span class="p">
+-</span> Customer success
+<span class="p">-</span> Marketing analytics
+
+<span class="gu">## Use Cases</span>
+<span class="p">
+-</span> Segment customers
+<span class="p">-</span> Monitor lifecycle signals
+
+<span class="gu">## Signals And Outcomes</span>
+<span class="p">
+-</span> Customer activity signals
+<span class="p">-</span> Retention and growth outcomes
+
+<span class="gu">## Product Boundary</span>
+
+This data product recipe covers one data product, not dashboards or downstream apps.
+</code></pre></div>
+<p><code>product-summary</code> gives a concise human-readable summary of the product,
+consumers, use cases, boundaries, and expected outcomes. It helps developers and
+agents understand the product without reading every source field first.</p>
+
+<p>Use this section to translate the source product specification into a short
+reviewable narrative. The summary should help a developer understand what is
+being built and what is outside the product boundary.</p>
+
+<p>Expected content:</p>
+
+<ul>
+<li>Product identity and plain-language purpose.</li>
+<li>Owner, domain, expected consumers, and primary use cases.</li>
+<li>Signals, outcomes, or business/data objectives that define success.</li>
+<li>Product boundary, including what the data product recipe must not implement.</li>
+</ul>
+
+<p>Do not introduce product facts that contradict the ODPS source. If the source is
+ambiguous, record the ambiguity in <code>open-questions</code> instead of resolving it
+silently.</p>
+
+<p>Path: <code>plans/product-summary.md</code></p>
+
+<p>Format: <code>markdown</code></p>
+<h3 id='delivery-plan'>delivery-plan</h3>
+<blockquote>
+<p>Delivery plan example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="gu">## Current Understanding</span>
+
+The source ODPS file defines one customer analytics data product.
+
+<span class="gu">## Decisions</span>
+<span class="p">
+-</span> Use the source ODPS file as the product contract.
+<span class="p">-</span> Keep implementation changes human-reviewed.
+
+<span class="gu">## Missing Inputs</span>
+<span class="p">
+-</span> Confirm target platform.
+<span class="p">-</span> Confirm consumer access path.
+
+<span class="gu">## Implementation Impact</span>
+
+Implementation requires product contract, access, and quality checks.
+
+<span class="gu">## Validation</span>
+
+Validate the data product recipe manifest, product spec, and generated implementation plan.
+</code></pre></div>
+<p><code>delivery-plan</code> describes the developer-controlled implementation path. It
+captures sequencing, dependencies, implementation impact, and validation
+expectations without turning the data product recipe into an execution script.</p>
+
+<p>Use this section to explain how the data product recipe can move from product
+definition to implementation. It should be practical enough for a developer to
+estimate the work and for an agent to understand the intended sequence.</p>
+
+<p>Expected content:</p>
+
+<ul>
+<li>Current understanding of the delivery target.</li>
+<li>Decisions already made and inputs still missing.</li>
+<li>Implementation impact for product contract, access, quality, and validation.</li>
+<li>Validation expectations before implementation, publication, or automation.</li>
+</ul>
+
+<p>Do not use this section for shell commands, deployment scripts, run logs, or
+automatic ticket creation. ODPR recipes define workflow intent; implementation
+execution belongs to tools and platforms.</p>
+
+<p>Path: <code>plans/delivery-plan.md</code></p>
+
+<p>Format: <code>markdown</code></p>
+<h3 id='open-questions'>open-questions</h3>
+<blockquote>
+<p>Open questions example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="gu">## Delivery-Blocking Questions</span>
+<span class="p">
+-</span> Which platform owns implementation?
+<span class="p">-</span> Which consumers need first access?
+
+<span class="gu">## Non-Blocking Questions</span>
+<span class="p">
+-</span> Should pricing be added later?
+
+<span class="gu">## Decision Owners</span>
+<span class="p">
+-</span> Product owner
+<span class="p">-</span> Engineering owner
+
+<span class="gu">## Required Before Implementation</span>
+<span class="p">
+-</span> Resolve delivery-blocking questions.
+</code></pre></div>
+<p><code>open-questions</code> records missing or ambiguous decisions. It is mandatory because
+draft packages are valid, but unresolved ambiguity must be visible.</p>
+
+<p>Use this section to prevent false readiness. A data product recipe may be valid
+while still being incomplete, but the missing decisions must be explicit and
+assigned where possible.</p>
+
+<p>Expected content:</p>
+
+<ul>
+<li>Delivery-blocking questions that must be answered before implementation.</li>
+<li>Non-blocking questions that can be resolved later.</li>
+<li>Decision owners or accountable roles.</li>
+<li>A clear list of questions required before implementation.</li>
+</ul>
+
+<p>Do not hide unknowns in prose elsewhere. Do not let an AI agent infer answers
+for delivery-blocking questions unless an authoritative data product recipe
+input provides the answer.</p>
+
+<p>Path: <code>governance/open-questions.md</code></p>
+
+<p>Format: <code>markdown</code></p>
+<h3 id='ai-agent-brief'>ai-agent-brief</h3>
+<blockquote>
+<p>AI agent brief example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="gu">## Objective</span>
+
+Prepare implementation guidance for one data product recipe.
+
+<span class="gu">## Authoritative Inputs</span>
+<span class="p">
+-</span> data-product-recipe.yaml
+<span class="p">-</span> product-context/odps.yaml
+<span class="p">-</span> plans/product-summary.md
+<span class="p">-</span> plans/delivery-plan.md
+<span class="p">-</span> governance/open-questions.md
+
+<span class="gu">## Required Behavior</span>
+<span class="p">
+-</span> Read the data product recipe manifest first.
+<span class="p">-</span> Preserve unrelated files.
+<span class="p">-</span> Ask for review before implementation changes.
+
+<span class="gu">## Prohibited Behavior</span>
+<span class="p">
+-</span> Do not invent missing product facts.
+<span class="p">-</span> Do not create tickets or deploy automatically.
+
+<span class="gu">## Approval Gates</span>
+<span class="p">
+-</span> Human review is required.
+
+<span class="gu">## Implementation Boundaries</span>
+<span class="p">
+-</span> Work only from the referenced data product recipe files.
+</code></pre></div>
+<p><code>ai-agent-brief</code> gives agents the data product recipe objective, authoritative
+inputs, required behavior, prohibited behavior, approval gates, and
+implementation boundaries. It keeps agent guidance in a file instead of adding
+agent-control fields to the manifest.</p>
+
+<p>Use this section to make the data product recipe safe for AI-assisted work. It
+should tell an agent what to read, what it may do, what it must not do, and when
+human approval is required.</p>
+
+<p>Expected content:</p>
+
+<ul>
+<li>Objective for the agent in the context of this data product recipe.</li>
+<li>Authoritative input files and their priority.</li>
+<li>Required behavior and prohibited behavior.</li>
+<li>Approval gates and implementation boundaries.</li>
+</ul>
+
+<p>Do not put model-provider settings, credentials, hidden prompts, or broad
+repository-wide agent rules here. Provider configuration belongs to ODPR
+Provider objects or runtime configuration, and repository guidance belongs in
+the repository&#39;s agent instruction files.</p>
+
+<p>Path: <code>agent/ai-agent-brief.md</code></p>
+
+<p>Format: <code>markdown</code></p>
+<h3 id='relationship-context'>relationship-context</h3>
+<blockquote>
+<p>Relationship context example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpg-v1.0/schema/odpg.yaml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="m">1.0</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Graph</span>
+<span class="na">graph</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">GRAPH-AVIATION-001</span>
+    <span class="na">name</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Aviation Data Product Value Graph</span>
+    <span class="na">description</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Graph for aviation data products, use cases, policies, agents, and objectives.</span>
+    <span class="na">domain</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Aviation</span>
+    <span class="na">status</span><span class="pi">:</span> <span class="s">draft</span>
+
+  <span class="na">nodes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">UC-AVIATION-001</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">UseCase</span>
+      <span class="s">$ref</span><span class="pi">:</span> <span class="s">../usecases/predictive-maintenance-aircraft.yaml</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">OBJ-AVIATION-001</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">BusinessObjective</span>
+      <span class="s">$ref</span><span class="pi">:</span> <span class="s">../objectives/increase-fleet-availability.yaml</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">DP-AVIATION-001</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">DataProduct</span>
+      <span class="s">$ref</span><span class="pi">:</span> <span class="s">../products/aircraft-maintenance-history.yaml</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">DP-AVIATION-002</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">DataProduct</span>
+      <span class="s">$ref</span><span class="pi">:</span> <span class="s">../products/aircraft-sensor-events.yaml</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">AGENT-AVIATION-001</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">Agent</span>
+      <span class="s">$ref</span><span class="pi">:</span> <span class="s">../agents/maintenance-recommendation-agent.yaml</span>
+
+  <span class="na">edges</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">from</span><span class="pi">:</span> <span class="s">UC-AVIATION-001</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">DP-AVIATION-001</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">uses</span>
+      <span class="na">confidence</span><span class="pi">:</span> <span class="s">high</span>
+    <span class="pi">-</span> <span class="na">from</span><span class="pi">:</span> <span class="s">UC-AVIATION-001</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">DP-AVIATION-002</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">uses</span>
+      <span class="na">confidence</span><span class="pi">:</span> <span class="s">high</span>
+    <span class="pi">-</span> <span class="na">from</span><span class="pi">:</span> <span class="s">UC-AVIATION-001</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">OBJ-AVIATION-001</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">supports</span>
+      <span class="na">confidence</span><span class="pi">:</span> <span class="s">high</span>
+    <span class="pi">-</span> <span class="na">from</span><span class="pi">:</span> <span class="s">AGENT-AVIATION-001</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">DP-AVIATION-001</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">uses</span>
+      <span class="na">confidence</span><span class="pi">:</span> <span class="s">high</span>
+</code></pre></div>
+<p><code>relationship-context</code> is the required graph context for the data product recipe. It
+references the ODPG relationship view that places the product in context with
+upstream products, downstream products, dependencies, shared signals, lineage,
+or other graph relationships.</p>
+
+<p>Use this section to make product context explicit for humans, developers, and AI
+agents. A data product recipe may still describe relationship work in
+<code>relationship-plan</code>, but the context graph itself MUST be available through
+<code>relationship-context</code>.</p>
+
+<p>Expected content:</p>
+
+<ul>
+<li>A valid ODPG graph or graph fragment.</li>
+<li>Relationship IDs or names that are relevant to this data product recipe.</li>
+<li>Source and target products for the relevant relationships.</li>
+<li>Relationship type, dependency direction, and any context decisions that affect
+implementation.</li>
+</ul>
+
+<p>Do not use this section for free-form relationship notes. Use an ODPG artifact
+or ODPG-compatible graph fragment so data product recipe context remains
+machine-readable.</p>
+
+<p>Path: <code>context/odpg.yaml</code></p>
+
+<p>Format: <code>yaml</code></p>
+
+<p>JSON Schema validates the manifest shape, the closed section ID enum, and the
+presence of mandatory core section IDs. A repository checker SHOULD validate
+the <code>recipe-readme</code> heading order because JSON Schema should not parse
+Markdown bodies.</p>
+<h2 id='optional-standardized-section-ids'>Optional standardized section IDs</h2>
+<table><thead>
+<tr>
+<th>Element name</th>
+<th>Type</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>product-interface-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>APIs, files, events, query endpoints, semantic layers, catalog entries, AI-agent context, or other interfaces.</td>
+</tr>
+<tr>
+<td><code>access-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Consumers, access methods, authentication, authorization, approval flow, and onboarding.</td>
+</tr>
+<tr>
+<td><code>contract-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Schema, consumer expectations, producer commitments, compatibility, versioning, and breaking-change handling.</td>
+</tr>
+<tr>
+<td><code>pricing-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Pricing model, chargeback/showback model, entitlement tiers, cost drivers, billing owner, and review requirements.</td>
+</tr>
+<tr>
+<td><code>quality-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Quality dimensions, validation rules, blocking checks, warning checks, freshness, completeness, and accuracy.</td>
+</tr>
+<tr>
+<td><code>sla-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Availability, refresh, response, incident response, support model, escalation, and measurement.</td>
+</tr>
+<tr>
+<td><code>lifecycle-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Product status, development stage, review stage, publication stage, operation stage, deprecation, versioning, and change process.</td>
+</tr>
+<tr>
+<td><code>relationship-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Upstream products, downstream products, shared objectives, shared signals, dependencies, conflicts, and portfolio gaps.</td>
+</tr>
+<tr>
+<td><code>validation-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Specification, contract, quality, access, SLA, relationship, documentation, and readiness validation.</td>
+</tr>
+<tr>
+<td><code>test-plan</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Schema, contract, quality, access, SLA, lifecycle, integration, consumer acceptance, and AI-agent context tests.</td>
+</tr>
+<tr>
+<td><code>operational-readiness</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Readiness score, readiness dimensions, missing ingredients, and launch blockers.</td>
+</tr>
+<tr>
+<td><code>risk-register</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Product, access, contract, quality, SLA, lifecycle, dependency, dashboard-confusion, and AI-agent-context risks.</td>
+</tr>
+<tr>
+<td><code>developer-review-checklist</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Human approval checklist before implementation, publication, automation, or agent-assisted code work.</td>
+</tr>
+<tr>
+<td><code>implementation-constraints</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Product-specific implementation boundaries that complement the AI-agent brief.</td>
+</tr>
+<tr>
+<td><code>backlog-items</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>Reviewable implementation backlog items without creating external tickets automatically.</td>
+</tr>
+<tr>
+<td><code>portfolio-context</code></td>
+<td>string</td>
+<td>standardized optional section id</td>
+<td>ODPC catalog or portfolio context included when the product belongs to a portfolio.</td>
+</tr>
+</tbody></table>
+
+<p>Optional section details:</p>
+<h3 id='product-interface-plan'>product-interface-plan</h3>
+<p><code>product-interface-plan</code> describes how consumers, platforms, tools, and agents
+will interact with the data product. Use it when the data product recipe needs to clarify
+interfaces beyond the product summary, such as APIs, files, events, query
+endpoints, semantic layers, catalog entries, or AI-agent context surfaces.</p>
+
+<p>Expected content includes the interface types, intended consumers, access
+pattern for each interface, input/output expectations, and any interface-level
+constraints that affect implementation.</p>
+<h3 id='access-plan'>access-plan</h3>
+<p><code>access-plan</code> describes how consumers get permission to use the product. Use it
+when access decisions, approval flow, identity model, entitlement, onboarding,
+or revocation must be understood before implementation.</p>
+
+<p>Expected content includes consumer groups, authentication and authorization
+expectations, approval owners, access request flow, onboarding notes, and any
+access decisions that are still unresolved.</p>
+<h3 id='contract-plan'>contract-plan</h3>
+<p><code>contract-plan</code> describes the consumer-facing product contract. Use it when the
+data product recipe must clarify schemas, compatibility expectations, versioning behavior,
+breaking-change handling, or commitments between producers and consumers.</p>
+
+<p>Expected content includes contract scope, schema or payload expectations,
+consumer obligations, producer obligations, compatibility policy, and the
+review path for contract changes.</p>
+<h3 id='pricing-plan'>pricing-plan</h3>
+<p><code>pricing-plan</code> describes the commercial, chargeback, or showback model for the
+data product. Use it when the product has pricing, internal cost allocation,
+entitlement tiers, cost drivers, or billing ownership that developers and
+reviewers must understand.</p>
+
+<p>Expected content includes pricing model, chargeback or showback approach,
+entitlement tiers, measurable cost drivers, billing owner, review requirements,
+and unresolved pricing decisions.</p>
+<h3 id='quality-plan'>quality-plan</h3>
+<p><code>quality-plan</code> describes the quality expectations that implementation must
+support. Use it when freshness, completeness, accuracy, validity, uniqueness,
+or other quality dimensions need explicit checks.</p>
+
+<p>Expected content includes quality dimensions, blocking validation rules,
+warning-level checks, expected thresholds, data owner responsibilities, and how
+quality failures should be surfaced.</p>
+<h3 id='sla-plan'>sla-plan</h3>
+<p><code>sla-plan</code> describes operational commitments for the product. Use it when the
+data product recipe needs to clarify availability, refresh timing, response expectations,
+incident handling, support model, escalation, or measurement.</p>
+
+<p>Expected content includes service targets, measurement method, support owner,
+incident response expectations, escalation path, reporting cadence, and any SLA
+assumptions that need approval.</p>
+<h3 id='lifecycle-plan'>lifecycle-plan</h3>
+<p><code>lifecycle-plan</code> describes how the product moves through status changes over
+time. Use it when development, testing, acceptance, production, sunset, retired
+state, versioning, deprecation, or change process needs explicit guidance.</p>
+
+<p>Expected content includes current lifecycle state, required transition gates,
+release or publication expectations, versioning approach, deprecation process,
+and owners for lifecycle decisions.</p>
+<h3 id='relationship-plan'>relationship-plan</h3>
+<p><code>relationship-plan</code> describes product relationships that affect delivery. Use
+it when upstream products, downstream consumers, shared objectives, shared
+signals, dependencies, conflicts, or portfolio gaps change implementation
+choices.</p>
+
+<p>Expected content includes relevant upstream and downstream products, dependency
+type, relationship impact, unresolved conflicts, and how the required
+<code>relationship-context</code> should be interpreted during delivery.</p>
+<h3 id='validation-plan'>validation-plan</h3>
+<p><code>validation-plan</code> describes how the data product recipe and resulting implementation should
+be checked before approval, publication, automation, or agent-assisted work.
+Use it when validation goes beyond the core data product recipe manifest checks.</p>
+
+<p>Expected content includes specification validation, contract validation,
+quality validation, access validation, SLA validation, relationship validation,
+documentation validation, readiness validation, and pass/fail expectations.</p>
+<h3 id='test-plan'>test-plan</h3>
+<p><code>test-plan</code> describes implementation-oriented tests derived from the data product recipe.
+Use it when developers need to convert the product intent into repeatable
+checks for code, pipelines, contracts, integrations, or consumer acceptance.</p>
+
+<p>Expected content includes test scope, test levels, required fixtures, expected
+assertions, acceptance tests, negative tests, and AI-agent context tests when
+agent-assisted implementation is expected.</p>
+<h3 id='operational-readiness'>operational-readiness</h3>
+<p><code>operational-readiness</code> describes whether the data product recipe is ready to move toward
+production use. Use it when the readiness score needs supporting detail beyond
+the numeric <code>readiness.score</code> field.</p>
+
+<p>Expected content includes readiness dimensions, readiness score rationale,
+missing inputs, launch blockers, required approvals, and the conditions needed
+to move from partial readiness to ready.</p>
+<h3 id='risk-register'>risk-register</h3>
+<p><code>risk-register</code> records risks that could affect implementation or operation.
+Use it when known product, access, contract, quality, SLA, lifecycle,
+dependency, dashboard-confusion, or AI-agent-context risks need explicit
+tracking.</p>
+
+<p>Expected content includes risk description, impact, likelihood, owner,
+mitigation, current status, and whether the risk blocks implementation.</p>
+<h3 id='developer-review-checklist'>developer-review-checklist</h3>
+<p><code>developer-review-checklist</code> gives human developers a compact approval checklist
+before implementation, publication, automation, or agent-assisted code work.
+Use it when the data product recipe should support a repeatable engineering review.</p>
+
+<p>Expected content includes checks for source product validity, mandatory data product recipe
+sections, unresolved questions, contract impact, access impact, validation
+expectations, implementation boundaries, and approval status.</p>
+<h3 id='implementation-constraints'>implementation-constraints</h3>
+<p><code>implementation-constraints</code> describes product-specific boundaries that affect
+implementation. Use it when the data product recipe needs constraints that are more
+specific than the general <code>ai-agent-brief</code>.</p>
+
+<p>Expected content includes allowed platforms, prohibited changes, data movement
+constraints, security or privacy boundaries, naming constraints, integration
+limits, and assumptions that must not be changed without review.</p>
+<h3 id='backlog-items'>backlog-items</h3>
+<p><code>backlog-items</code> lists reviewable work items without requiring ODPR to create
+external tickets. Use it when the data product recipe should expose likely implementation
+tasks while remaining independent of Jira, GitHub Issues, or another work
+tracking system.</p>
+
+<p>Expected content includes item title, short description, dependency, priority
+or sequencing hint, owner when known, and acceptance notes. External ticket IDs
+may be included as references but are not required.</p>
+<h3 id='portfolio-context'>portfolio-context</h3>
+<p><code>portfolio-context</code> includes ODPC catalog or portfolio context when the product
+belongs to a broader portfolio. Use it when portfolio placement, catalog entry,
+ownership model, duplication risk, or portfolio-level governance affects the
+data product recipe.</p>
+
+<p>Expected content includes the referenced ODPC catalog or portfolio artifact,
+portfolio identity, related products, ownership context, and any portfolio
+decision that affects implementation.</p>
+<h2 id='recommended-markdown-headings'>Recommended Markdown headings</h2>
+<p>Core Markdown sections SHOULD use lightweight heading templates. These headings
+reduce ambiguity for developers and AI agents without making every Markdown
+file a rigid schema object.</p>
+
+<p>For <code>delivery-plan</code>, <code>access-plan</code>, <code>contract-plan</code>, <code>quality-plan</code>,
+<code>validation-plan</code>, and <code>test-plan</code>:</p>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="gu">## Current Understanding</span>
+<span class="gu">## Decisions</span>
+<span class="gu">## Missing Inputs</span>
+<span class="gu">## Implementation Impact</span>
+<span class="gu">## Validation</span>
+</code></pre></div>
+<p>For <code>ai-agent-brief</code>:</p>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="gu">## Objective</span>
+<span class="gu">## Authoritative Inputs</span>
+<span class="gu">## Required Behavior</span>
+<span class="gu">## Prohibited Behavior</span>
+<span class="gu">## Approval Gates</span>
+<span class="gu">## Implementation Boundaries</span>
+</code></pre></div><h2 id='practice-alignment'>Practice alignment</h2>
+<p>The data product recipe model follows common CI/CD and agent practices without
+importing their execution models into ODPR. Stable section IDs act like artifact
+names. The data product recipe keeps <code>recipeRef</code> as the reference to the
+governing recipe and uses mandatory section entries for data product recipe
+files such as the README, ODPS product specification, and ODPG graph context.
+Execution terms such as job, run, and step stay out of <code>DataProductRecipe</code>
+because <code>Recipe.steps</code> already models workflow steps.</p>
+
+<p>The model is aligned with these non-normative practice references:</p>
+
+<table><thead>
+<tr>
+<th>Practice source</th>
+<th>Applied ODPR practice</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax">GitHub Actions workflow syntax</a></td>
+<td>Keep execution terms such as workflow, job, run, and step distinct from data product recipe manifest terms.</td>
+</tr>
+<tr>
+<td><a href="https://docs.github.com/en/actions/tutorials/store-and-share-data">GitHub workflow artifacts</a></td>
+<td>Treat generated outputs as named artifacts that can be archived, shared, downloaded, and validated.</td>
+</tr>
+<tr>
+<td><a href="https://slsa.dev/spec/v1.0/provenance">SLSA provenance v1.0</a></td>
+<td>Separate what was produced from how it was produced and which inputs were used.</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2601.20404">AGENTS.md efficiency study</a></td>
+<td>Provide agent-readable guidance as a dedicated data product recipe section.</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2602.11988">AGENTS.md evaluation study</a></td>
+<td>Keep agent instructions minimal and avoid broad, unnecessary requirements in the manifest.</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2606.15828">AGENTS.md configuration-smell study</a></td>
+<td>Avoid context bloat, conflicting instructions, and leaked tool-specific rules in the schema.</td>
+</tr>
+</tbody></table>
 <h1 id='odpr-provider'>ODPR Provider</h1>
 <p>The <code>Provider</code> object is the second ODPR root object. It defines a named
 runtime provider profile that recipes can reference with <code>providerRef</code>.</p>
@@ -2098,6 +3093,10 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.</p>
 <td>A portable, declarative workflow contract for repeatable data product work.</td>
 </tr>
 <tr>
+<td>Data Product Recipe</td>
+<td>A <code>Recipe</code> with <code>recipe.scope: data-product</code>, used for delivery planning, readiness, validation, implementation guidance, and review around one data product.</td>
+</tr>
+<tr>
 <td>Workflow</td>
 <td>A sequence of steps that creates, validates, reviews, localizes, publishes, or refreshes data product artifacts.</td>
 </tr>
@@ -2144,6 +3143,10 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.</p>
 <tr>
 <td><code>RecipeCatalog</code></td>
 <td>The ODPR root object that lists recipe metadata and paths to full recipe files.</td>
+</tr>
+<tr>
+<td><code>DataProductRecipe</code></td>
+<td>The ODPR root object that describes the result created for a Data Product Recipe.</td>
 </tr>
 <tr>
 <td><code>providerRef</code></td>

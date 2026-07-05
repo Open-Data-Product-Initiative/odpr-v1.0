@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">Data Product Recipe structure</title>
+  <desc id="desc">Illustration of a DataProductRecipe manifest with mandatory core sections and optional standardized sections.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F3F7F9"/>
+      <stop offset="1" stop-color="#fff5f7"/>
+    </linearGradient>
+    <linearGradient id="manifest" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f001f"/>
+      <stop offset="1" stop-color="#650016"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#35000c" flood-opacity="0.14"/>
+    </filter>
+    <style>
+      .label { font-family: Inter, Arial, sans-serif; fill: #230336; }
+      .small { font-size: 18px; }
+      .tiny { font-size: 15px; }
+      .title { font-size: 36px; font-weight: 700; }
+      .section-title { font-size: 22px; font-weight: 700; }
+      .card-title { font-size: 20px; font-weight: 700; }
+      .muted { fill: #6b4b55; }
+      .white { fill: #ffffff; }
+      .required-card { fill: #ffffff; stroke: #8f001f; stroke-width: 2; }
+      .optional-card { fill: #ffffff; stroke: #c97a7e; stroke-width: 1.5; }
+      .connector { fill: none; stroke: #c97a7e; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 7 9; }
+      .required-pill { fill: #f8e5ea; stroke: #650016; stroke-width: 1; }
+      .optional-pill { fill: #fff5f7; stroke: #c97a7e; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="820" rx="26" fill="url(#bg)"/>
+  <rect x="42" y="42" width="1116" height="736" rx="24" fill="#ffffff" stroke="#ead2d8"/>
+
+  <text x="88" y="98" class="label title">Data Product Recipe</text>
+  <text x="88" y="128" class="label small muted">A manifest indexes required core files, graph context, and optional standardized sections.</text>
+
+  <rect x="426" y="172" width="348" height="214" rx="22" fill="url(#manifest)" filter="url(#shadow)"/>
+  <text x="600" y="220" text-anchor="middle" class="label section-title white">DataProductRecipe</text>
+  <text x="600" y="252" text-anchor="middle" class="label small white">manifest index</text>
+  <line x1="478" y1="274" x2="722" y2="274" stroke="#ffffff" stroke-opacity="0.45"/>
+  <text x="492" y="309" class="label tiny white">metadata incl. description</text>
+  <text x="492" y="338" class="label tiny white">version, recipeRef, status</text>
+  <text x="492" y="367" class="label tiny white">sections, readiness, review</text>
+
+  <path class="connector" d="M426 276 C337 250 292 222 230 184"/>
+  <path class="connector" d="M426 300 C338 302 292 306 230 306"/>
+  <path class="connector" d="M426 330 C336 374 290 418 230 498"/>
+  <path class="connector" d="M774 276 C858 246 906 220 970 184"/>
+  <path class="connector" d="M774 314 C860 316 912 320 970 336"/>
+  <path class="connector" d="M774 352 C856 402 908 454 970 536"/>
+
+  <rect x="78" y="162" width="304" height="540" rx="20" fill="#fff8fa" stroke="#e3b8c2"/>
+  <text x="108" y="204" class="label section-title">Mandatory core</text>
+  <text x="108" y="232" class="label tiny muted">Schema-enforced section IDs</text>
+
+  <g>
+    <rect x="108" y="262" width="244" height="44" rx="10" class="required-card"/>
+    <text x="130" y="290" class="label tiny">recipe-readme</text>
+    <rect x="287" y="272" width="45" height="22" rx="11" class="required-pill"/>
+    <text x="309.5" y="288" text-anchor="middle" class="label tiny">md</text>
+
+    <rect x="108" y="318" width="244" height="44" rx="10" class="required-card"/>
+    <text x="130" y="346" class="label tiny">source-product-spec</text>
+    <rect x="287" y="328" width="45" height="22" rx="11" class="required-pill"/>
+    <text x="309.5" y="344" text-anchor="middle" class="label tiny">yaml</text>
+
+    <rect x="108" y="374" width="244" height="44" rx="10" class="required-card"/>
+    <text x="130" y="402" class="label tiny">product-summary</text>
+    <rect x="287" y="384" width="45" height="22" rx="11" class="required-pill"/>
+    <text x="309.5" y="400" text-anchor="middle" class="label tiny">md</text>
+
+    <rect x="108" y="430" width="244" height="44" rx="10" class="required-card"/>
+    <text x="130" y="458" class="label tiny">delivery-plan</text>
+    <rect x="287" y="440" width="45" height="22" rx="11" class="required-pill"/>
+    <text x="309.5" y="456" text-anchor="middle" class="label tiny">md</text>
+
+    <rect x="108" y="486" width="244" height="44" rx="10" class="required-card"/>
+    <text x="130" y="514" class="label tiny">open-questions</text>
+    <rect x="287" y="496" width="45" height="22" rx="11" class="required-pill"/>
+    <text x="309.5" y="512" text-anchor="middle" class="label tiny">md</text>
+
+    <rect x="108" y="542" width="244" height="44" rx="10" class="required-card"/>
+    <text x="130" y="570" class="label tiny">ai-agent-brief</text>
+    <rect x="287" y="552" width="45" height="22" rx="11" class="required-pill"/>
+    <text x="309.5" y="568" text-anchor="middle" class="label tiny">md</text>
+
+    <rect x="108" y="598" width="244" height="44" rx="10" class="required-card"/>
+    <text x="130" y="626" class="label tiny">relationship-context</text>
+    <rect x="287" y="608" width="45" height="22" rx="11" class="required-pill"/>
+    <text x="309.5" y="624" text-anchor="middle" class="label tiny">yaml</text>
+  </g>
+
+  <rect x="818" y="162" width="304" height="540" rx="20" fill="#fff8fa" stroke="#ead2d8"/>
+  <text x="848" y="204" class="label section-title">Optional sections</text>
+  <text x="848" y="232" class="label tiny muted">Allowed standardized IDs</text>
+
+  <g>
+    <rect x="848" y="262" width="244" height="36" rx="10" class="optional-card"/>
+    <text x="870" y="286" class="label tiny">Interface, access, contract</text>
+
+    <rect x="848" y="310" width="244" height="36" rx="10" class="optional-card"/>
+    <text x="870" y="334" class="label tiny">Pricing, quality, SLA</text>
+
+    <rect x="848" y="358" width="244" height="36" rx="10" class="optional-card"/>
+    <text x="870" y="382" class="label tiny">Lifecycle, relationships</text>
+
+    <rect x="848" y="406" width="244" height="36" rx="10" class="optional-card"/>
+    <text x="870" y="430" class="label tiny">Validation and test plans</text>
+
+    <rect x="848" y="454" width="244" height="36" rx="10" class="optional-card"/>
+    <text x="870" y="478" class="label tiny">Readiness and risks</text>
+
+    <rect x="848" y="502" width="244" height="36" rx="10" class="optional-card"/>
+    <text x="870" y="526" class="label tiny">Developer guidance</text>
+  </g>
+
+  <rect x="408" y="430" width="384" height="136" rx="18" fill="#ffffff" stroke="#e3b8c2" filter="url(#shadow)"/>
+  <text x="436" y="470" class="label card-title">Referenced recipe files</text>
+  <text x="436" y="502" class="label tiny muted">Section entries carry paths and formats.</text>
+  <text x="436" y="530" class="label tiny muted">README, ODPS, and ODPG files are</text>
+  <text x="436" y="554" class="label tiny muted">mandatory section references.</text>
+
+  <rect x="88" y="724" width="1024" height="34" rx="17" fill="#fff0f3" stroke="#e3b8c2"/>
+  <text x="600" y="747" text-anchor="middle" class="label tiny">Required core keeps every recipe reviewable. Optional sections add detail only when needed.</text>
+</svg>
