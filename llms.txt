@@ -103,8 +103,8 @@ Core ODPR concepts:
   runtime defaults for a named `providerRef`.
 - RecipeCatalog: root metadata-only discovery document that lists available
   recipes and points to complete Recipe files.
-- DataProductRecipe: root Data Product Recipe document created from a reusable
-  `Recipe` with `recipe.scope: data-product`.
+- DataProductRecipe: root Data Product Recipe handoff document for developers
+  and AI agents planning and implementing one data product.
 - Step: one operation in a recipe, such as generate, validate, portfolio.build,
   portfolio.localize, portfolio.explain, or odpg.build.
 - Execution: runtime policy for local, hosted, hybrid, or model-free execution.
@@ -128,8 +128,8 @@ Recommended agent workflow:
    Provider objects by `provider.id` to resolve model and provider defaults.
 8. Inspect declared outputs, gates, review policy, environment, and runPolicy
    before running recipe steps.
-9. Use `recipe.scope: data-product` on reusable Recipe documents and expect a
-   DataProductRecipe document for Markdown-heavy data product delivery work.
+9. Use DataProductRecipe documents for Markdown-heavy data product handoff work.
+   Optional recipe references are provenance, not implementation dependencies.
 10. Keep recipes declarative. Do not turn ODPR into a shell scripting language or
    Provider objects into raw secret stores.
 

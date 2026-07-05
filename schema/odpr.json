@@ -1559,7 +1559,6 @@
       "required": [
         "metadata",
         "version",
-        "recipeRef",
         "status",
         "sections",
         "readiness",
