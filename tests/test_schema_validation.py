@@ -131,7 +131,6 @@ def minimal_data_product_recipe():
                 "description": {"en": "Reviewable recipe for delivering the Customer Analytics data product."},
             },
             "version": "1.0.0",
-            "recipeRef": "recipe.yaml",
             "status": "draft",
             "sections": [
                 {"id": "recipe-readme", "path": "README.md", "format": "markdown"},
@@ -165,6 +164,13 @@ def test_data_product_recipe_requires_artifact_version(validator):
     del document["dataProductRecipe"]["version"]
 
     assert_invalid(validator, document)
+
+
+def test_data_product_recipe_accepts_optional_recipe_ref(validator):
+    document = minimal_data_product_recipe()
+    document["dataProductRecipe"]["recipeRef"] = "provenance/data-product-delivery-recipe.yaml"
+
+    assert_valid(validator, document)
 
 
 def test_data_product_recipe_requires_metadata_description(validator):

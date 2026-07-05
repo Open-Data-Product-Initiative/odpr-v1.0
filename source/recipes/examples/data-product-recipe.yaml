@@ -9,7 +9,6 @@ dataProductRecipe:
     description:
       en: Reviewable recipe for delivering the Customer Analytics data product.
   version: "1.0.0"
-  recipeRef: recipe.yaml
   status: draft
   sections:
     - id: recipe-readme

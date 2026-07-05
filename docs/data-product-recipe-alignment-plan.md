@@ -5,8 +5,9 @@ result object is named **Data Product Recipe**.
 
 ## Naming decision
 
-Use `DataProductRecipe` as the ODPR root kind for the reviewable result created
-from a reusable `Recipe` with `recipe.scope: data-product`.
+Use `DataProductRecipe` as the ODPR root kind for the reviewable handoff
+artifact used by developers and AI agents when planning and implementing one
+data product.
 
 Do not use a separate `ProductRecipe` kind. Do not use Data Product Recipe
 Package as the concept name in specification materials.
@@ -27,7 +28,6 @@ dataProductRecipe:
     description:
       en: Reviewable recipe for delivering the Customer Analytics data product.
   version: "1.0.0"
-  recipeRef: recipe.yaml
   status: draft
   sections:
     - id: recipe-readme
@@ -70,7 +70,7 @@ The mandatory core section IDs are:
 | `product-summary` | markdown | Plain-language product summary and boundary. |
 | `delivery-plan` | markdown | Developer-controlled implementation path. |
 | `open-questions` | markdown | Missing decisions and blockers. |
-| `ai-agent-brief` | markdown | Agent objective, constraints, and approval gates. |
+| `ai-agent-brief` | markdown | Agent handoff contract derived from AGENTS.md practices: objective, input priority, allowed work, prohibited work, ambiguity handling, expected outputs, validation evidence, gates, boundaries, and repository instruction handling. |
 | `relationship-context` | yaml | ODPG graph context for the product. |
 
 ## Surfaces to keep aligned
@@ -87,6 +87,9 @@ The mandatory core section IDs are:
 
 ## Practice alignment
 
-The Data Product Recipe keeps execution terms out of the result object. `Recipe`
-continues to own workflow steps. `DataProductRecipe` indexes reviewable files,
-readiness, and review state for one data product delivery effort.
+The Data Product Recipe keeps execution terms out of the handoff object.
+`Recipe` continues to own reusable workflow steps elsewhere in ODPR.
+`DataProductRecipe` indexes reviewable files, readiness, and review state for
+one data product delivery effort. Optional `recipeRef` may record provenance or
+generation context, but it is not required for developers or AI agents to
+implement the product.

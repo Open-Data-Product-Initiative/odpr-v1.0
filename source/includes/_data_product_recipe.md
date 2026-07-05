@@ -12,7 +12,6 @@ dataProductRecipe:
     description:
       en: Reviewable recipe for delivering the Customer Analytics data product.
   version: "1.0.0"
-  recipeRef: recipe.yaml
   status: draft
   sections:
     - id: recipe-readme
@@ -57,13 +56,68 @@ detail only when the product needs them.
 
 
 
-`DataProductRecipe` is the ODPR root object for the reviewable data product recipe
-created by a `Recipe` with `recipe.scope: data-product`.
+`DataProductRecipe` is the ODPR root object for the reviewable handoff artifact
+used by developers and AI agents when planning and implementing one data
+product.
 
-The data product recipe manifest describes what was produced. It does not
-replace the `Recipe` contract and it does not define the ODPS product itself.
-The source product specification remains an ODPS file referenced by the data
-product recipe.
+The data product recipe manifest describes the handoff artifact. It does not
+define implementation workflow execution, and it does not define the ODPS
+product itself. Developers and AI agents may use their own repositories,
+platforms, CI/CD systems, SDKs, and agent tools to implement the product. The
+source product specification remains an ODPS file referenced by the data product
+recipe.
+
+## Typical folder structure
+
+> Folder structure example:
+
+```text
+customer-analytics-data-product-recipe/
+├── data-product-recipe.yaml
+├── README.md
+├── product-context/
+│   └── odps.yaml
+├── context/
+│   └── odpg.yaml
+├── plans/
+│   ├── product-summary.md
+│   └── delivery-plan.md
+├── governance/
+│   └── open-questions.md
+└── agent/
+    └── ai-agent-brief.md
+```
+
+A typical data product recipe is a small manifest-led folder. The root contains
+the `data-product-recipe.yaml` manifest and the `README.md` entrypoint. The
+remaining files are grouped by purpose so that humans, SDKs, CI checks, and AI
+agents can find the same mandatory sections predictably.
+
+The core folder structure usually separates source context, relationship
+context, planning notes, governance questions, and agent guidance:
+
+| Folder or file | Typical content |
+|---|---|
+| `data-product-recipe.yaml` | Root `DataProductRecipe` manifest. |
+| `README.md` | `recipe-readme` section and first reader entrypoint. |
+| `product-context/` | Source ODPS product specification. |
+| `context/` | ODPG graph or relationship context. |
+| `plans/` | Product summary, delivery plan, and optional planning sections. |
+| `governance/` | Open questions, risks, and review checklists. |
+| `agent/` | AI agent brief and agent-facing handoff guidance. |
+
+Optional sections extend the same folder structure when needed. For example,
+`plans/` may include `pricing-plan.md`, `quality-plan.md`, `sla-plan.md`,
+`access-plan.md`, `contract-plan.md`, `validation-plan.md`, or `test-plan.md`.
+`governance/` may include `risk-register.md` or
+`developer-review-checklist.md`. Implementation-oriented optional sections may
+use an `implementation/` folder, and portfolio context may use a `portfolio/`
+folder.
+
+The schema validates the section IDs, paths, and formats declared in
+`dataProductRecipe.sections`. It does not require every data product recipe to
+use identical directory names. The folder structure is a recommended convention
+that keeps packages easy to review without making ODPR a filesystem standard.
 
 ## Root structure
 
@@ -79,7 +133,6 @@ dataProductRecipe:
     name: <localized data product recipe name>
     description: <localized data product recipe description>
   version: <data product recipe artifact version>
-  recipeRef: <recipe path>
   status: draft
   sections: []
   readiness: {}
@@ -94,10 +147,11 @@ The manifest is intentionally an index, not the full delivery plan. It points to
 the files that developers, reviewers, SDKs, CI checks, and AI agents should
 inspect:
 
-- `recipeRef` points to the reusable ODPR recipe that governs this data product
-  recipe.
 - `version` identifies the data product recipe artifact version, separate from
   the ODPR specification version.
+- `recipeRef`, when present, identifies provenance or generation context for
+  the data product recipe. It is not an instruction for developers or AI agents
+  to execute an ODPR workflow recipe.
 - `sections` lists the stable section IDs, paths, and formats. The source ODPS
   product specification and recipe README are referenced through mandatory
   section entries instead of duplicate top-level fields.
@@ -121,13 +175,18 @@ as `pricing-plan`, `sla-plan`, and `relationship-plan`.
 | `metadata.name` | object | localized text object | Human-readable data product recipe name. |
 | `metadata.description` | object | localized text object | Short data product recipe description for human readers. |
 | `version` | string | semantic version | Version of this data product recipe artifact. This is separate from the top-level ODPR specification version. |
-| `recipeRef` | relative path | - | Path to the reusable ODPR recipe that produced or governs this data product recipe. |
 | `status` | string | `announcement`, `draft`, `development`, `testing`, `acceptance`, `production`, `sunset`, `retired` | Data product recipe lifecycle status aligned with ODPS status values. |
 | `sections` | array | mandatory section IDs | Data product recipe section index with stable section IDs, paths, and formats. |
 | `readiness.score` | number | `0`-`100` | Readiness confidence; `0` means no readiness confidence. |
 | `readiness.status` | string | `missing`, `partial`, `ready` | Readiness status. |
 | `review.required` | boolean | `true`, `false` | Whether human review is required before implementation, publication, automation, or agent-assisted code work. |
 | `review.status` | string | `pending`, `approved`, `changes-requested` | Review status. |
+
+## Optional data product recipe fields
+
+| Element name | Type | Options | Description |
+|---|---|---|---|
+| `recipeRef` | relative path | - | Optional provenance or generation-context reference for the ODPR recipe that created or informed the data product recipe. This is not an implementation dependency for developers or AI agents. |
 
 ## Mandatory core section IDs
 
@@ -432,47 +491,103 @@ Prepare implementation guidance for one data product recipe.
 - plans/product-summary.md
 - plans/delivery-plan.md
 - governance/open-questions.md
+- repository AGENTS.md or equivalent, when implementation code changes are requested
 
-## Required Behavior
+## Input Priority
+
+1. data-product-recipe.yaml
+2. product-context/odps.yaml
+3. context/odpg.yaml
+4. plans/*.md
+5. governance/open-questions.md
+6. repository agent instructions for code editing conventions only
+
+## Allowed Work
 
 - Read the data product recipe manifest first.
+- Summarize implementation impact.
+- Draft implementation guidance from referenced files.
+- Inspect repository agent instructions before editing code.
 - Preserve unrelated files.
-- Ask for review before implementation changes.
 
-## Prohibited Behavior
+## Prohibited Work
 
 - Do not invent missing product facts.
 - Do not create tickets or deploy automatically.
+- Do not change source product or graph context unless asked.
+- Do not copy tool-specific agent rules into the data product recipe.
+
+## Ambiguity Handling
+
+- Treat delivery-blocking questions as blockers.
+- Record unresolved assumptions instead of silently resolving them.
+- Prefer a short question over guessing when product facts conflict.
+
+## Expected Outputs
+
+- Implementation guidance.
+- Validation notes.
+- Open decisions that still require a human owner.
+- Summary of files changed when implementation work is performed.
+
+## Validation Expectations
+
+- Check the Data Product Recipe manifest.
+- Check referenced ODPS and ODPG files before implementation.
+- Report validation commands, checks, or review evidence.
 
 ## Approval Gates
 
-- Human review is required.
+- Ask for review before implementation changes.
 
 ## Implementation Boundaries
 
 - Work only from the referenced data product recipe files.
+- Follow repository agent instructions when editing code.
 ```
 
-`ai-agent-brief` gives agents the data product recipe objective, authoritative
-inputs, required behavior, prohibited behavior, approval gates, and
-implementation boundaries. It keeps agent guidance in a file instead of adding
+`ai-agent-brief` is the handoff contract for AI-assisted work on the data
+product recipe. It gives agents the objective, authoritative inputs, input
+priority, allowed work, prohibited work, ambiguity handling, expected outputs,
+validation expectations, approval gates, and implementation boundaries. It
+derives common AGENTS.md practices into a product-specific brief: keep
+instructions task-local, make input priority explicit, preserve unrelated files,
+separate product facts from repository editing conventions, and require visible
+validation evidence. It keeps agent guidance in a file instead of adding
 agent-control fields to the manifest.
 
+These practices are aligned with AGENTS.md research and industry guidance:
+use a dedicated agent-readable guidance artifact for efficiency
+([AGENTS.md efficiency study](https://arxiv.org/abs/2601.20404)), keep
+instructions minimal and task-relevant to avoid reducing task success
+([AGENTS.md evaluation study](https://arxiv.org/abs/2602.11988)), and avoid
+context bloat, conflicting instructions, and leaked tool-specific rules
+([AGENTS.md configuration-smell study](https://arxiv.org/abs/2606.15828)).
+
 Use this section to make the data product recipe safe for AI-assisted work. It
-should tell an agent what to read, what it may do, what it must not do, and when
+should tell an agent what to read first, what it may produce, what it must not
+do, how to handle missing information, which outputs are expected, and when
 human approval is required.
 
 Expected content:
 
 - Objective for the agent in the context of this data product recipe.
 - Authoritative input files and their priority.
-- Required behavior and prohibited behavior.
+- Allowed work and prohibited work.
+- Ambiguity handling for blocking questions, assumptions, and missing inputs.
+- Expected outputs from the agent.
+- Validation expectations before implementation or publication.
 - Approval gates and implementation boundaries.
+- Repository agent instruction handling when implementation code changes are
+  requested.
 
 Do not put model-provider settings, credentials, hidden prompts, or broad
-repository-wide agent rules here. Provider configuration belongs to ODPR
-Provider objects or runtime configuration, and repository guidance belongs in
-the repository's agent instruction files.
+repository-wide agent rules here. Do not use this section to bypass unresolved
+questions or human approval gates. Do not paste an implementation repository's
+entire AGENTS.md into the data product recipe; reference repository instructions
+only when implementation work will happen in that repository. Provider
+configuration belongs to ODPR Provider objects or runtime configuration, and
+repository guidance belongs in the repository's agent instruction files.
 
 Path: `agent/ai-agent-brief.md`
 
@@ -752,43 +867,25 @@ Expected content includes the referenced ODPC catalog or portfolio artifact,
 portfolio identity, related products, ownership context, and any portfolio
 decision that affects implementation.
 
-## Recommended Markdown headings
-
-Core Markdown sections SHOULD use lightweight heading templates. These headings
-reduce ambiguity for developers and AI agents without making every Markdown
-file a rigid schema object.
-
-For `delivery-plan`, `access-plan`, `contract-plan`, `quality-plan`,
-`validation-plan`, and `test-plan`:
-
-```markdown
-## Current Understanding
-## Decisions
-## Missing Inputs
-## Implementation Impact
-## Validation
-```
-
-For `ai-agent-brief`:
-
-```markdown
-## Objective
-## Authoritative Inputs
-## Required Behavior
-## Prohibited Behavior
-## Approval Gates
-## Implementation Boundaries
-```
-
 ## Practice alignment
 
 The data product recipe model follows common CI/CD and agent practices without
 importing their execution models into ODPR. Stable section IDs act like artifact
-names. The data product recipe keeps `recipeRef` as the reference to the
-governing recipe and uses mandatory section entries for data product recipe
-files such as the README, ODPS product specification, and ODPG graph context.
-Execution terms such as job, run, and step stay out of `DataProductRecipe`
-because `Recipe.steps` already models workflow steps.
+names. The data product recipe uses mandatory section entries for handoff files
+such as the README, ODPS product specification, ODPG graph context, delivery
+plan, open questions, and AI agent brief. Optional `recipeRef` may record
+provenance or generation context, but it is not required for developers or AI
+agents to execute an ODPR workflow recipe. Execution terms such as job, run, and
+step stay out of `DataProductRecipe` because `Recipe.steps` already models
+workflow steps elsewhere in ODPR.
+
+The `ai-agent-brief` derives the portable parts of AGENTS.md practice without
+turning ODPR into an agent configuration format. It should define the objective,
+source-of-truth files, input priority, allowed work, prohibited work, ambiguity
+handling, expected outputs, validation expectations, approval gates, and
+implementation boundaries for this data product recipe. Repository-level
+AGENTS.md or equivalent files remain the right place for coding conventions,
+build commands, local test commands, and repository-specific tool rules.
 
 The model is aligned with these non-normative practice references:
 
@@ -797,6 +894,7 @@ The model is aligned with these non-normative practice references:
 | [GitHub Actions workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax) | Keep execution terms such as workflow, job, run, and step distinct from data product recipe manifest terms. |
 | [GitHub workflow artifacts](https://docs.github.com/en/actions/tutorials/store-and-share-data) | Treat generated outputs as named artifacts that can be archived, shared, downloaded, and validated. |
 | [SLSA provenance v1.0](https://slsa.dev/spec/v1.0/provenance) | Separate what was produced from how it was produced and which inputs were used. |
+| [Agentic AI Foundation and AGENTS.md](https://www.wired.com/story/openai-anthropic-and-block-are-teaming-up-on-ai-agent-standards) | Treat agent instructions as an interoperable guidance artifact, but keep ODPR's data product recipe brief product-specific and implementation-neutral. |
 | [AGENTS.md efficiency study](https://arxiv.org/abs/2601.20404) | Provide agent-readable guidance as a dedicated data product recipe section. |
 | [AGENTS.md evaluation study](https://arxiv.org/abs/2602.11988) | Keep agent instructions minimal and avoid broad, unnecessary requirements in the manifest. |
 | [AGENTS.md configuration-smell study](https://arxiv.org/abs/2606.15828) | Avoid context bloat, conflicting instructions, and leaked tool-specific rules in the schema. |

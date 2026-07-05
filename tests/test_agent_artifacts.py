@@ -74,7 +74,6 @@ def assert_data_product_recipe_document(document):
     assert document["kind"] == "DataProductRecipe"
     data_product_recipe = document["dataProductRecipe"]
     assert data_product_recipe["version"] == "1.0.0"
-    assert data_product_recipe["recipeRef"] == "recipe.yaml"
     section_ids = {section["id"] for section in data_product_recipe["sections"]}
     assert section_ids == {
         "recipe-readme",
@@ -262,7 +261,8 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertNotIn("metadata requires stable id, name, and description", llms_words)
         self.assertNotIn("define data products, catalogs, graphs", llms_words)
         self.assertIn("define data products, ODPC catalog object models, graphs", llms_words)
-        self.assertIn("recipe.scope: data-product", llms_words)
+        self.assertIn("Data Product Recipe handoff document", llms_words)
+        self.assertIn("Optional recipe references are provenance, not implementation dependencies", llms_words)
         self.assertIn("DataProductRecipe", llms_words)
         self.assertIn("Do not use `ProductRecipe`", llms_words)
 

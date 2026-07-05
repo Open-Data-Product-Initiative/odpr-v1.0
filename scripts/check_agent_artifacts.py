@@ -117,7 +117,6 @@ def assert_data_product_recipe_document(document):
     assert document["version"] == "1.0"
     assert document["kind"] == "DataProductRecipe"
     data_product_recipe = document["dataProductRecipe"]
-    assert data_product_recipe["recipeRef"] == "recipe.yaml"
     section_ids = {section["id"] for section in data_product_recipe["sections"]}
     assert "source-product-spec" in section_ids
     assert "ai-agent-brief" in section_ids
