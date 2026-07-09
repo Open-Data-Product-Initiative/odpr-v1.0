@@ -8,10 +8,10 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://opendataproducts.org/odpr-v1.0/images/favicon.png" />
     <meta property="og:description" 
-    content="Data Product Recipe Specification (ODPR) version 1.0 defines workflow recipes, provider profiles, recipe catalogs, and Data Product Recipe handoff manifests." />
+    content="Data Product Recipe Specification (ODPR) version 1.0 defines delivery flows, product handoff flows, and trigger-based flows." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Data Product Recipe Specification - Version 1.0" />
-    <meta name="twitter:description" content="Data Product Recipe Specification (ODPR) version 1.0 defines workflow recipes, provider profiles, recipe catalogs, and Data Product Recipe handoff manifests." />
+    <meta name="twitter:description" content="Data Product Recipe Specification (ODPR) version 1.0 defines delivery flows, product handoff flows, and trigger-based flows." />
     <meta name="twitter:image" content="https://opendataproducts.org/odpr-v1.0/images/favicon.png" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-b839d23a.png">
@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta
             name="description"
-            content="Open Data Product Recipe Specification (ODPR) version 1.0 defines workflow recipes, provider profiles, recipe catalogs, and Data Product Recipe handoff manifests."
+            content="Open Data Product Recipe Specification (ODPR) version 1.0 defines delivery flows, product handoff flows, and trigger-based flows, with recipes, provider profiles, and recipe catalogs as supporting building blocks."
         >
         <meta
             name="spec-version"
@@ -361,24 +361,105 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#specification-aims" class="toc-h2 toc-link" data-title="Specification aims">Specification aims</a>
-                  </li>
-                  <li>
-                    <a href="#why-odpr-is-needed" class="toc-h2 toc-link" data-title="Why ODPR is needed">Why ODPR is needed</a>
-                  </li>
-                  <li>
-                    <a href="#core-design-principle" class="toc-h2 toc-link" data-title="Core design principle">Core design principle</a>
-                  </li>
-                  <li>
-                    <a href="#root-object-model" class="toc-h2 toc-link" data-title="Root object model">Root object model</a>
-                  </li>
-                  <li>
-                    <a href="#relationship-to-the-standards-family" class="toc-h2 toc-link" data-title="Relationship to the standards family">Relationship to the standards family</a>
-                  </li>
-                  <li>
-                    <a href="#example-recipe" class="toc-h2 toc-link" data-title="Example recipe">Example recipe</a>
+                    <a href="#what-odpr-defines" class="toc-h2 toc-link" data-title="What ODPR defines">What ODPR defines</a>
                   </li>
               </ul>
+          </li>
+          <li>
+            <a href="#delivery-flows" class="toc-h1 toc-link" data-title="Delivery Flows">Delivery Flows</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#delivery-flow-boundaries" class="toc-h2 toc-link" data-title="Delivery flow boundaries">Delivery flow boundaries</a>
+                  </li>
+                  <li>
+                    <a href="#delivery-flow-fields" class="toc-h2 toc-link" data-title="Delivery flow fields">Delivery flow fields</a>
+                  </li>
+                  <li>
+                    <a href="#delivery-flow-model" class="toc-h2 toc-link" data-title="Delivery flow model">Delivery flow model</a>
+                  </li>
+                  <li>
+                    <a href="#delivery-flow-examples" class="toc-h2 toc-link" data-title="Delivery flow examples">Delivery flow examples</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#product-handoff-flows" class="toc-h1 toc-link" data-title="Product Handoff Flows">Product Handoff Flows</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#root-structure" class="toc-h2 toc-link" data-title="Root structure">Root structure</a>
+                  </li>
+                  <li>
+                    <a href="#package-structure" class="toc-h2 toc-link" data-title="Package structure">Package structure</a>
+                  </li>
+                  <li>
+                    <a href="#required-handoff-contents" class="toc-h2 toc-link" data-title="Required handoff contents">Required handoff contents</a>
+                  </li>
+                  <li>
+                    <a href="#practice-alignment" class="toc-h2 toc-link" data-title="Practice alignment">Practice alignment</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#trigger-based-flows" class="toc-h1 toc-link" data-title="Trigger-Based Flows">Trigger-Based Flows</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#trigger-flow-boundaries" class="toc-h2 toc-link" data-title="Trigger flow boundaries">Trigger flow boundaries</a>
+                  </li>
+                  <li>
+                    <a href="#trigger-flow-fields" class="toc-h2 toc-link" data-title="Trigger flow fields">Trigger flow fields</a>
+                  </li>
+                  <li>
+                    <a href="#trigger-flow-model" class="toc-h2 toc-link" data-title="Trigger flow model">Trigger flow model</a>
+                  </li>
+                  <li>
+                    <a href="#trigger-events" class="toc-h2 toc-link" data-title="Trigger events">Trigger events</a>
+                  </li>
+                  <li>
+                    <a href="#trigger-patterns" class="toc-h2 toc-link" data-title="Trigger patterns">Trigger patterns</a>
+                  </li>
+                  <li>
+                    <a href="#trigger-flow-examples" class="toc-h2 toc-link" data-title="Trigger flow examples">Trigger flow examples</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#recipe" class="toc-h1 toc-link" data-title="Recipe">Recipe</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#recipe-design-principle" class="toc-h2 toc-link" data-title="Recipe design principle">Recipe design principle</a>
+                  </li>
+                  <li>
+                    <a href="#recipe-structure" class="toc-h2 toc-link" data-title="Recipe structure">Recipe structure</a>
+                  </li>
+                  <li>
+                    <a href="#runtime-behavior" class="toc-h2 toc-link" data-title="Runtime behavior">Runtime behavior</a>
+                  </li>
+                  <li>
+                    <a href="#recipe-example" class="toc-h2 toc-link" data-title="Recipe example">Recipe example</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#provider" class="toc-h1 toc-link" data-title="Provider">Provider</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#provider-structure" class="toc-h2 toc-link" data-title="Provider structure">Provider structure</a>
+                  </li>
+                  <li>
+                    <a href="#provider-examples" class="toc-h2 toc-link" data-title="Provider examples">Provider examples</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#recipecatalog" class="toc-h1 toc-link" data-title="RecipeCatalog">RecipeCatalog</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#catalog-structure" class="toc-h2 toc-link" data-title="Catalog structure">Catalog structure</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#recipe-library" class="toc-h1 toc-link" data-title="Recipe Library">Recipe Library</a>
           </li>
           <li>
             <a href="#recipe-toolkit" class="toc-h1 toc-link" data-title="Recipe Toolkit">Recipe Toolkit</a>
@@ -397,116 +478,6 @@
                   </li>
                   <li>
                     <a href="#example-prompts-odpr-enables" class="toc-h2 toc-link" data-title="Example prompts ODPR enables">Example prompts ODPR enables</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#recipe-library" class="toc-h1 toc-link" data-title="Recipe Library">Recipe Library</a>
-          </li>
-          <li>
-            <a href="#odpr-recipecatalog" class="toc-h1 toc-link" data-title="ODPR RecipeCatalog">ODPR RecipeCatalog</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#root-structure" class="toc-h2 toc-link" data-title="Root structure">Root structure</a>
-                  </li>
-                  <li>
-                    <a href="#recipecatalog-fields" class="toc-h2 toc-link" data-title="RecipeCatalog fields">RecipeCatalog fields</a>
-                  </li>
-                  <li>
-                    <a href="#catalog-group-fields" class="toc-h2 toc-link" data-title="Catalog group fields">Catalog group fields</a>
-                  </li>
-                  <li>
-                    <a href="#catalog-entry-fields" class="toc-h2 toc-link" data-title="Catalog entry fields">Catalog entry fields</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#odpr-recipe" class="toc-h1 toc-link" data-title="ODPR Recipe">ODPR Recipe</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#root-structure" class="toc-h2 toc-link" data-title="Root structure">Root structure</a>
-                  </li>
-                  <li>
-                    <a href="#recipe-fields" class="toc-h2 toc-link" data-title="Recipe fields">Recipe fields</a>
-                  </li>
-                  <li>
-                    <a href="#recipe-types" class="toc-h2 toc-link" data-title="Recipe types">Recipe types</a>
-                  </li>
-                  <li>
-                    <a href="#recipe-scopes" class="toc-h2 toc-link" data-title="Recipe scopes">Recipe scopes</a>
-                  </li>
-                  <li>
-                    <a href="#execution-modes" class="toc-h2 toc-link" data-title="Execution modes">Execution modes</a>
-                  </li>
-                  <li>
-                    <a href="#context-formats" class="toc-h2 toc-link" data-title="Context formats">Context formats</a>
-                  </li>
-                  <li>
-                    <a href="#provider-references" class="toc-h2 toc-link" data-title="Provider references">Provider references</a>
-                  </li>
-                  <li>
-                    <a href="#recommended-commands" class="toc-h2 toc-link" data-title="Recommended commands">Recommended commands</a>
-                  </li>
-                  <li>
-                    <a href="#outputs" class="toc-h2 toc-link" data-title="Outputs">Outputs</a>
-                  </li>
-                  <li>
-                    <a href="#gates-review-and-runtime-policy" class="toc-h2 toc-link" data-title="Gates, review, and runtime policy">Gates, review, and runtime policy</a>
-                  </li>
-                  <li>
-                    <a href="#environment-labels" class="toc-h2 toc-link" data-title="Environment labels">Environment labels</a>
-                  </li>
-                  <li>
-                    <a href="#example" class="toc-h2 toc-link" data-title="Example">Example</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#data-product-recipe" class="toc-h1 toc-link" data-title="Data Product Recipe">Data Product Recipe</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#manifest-boundary" class="toc-h2 toc-link" data-title="Manifest boundary">Manifest boundary</a>
-                  </li>
-                  <li>
-                    <a href="#root-structure" class="toc-h2 toc-link" data-title="Root structure">Root structure</a>
-                  </li>
-                  <li>
-                    <a href="#minimum-folder-structure" class="toc-h2 toc-link" data-title="Minimum folder structure">Minimum folder structure</a>
-                  </li>
-                  <li>
-                    <a href="#full-folder-structure" class="toc-h2 toc-link" data-title="Full folder structure">Full folder structure</a>
-                  </li>
-                  <li>
-                    <a href="#mandatory-data-product-recipe-fields" class="toc-h2 toc-link" data-title="Mandatory data product recipe fields">Mandatory data product recipe fields</a>
-                  </li>
-                  <li>
-                    <a href="#optional-data-product-recipe-fields" class="toc-h2 toc-link" data-title="Optional data product recipe fields">Optional data product recipe fields</a>
-                  </li>
-                  <li>
-                    <a href="#mandatory-core-section-ids" class="toc-h2 toc-link" data-title="Mandatory core section IDs">Mandatory core section IDs</a>
-                  </li>
-                  <li>
-                    <a href="#optional-standardized-section-ids" class="toc-h2 toc-link" data-title="Optional standardized section IDs">Optional standardized section IDs</a>
-                  </li>
-                  <li>
-                    <a href="#practice-alignment" class="toc-h2 toc-link" data-title="Practice alignment">Practice alignment</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#odpr-provider" class="toc-h1 toc-link" data-title="ODPR Provider">ODPR Provider</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#root-structure" class="toc-h2 toc-link" data-title="Root structure">Root structure</a>
-                  </li>
-                  <li>
-                    <a href="#provider-fields" class="toc-h2 toc-link" data-title="Provider fields">Provider fields</a>
-                  </li>
-                  <li>
-                    <a href="#provider-references" class="toc-h2 toc-link" data-title="Provider references">Provider references</a>
-                  </li>
-                  <li>
-                    <a href="#example-profiles" class="toc-h2 toc-link" data-title="Example profiles">Example profiles</a>
                   </li>
               </ul>
           </li>
@@ -572,8 +543,8 @@ Development of the specification is under the umbrella of the Linux Foundation.<
 </tr>
 </tbody></table>
 <h1 id='introduction'>Introduction</h1>
-<p>The Data Product Recipe Specification, ODPR, is a lightweight, vendor-neutral,
-machine-readable standard for repeatable data product delivery.</p>
+<p><strong>The Data Product Recipe Specification, ODPR, is a lightweight, vendor-neutral,
+machine-readable standard for repeatable data product delivery.</strong></p>
 
 <p>ODPR is part of the OpenDataProducts.org standards family. It complements the
 Open Data Product Specification, ODPS, Open Data Product Catalogs, ODPC, Open
@@ -582,63 +553,42 @@ how delivery work around those artifacts can be declared, discovered,
 configured, validated, reviewed, and handed off.</p>
 
 <p>ODPR standardizes how data product work gets done, not only what the final
-artifact looks like. In version 1.0, ODPR defines four root objects:</p>
+artifact looks like.</p>
 
-<table><thead>
-<tr>
-<th>Root object</th>
-<th>What it defines</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>Recipe</code></td>
-<td>Portable workflow intent: steps, inputs, outputs, gates, execution class, provider references, and review expectations.</td>
-</tr>
-<tr>
-<td><code>Provider</code></td>
-<td>Named runtime profile that recipes can reference without embedding credentials or provider-specific configuration in the workflow.</td>
-</tr>
-<tr>
-<td><code>RecipeCatalog</code></td>
-<td>Metadata-only discovery index for available <code>Recipe</code> files.</td>
-</tr>
-<tr>
-<td><code>DataProductRecipe</code></td>
-<td>Reviewable handoff manifest for developers and AI agents implementing one data product.</td>
-</tr>
-</tbody></table>
+<p><strong>ODPR has three primary composite flows.</strong> It defines delivery flows for
+repeatable work such as portfolio building and release validation. It defines
+product handoff flows for developers and AI agents implementing one data
+product. It defines trigger-based flows, where graph changes can make declared
+work applicable.</p>
 
-<p><img src="images/odpr-scope-76b3143c.svg" alt="ODPR root objects and standards-family boundary." /></p>
-<h2 id='specification-aims'>Specification aims</h2>
-<p>ODPR aims to:</p>
+<p><strong>Recipes, provider profiles, and recipe catalogs are supporting building blocks.</strong>
+Recipes describe the reusable workflow unit. Providers let recipes reference
+approved LLM or model runtime profiles without embedding credentials, endpoints,
+or model settings in the recipe. Catalogs help teams and agents discover
+available recipes.</p>
 
+<p><img src="images/odpr-scope-f590fdc9.svg" alt="ODPR purposes and supporting functions." /></p>
+<h2 id='what-odpr-defines'>What ODPR defines</h2>
 <ul>
-<li>make data product workflows portable, repeatable, inspectable, and
-automation-ready</li>
-<li>support standard development, CI, release, localization, hybrid, and
-agent-safe workflows</li>
-<li>let teams switch between local, hosted, and hybrid model execution</li>
-<li>standardize provider profile shape without storing raw secrets or defining
-provider-specific APIs</li>
-<li>standardize Data Product Recipe handoff manifests for developer and AI-agent
-collaboration</li>
-<li>support compact context policy such as YAML, TOON, GCF, or automatic fallback</li>
-<li>expose safe workflows and handoff context to AI agents before they run tools</li>
+<li>define delivery flows for repeatable data product work</li>
+<li>define product handoff flows for one data product</li>
+<li>define trigger-based flows driven by graph changes</li>
+<li>support those flows with recipes, provider profiles, recipe catalogs, context
+policy, gates, and review expectations</li>
 </ul>
 
 <p><strong>Note!</strong> In &quot;Open Data Product&quot; the focus is on the latter words and the
 prefix &quot;open&quot; refers to the openness of the standard. Any connotations to open
 data are not intentional, intended, or desirable.</p>
-<h2 id='why-odpr-is-needed'>Why ODPR is needed</h2>
+<h3 id='why-odpr-is-needed'>Why ODPR is needed</h3>
 <p>Data product work often depends on manual command sequences, scripts, notebooks,
 prompts, and local habits. That creates delivery variation, makes validation
 and review steps easy to skip, hides model-provider choices, and forces CI/CD
 automation and AI agents to guess the intended workflow.</p>
 
-<p>ODPR solves this by giving teams and tools a small set of declared objects:
-recipes for workflow intent, provider profiles for runtime references, catalogs
-for recipe discovery, and data product recipes for implementation handoff. A
-recipe describes:</p>
+<p>ODPR solves this by giving teams and tools three composite flow contracts:
+delivery flows, product handoff flows, and trigger-based automation
+boundaries. A recipe building block describes:</p>
 
 <ul>
 <li>what workflow runs</li>
@@ -651,1280 +601,214 @@ recipe describes:</p>
 <li>which provider reference is expected</li>
 <li>whether human review is required</li>
 </ul>
-<h2 id='core-design-principle'>Core design principle</h2>
-<p>A recipe is not a script.</p>
+<h3 id='primary-flow-types'>Primary flow types</h3>
+<p>ODPR has three root-level flow types.</p>
 
-<p>A recipe is a portable, declarative workflow contract. Scripts tell one tool
-what to do. Recipes tell teams, tools, agents, and automation systems how a data
-product workflow should run.</p>
-<h2 id='root-object-model'>Root object model</h2>
-<p>ODPR standardizes four clear root objects: <code>Recipe</code>, <code>Provider</code>,
-<code>RecipeCatalog</code>, and <code>DataProductRecipe</code>.</p>
+<p><strong>1. Delivery flows</strong> declare repeatable work such as portfolio building, validation,
+localization, publishing, and release review.</p>
 
-<p>A <code>Recipe</code> declares workflow intent: which steps run, which inputs and outputs
-matter, which gates apply, and which provider profile should be used.</p>
+<p><strong>2. Product handoff flows</strong> declare the reviewable handoff for developers and AI
+agents implementing one data product.</p>
 
-<p>A <code>Provider</code> declares a named runtime profile: provider family, model,
-provider class, endpoint reference, credentials reference, and safe default
-settings such as temperature. This prevents each SDK, CI system, MCP server, or
-agent runtime from inventing a different provider shape.</p>
+<p><strong>3. Trigger-based flows</strong> declare when graph changes can make work applicable. They
+use triggers and graph context, while ODPG remains the graph source of truth.</p>
 
-<p>A <code>RecipeCatalog</code> is a metadata-only discovery document. It lists available
-recipes and points to their full <code>Recipe</code> files. It does not embed full steps,
-credentials, runtime status, planned writes, run ids, logs, or provider
-readiness results.</p>
+<p>Recipes, provider profiles, and recipe catalogs support these flows. They are
+part of ODPR v1 because flows need reusable workflow units, runtime references,
+and discovery, but they are not the main reason the specification exists.</p>
+<h3 id='supporting-functions'>Supporting functions</h3>
+<p><code>Recipe</code>, <code>Provider</code>, and <code>RecipeCatalog</code> are support building blocks for the
+three flow types. Their detailed YAML structures are described after the flow
+sections.</p>
+<h3 id='relationship-to-the-standards-family'>Relationship to the standards family</h3>
+<p><img src="images/standards-family-boundary-db1c5413.svg" alt="ODPR relationship to the standards family." /></p>
 
-<p>A <code>DataProductRecipe</code> is a machine-readable handoff artifact for developers and
-AI agents planning and implementing one data product. It indexes the recipe
-README, source ODPS product spec, plans, governance files, agent brief,
-readiness confidence, and review status. Optional <code>recipeRef</code> may record
-provenance or generation context, but it is not an implementation dependency.</p>
-
-<p>In an ODPR recipe, a provider is referenced by name:</p>
-<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">execution</span><span class="pi">:</span>
-  <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
-  <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
-</code></pre></div>
-<p>The provider profile itself is configured outside the recipe, as a separate
-ODPR <code>Provider</code> object:</p>
-
-<p><img src="images/provider-configuration-5cc636b2.png" alt="Provider configuration resolves ODPR provider references outside the recipe." /></p>
-<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Provider</span>
-<span class="na">provider</span><span class="pi">:</span>
-  <span class="na">id</span><span class="pi">:</span> <span class="s">production-quality</span>
-  <span class="na">provider</span><span class="pi">:</span> <span class="s">openai</span>
-  <span class="na">model</span><span class="pi">:</span> <span class="s">gpt-4.1</span>
-  <span class="na">providerClass</span><span class="pi">:</span> <span class="s">hosted</span>
-  <span class="na">temperature</span><span class="pi">:</span> <span class="m">0.2</span>
-</code></pre></div>
-<p>This two-part model keeps recipes portable and safe to share. The same recipe
-can use <code>providerRef: production-quality</code> in development, CI, staging, or
-production while each environment resolves that reference to the right local
-model, hosted model, internal gateway, credentials, and operational settings.
-ODPR standardizes the workflow contract, provider profile shape, and recipe
-discovery metadata; the executing implementation owns runtime resolution,
-credentials, provider connectivity, invocation mode, readiness checks, write
-scope checks, run manifests, and logs.</p>
-<h2 id='relationship-to-the-standards-family'>Relationship to the standards family</h2>
 <p>The OpenDataProducts.org standards family follows a separation of concerns:</p>
 
 <ul>
-<li><strong>ODPS defines the product.</strong></li>
-<li><strong>ODPC defines catalogs and reusable portfolio objects.</strong></li>
-<li><strong>ODPG defines relationships and graphs.</strong></li>
-<li><strong>ODPV defines shared vocabulary and terms.</strong></li>
-<li><strong>ODPR defines workflow recipes, provider profiles, recipe catalogs, and data
-product recipe handoff manifests around those artifacts.</strong></li>
+<li>ODPS defines the product.</li>
+<li>ODPC defines catalogs and reusable portfolio objects.</li>
+<li>ODPG defines relationships and graphs.</li>
+<li>ODPV defines shared vocabulary and terms.</li>
+<li>ODPR defines delivery flows, product handoff flows, and trigger-based flows
+around those artifacts.</li>
 </ul>
 
 <p>ODPR does not define the product, catalog, graph, or vocabulary model. It
 defines delivery workflow and handoff contracts around those artifacts.</p>
-<h2 id='example-recipe'>Example recipe</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Recipe</span>
-<span class="na">recipe</span><span class="pi">:</span>
-  <span class="na">metadata</span><span class="pi">:</span>
-    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-CI-001</span>
-    <span class="na">name</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">CI Validate Generated Fragments</span>
-    <span class="na">description</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">Generate and validate draft fragments during CI.</span>
-  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
-  <span class="na">type</span><span class="pi">:</span> <span class="s">ci</span>
-  <span class="na">environment</span><span class="pi">:</span> <span class="s">ci</span>
-  <span class="na">execution</span><span class="pi">:</span>
-    <span class="na">mode</span><span class="pi">:</span> <span class="s">local</span>
-    <span class="na">providerRef</span><span class="pi">:</span> <span class="s">local-fast</span>
-  <span class="na">context</span><span class="pi">:</span>
-    <span class="na">format</span><span class="pi">:</span> <span class="s">gcf</span>
-    <span class="na">fallback</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">toon</span>
-      <span class="pi">-</span> <span class="s">yaml</span>
-  <span class="na">steps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generate-signals</span>
-      <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
-        <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
-        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">validate-fragments</span>
-      <span class="na">command</span><span class="pi">:</span> <span class="s">validate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">document</span><span class="pi">:</span> <span class="s">generated/fragments/signal.yaml</span>
-  <span class="na">outputs</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generated-fragments</span>
-      <span class="na">path</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
-  <span class="na">gates</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">fragments-valid</span>
-      <span class="na">type</span><span class="pi">:</span> <span class="s">validation</span>
-      <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
-  <span class="na">review</span><span class="pi">:</span>
-    <span class="na">required</span><span class="pi">:</span> <span class="no">false</span>
-</code></pre></div>
-<p>This recipe declares what a CI runner or SDK executor should do when source
-documents for signals change. The expected run is:</p>
-
-<ol>
-<li>The executor loads the recipe and validates it against
-<code>https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</code>.</li>
-<li>It reads <code>recipe.version: &quot;1.0.0&quot;</code> as the version of this workflow contract.</li>
-<li>It sees <code>type: ci</code> and treats the recipe as an automated CI workflow, not as
-an interactive authoring or release-review workflow.</li>
-<li>It reads <code>environment: ci</code> and labels the run as a CI workflow context.</li>
-<li>It prepares a local execution run using the configured provider named
-<code>local-fast</code>. ODPR only stores the <code>providerRef</code>; credentials, model
-settings, command bindings, and runtime configuration stay in the executing
-SDK, CI system, MCP server, or platform.</li>
-<li>It prepares recipe context in GCF format. If GCF is not available, the
-executor can fall back first to TOON and then to YAML.</li>
-<li>It runs the <code>generate-signals</code> step by invoking the executor&#39;s <code>generate</code>
-operation with <code>kind: signal</code>, reading inputs from <code>source_docs/signals/</code>,
-and writing generated fragments to <code>generated/fragments/</code>.</li>
-<li>It runs the <code>validate-fragments</code> step by invoking the executor&#39;s <code>validate</code>
-operation against <code>generated/fragments/signal.yaml</code>.</li>
-<li>It exposes <code>generated-fragments</code> as the durable output path that CI jobs or
-agents can inspect after the run.</li>
-<li>It evaluates the <code>fragments-valid</code> validation gate. Because the gate is
-required, failed validation means the CI workflow fails.</li>
-<li>It does not pause for manual review after the gate passes, because
-<code>review.required</code> is <code>false</code>.</li>
-</ol>
-<h1 id='recipe-toolkit'>Recipe Toolkit</h1>
+<h3 id='reading-order'>Reading order</h3>
+<p>Read the three flow sections first: Delivery Flows, Product Handoff Flows, and
+Trigger-Based Flows. Then use the support sections for the reusable YAML
+building blocks: Recipe, Provider, and RecipeCatalog.</p>
+<h1 id='delivery-flows'>Delivery Flows</h1>
 <blockquote>
-<p>Snippet of YAML version:</p>
+<p>Root shape example:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
 <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Recipe</span>
 <span class="na">recipe</span><span class="pi">:</span>
   <span class="na">metadata</span><span class="pi">:</span>
-    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-DEV-001</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-DELIVERY-001</span>
     <span class="na">name</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">Local Fragment Draft</span>
-    <span class="na">description</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">Generate draft ODPC fragments locally for fast iteration.</span>
-  <span class="na">type</span><span class="pi">:</span> <span class="s">dev</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Portfolio Delivery Flow</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">release</span>
+  <span class="na">scope</span><span class="pi">:</span> <span class="s">portfolio</span>
   <span class="na">execution</span><span class="pi">:</span>
-    <span class="na">mode</span><span class="pi">:</span> <span class="s">local</span>
-    <span class="na">providerRef</span><span class="pi">:</span> <span class="s">local-fast</span>
-  <span class="na">steps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generate-signals</span>
-      <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
-        <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
-        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
+    <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
+  <span class="na">steps</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">outputs</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">gates</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">review</span><span class="pi">:</span>
+    <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
 </code></pre></div>
-<p>ODPR is published in several forms for different users and tools. This
-specification provides the human-readable documentation, while the schema,
-recipe records, provider records, and example files provide machine-readable
-resources for validation, workflow automation, AI retrieval, and agent use.</p>
+<p>Delivery flows declare repeatable work around data product artifacts. They
+cover work such as portfolio building, validation, localization, publishing,
+release review, and other delivery operations that teams want to make portable
+across tools and environments.</p>
 
-<p>Use <code>odpr.yaml</code> or <code>odpr.json</code> to validate Recipe, Provider, RecipeCatalog, and
-DataProductRecipe files, <code>recipes.jsonl</code> for lightweight object
-selection and retrieval, and the examples when generating or repairing ODPR
-YAML.</p>
-
-<p>The <a href="https://opendataproducts.org/sdk/">ODP Agent SDK</a> supports ODPR and is the
-first reference implementation for validating and executing ODPR recipes. Use
-it when building agents or automation across ODPS, ODPC, ODPG, and ODPV
-workflows. ODPR recipes remain portable workflow contracts and can also be used
-with other conforming SDKs, CI/CD systems, MCP servers, or platform
-implementations.</p>
-
-<!-- AI_AGENT_GUIDANCE:
-Use /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe, Provider, RecipeCatalog, and DataProductRecipe files.
-Use /recipes/recipes.jsonl for retrieval, classification, ODPR object selection, and lightweight tool calls.
-Use /recipes/catalog.yaml for metadata-only discovery of complete Recipe files.
-Use /recipes/examples/*.yaml when generating or repairing ODPR recipe content.
-Use /providers/examples/*.yaml when generating or repairing ODPR Provider content.
-Use the ODP Agent SDK as the first reference implementation for validating and executing ODPR recipes; do not treat it as the only possible ODPR implementation.
-Keep recipes declarative. Do not turn ODPR into a shell scripting language or orchestration engine.
-Keep Provider objects free of raw secrets and provider-specific API schemas.
--->
-
-<table><thead>
-<tr>
-<th>Resource</th>
-<th>Format</th>
-<th>Purpose</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><a href="https://opendataproducts.org/sdk/">ODP Agent SDK</a></td>
-<td>SDK</td>
-<td>First reference implementation for validating and executing ODPR recipes; ODPR can also be used with other conforming implementations</td>
-</tr>
-<tr>
-<td><a href="llms.txt"><code>llms.txt</code></a></td>
-<td>Text</td>
-<td>AI agent guidance for discovering and using ODPR resources</td>
-</tr>
-<tr>
-<td><a href="schema/odpr.yaml"><code>odpr.yaml</code></a></td>
-<td>YAML Schema</td>
-<td>YAML representation of the ODPR validation schema</td>
-</tr>
-<tr>
-<td><a href="schema/odpr.json"><code>odpr.json</code></a></td>
-<td>JSON Schema</td>
-<td>JSON representation of the ODPR validation schema</td>
-</tr>
-<tr>
-<td><a href="recipes/recipes.jsonl"><code>recipes.jsonl</code></a></td>
-<td>JSONL</td>
-<td>Agent-friendly one-recipe-per-line file for retrieval and lightweight tools</td>
-</tr>
-<tr>
-<td><a href="recipes/catalog.yaml"><code>catalog.yaml</code></a></td>
-<td>YAML</td>
-<td>Metadata-only RecipeCatalog that points to canonical recipe examples</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/minimal.yaml"><code>minimal.yaml</code></a></td>
-<td>YAML</td>
-<td>Minimal valid ODPR recipe example</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/ci-validate-generated-fragments.yaml"><code>ci-validate-generated-fragments.yaml</code></a></td>
-<td>YAML</td>
-<td>CI recipe that generates and validates fragments</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/release-portfolio-review.yaml"><code>release-portfolio-review.yaml</code></a></td>
-<td>YAML</td>
-<td>Release recipe for portfolio refresh, localization, and explanation</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/portfolio-localization.yaml"><code>portfolio-localization.yaml</code></a></td>
-<td>YAML</td>
-<td>Localization recipe with YAML list language targets</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/hybrid-graph-review.yaml"><code>hybrid-graph-review.yaml</code></a></td>
-<td>YAML</td>
-<td>Hybrid recipe that mixes local and hosted execution</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/data-product-delivery.yaml"><code>data-product-delivery.yaml</code></a></td>
-<td>YAML</td>
-<td>Data Product Recipe example using <code>recipe.scope: data-product</code></td>
-</tr>
-<tr>
-<td><a href="recipes/examples/data-product-recipe.yaml"><code>data-product-recipe.yaml</code></a></td>
-<td>YAML</td>
-<td>Minimal DataProductRecipe manifest example</td>
-</tr>
-<tr>
-<td><a href="providers/examples/production-quality.yaml"><code>production-quality.yaml</code></a></td>
-<td>YAML</td>
-<td>Hosted Provider profile for production-quality generation</td>
-</tr>
-<tr>
-<td><a href="providers/examples/local-fast.yaml"><code>local-fast.yaml</code></a></td>
-<td>YAML</td>
-<td>Local Provider profile for fast development runs</td>
-</tr>
-<tr>
-<td><a href="providers/examples/local-graph.yaml"><code>local-graph.yaml</code></a></td>
-<td>YAML</td>
-<td>Local Provider profile for graph-building workflows</td>
-</tr>
-<tr>
-<td><a href="providers/examples/internal-secure.yaml"><code>internal-secure.yaml</code></a></td>
-<td>YAML</td>
-<td>Internal gateway Provider profile for controlled production use</td>
-</tr>
-</tbody></table>
-
-<p>Agent-oriented helper scripts are available in the source repository for
-maintaining and using recipe artifacts.</p>
-
-<!-- AI_AGENT_SCRIPT_GUIDANCE:
-When working from the source repository, use scripts/search_recipes.py for repeatable local ODPR recipe lookup.
-Use scripts/search_recipes.py --json when another tool or agent will consume the result.
-Use scripts/validate_recipe.py to validate ODPR YAML or JSON Recipe, Provider, RecipeCatalog, or DataProductRecipe files against source/schema/odpr.yaml and reject embedded secrets or API keys.
-Use scripts/build_recipe_catalog.py to regenerate source/recipes/catalog.yaml from canonical recipe examples; use --check in CI or review workflows.
-Use scripts/check_agent_artifacts.py in CI or review workflows to detect drift between schema, recipe artifacts, examples, and llms.txt.
-Use scripts/generate_recipe_artifacts.py after editing source/schema/odpr.yaml to regenerate source/schema/odpr.json; use --check in CI or review workflows.
-Install script dependencies with python -m pip install -r scripts/requirements-agent.txt.
-Do not edit generated or derived artifacts without checking alignment across llms.txt, schema files, recipe artifacts, examples, and tests.
--->
-
-<table><thead>
-<tr>
-<th>Script</th>
-<th>Purpose</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/build_recipe_catalog.py"><code>build_recipe_catalog.py</code></a></td>
-<td>Regenerates the metadata-only <code>source/recipes/catalog.yaml</code> from canonical recipe examples; use <code>--check</code> to detect catalog drift</td>
-</tr>
-<tr>
-<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/check_agent_artifacts.py"><code>check_agent_artifacts.py</code></a></td>
-<td>Checks schema alignment, example files, recipe JSONL records, and <code>llms.txt</code> references</td>
-</tr>
-<tr>
-<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/generate_recipe_artifacts.py"><code>generate_recipe_artifacts.py</code></a></td>
-<td>Regenerates derived recipe artifacts such as <code>source/schema/odpr.json</code> from canonical source files; use <code>--check</code> to detect drift</td>
-</tr>
-<tr>
-<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/search_recipes.py"><code>search_recipes.py</code></a></td>
-<td>Searches ODPR recipe records by keyword or exact recipe id; use <code>--json</code> for machine-readable results</td>
-</tr>
-<tr>
-<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/validate_recipe.py"><code>validate_recipe.py</code></a></td>
-<td>Validates ODPR YAML or JSON Recipe, Provider, RecipeCatalog, or DataProductRecipe files against the ODPR schema and rejects embedded secrets or API keys</td>
-</tr>
-</tbody></table>
-
-<p>The Markdown tables in this specification are intended for human readers. The
-schema, JSONL, and YAML example files are intended for programmable use,
-automation, validation, AI retrieval, and recipe tooling.</p>
-<h1 id='ai-agent-usage-patterns'>AI Agent Usage Patterns</h1>
-<p>ODPR is designed to be usable by AI agents, SDKs, CI/CD systems, and automation
-tools. From an agent perspective, ODPR provides inspectable workflow contracts,
-named provider profiles, recipe discovery metadata, and Data Product Recipe
-handoff manifests. These objects let agents understand intended work before an
-action is run, resolve runtime references through approved configuration, and
-find the files needed for review or implementation.</p>
-
-<p>ODPS defines one data product. ODPC defines catalogs and reusable portfolio
-objects. ODPG defines relationships between data product artifacts. ODPV
-provides shared vocabulary terms. ODPR defines workflow recipes, provider
-profiles, recipe catalogs, and Data Product Recipe handoff manifests around
-those artifacts.</p>
-
-<!-- AI_AGENT_USAGE_PATTERNS:
-Use ODPR for repeatable workflow recipes, provider profiles, recipe discovery, and Data Product Recipe handoff manifests; do not use it for defining the data product, catalog, graph, or vocabulary model itself.
-Use providerRef as an execution reference only; provider configuration belongs to the SDK, CI system, or platform executing the recipe.
-Use RecipeCatalog only for metadata-only discovery; load and validate the referenced Recipe before execution.
-Use DataProductRecipe as a handoff manifest for one data product; do not treat it as a workflow execution script.
-Prefer declarative steps and gates over arbitrary shell scripts.
-Use context.format to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
--->
-<h2 id='agent-capabilities-enabled-by-odpr'>Agent capabilities enabled by ODPR</h2>
-<p>Agents can use ODPR to:</p>
+<p>Delivery flows coordinate a sequence of delivery operations. A delivery flow
+can generate or refresh artifacts, validate them, render outputs, localize
+content, explain results, and require review before release.</p>
+<h3 id='delivery-flow-boundaries'>Delivery flow boundaries</h3>
+<p>A delivery flow SHOULD answer five practical questions before any tool runs:</p>
 
 <ul>
-<li>discover safe workflow recipes before running SDK tools</li>
-<li>use a <code>RecipeCatalog</code> to find complete recipe files</li>
-<li>read a <code>DataProductRecipe</code> to understand mandatory handoff files, readiness,
-review state, and agent instructions</li>
-<li>explain what a recipe will do before execution</li>
-<li>validate recipe files against <code>odpr.yaml</code> or <code>odpr.json</code></li>
-<li>select a development, CI, release, localization, hybrid, or agent recipe</li>
-<li>inspect whether a workflow expects local, hosted, hybrid, or no model execution</li>
-<li>follow declared gates and review requirements</li>
-<li>reuse a recipe in CI/CD or production automation</li>
-<li>preserve stable workflow intent while model providers vary by environment</li>
+<li>What delivery work is being performed?</li>
+<li>Which artifact area is affected?</li>
+<li>Which ordered operations run?</li>
+<li>Which durable outputs should exist afterwards?</li>
+<li>Which gates or review expectations apply?</li>
 </ul>
-<h2 id='common-agent-workflows'>Common agent workflows</h2>
+
+<p>A delivery flow MUST NOT redefine ODPS product metadata, ODPC catalog structure,
+ODPG graph semantics, ODPV vocabulary terms, SDK internals, provider internals,
+or CI/CD engine behavior. It may reference those standards as inputs, context,
+or outputs of the delivery work.</p>
+<h3 id='delivery-flow-fields'>Delivery flow fields</h3>
 <table><thead>
 <tr>
-<th>Workflow</th>
-<th>Agent behavior</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Recipe validation</td>
-<td>Validate ODPR recipe files and report schema-compliant repairs.</td>
-</tr>
-<tr>
-<td>Recipe selection</td>
-<td>Choose a recipe based on task type, execution mode, context format, or required review.</td>
-</tr>
-<tr>
-<td>CI/CD preparation</td>
-<td>Convert a repeatable SDK command sequence into a declared recipe.</td>
-</tr>
-<tr>
-<td>Local development</td>
-<td>Run draft recipes that use local providers for fast iteration.</td>
-</tr>
-<tr>
-<td>Production review</td>
-<td>Run release recipes that use hosted providers, validation gates, and review expectations.</td>
-</tr>
-<tr>
-<td>Hybrid execution</td>
-<td>Combine local generation or graph inference with hosted review or localization.</td>
-</tr>
-<tr>
-<td>Agent handoff</td>
-<td>Inspect recipe steps and gates before invoking SDK tools.</td>
-</tr>
-</tbody></table>
-<h2 id='agent-behavior-constraints'>Agent behavior constraints</h2>
-<p>Agents using ODPR should keep boundaries clear:</p>
-
-<ul>
-<li>Do not treat ODPR as a data product definition; use ODPS for product metadata.</li>
-<li>Do not treat ODPR as a catalog object model; use ODPC for catalogs and
-portfolio objects.</li>
-<li>Do not treat ODPR as a graph model; use ODPG for nodes, edges, and
-relationships.</li>
-<li>Do not embed secrets or API keys in recipes.</li>
-<li>Do not put dry-run responses, run manifests, provider readiness results,
-planned writes, write-scope checks, run ids, or logs in ODPR documents.</li>
-<li>Do not assume <code>providerRef</code> is globally meaningful; it must be resolved by the
-executing SDK, CI system, or platform.</li>
-<li>Do not silently skip required gates or human review requirements.</li>
-</ul>
-<h2 id='example-prompts-odpr-enables'>Example prompts ODPR enables</h2>
-<ul>
-<li>&quot;Validate this ODPR recipe and suggest schema-compliant repairs.&quot;</li>
-<li>&quot;Create a CI recipe that generates signal fragments and validates them.&quot;</li>
-<li>&quot;Create a release recipe that refreshes, localizes, and explains a portfolio.&quot;</li>
-<li>&quot;Explain which steps this recipe will run and whether human review is required.&quot;</li>
-<li>&quot;Convert this local development workflow into a hosted production recipe.&quot;</li>
-</ul>
-<h1 id='recipe-library'>Recipe Library</h1>
-<p>ODPR publishes a small library of canonical recipes under
-<code>/recipes/examples/</code>. These examples are not decorative snippets. They are
-complete recipe files that can be copied, validated, adapted, and used by SDKs,
-CI/CD systems, MCP servers, or other ODPR-aware platforms.</p>
-
-<p>Agents and tools can also use <code>/recipes/recipes.jsonl</code> as a lightweight lookup
-file for selecting the right recipe pattern before loading the full YAML
-example.</p>
-
-<p>Use <code>/recipes/catalog.yaml</code> when a tool needs metadata-only discovery of
-available recipe files. Catalog entries point to complete recipes; they do not
-embed step bodies or runtime output.</p>
-
-<table><thead>
-<tr>
-<th>Recipe</th>
-<th>Use when</th>
-<th>What happens</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><a href="recipes/examples/minimal.yaml"><code>minimal.yaml</code></a></td>
-<td>A developer wants the smallest valid local recipe for fast iteration.</td>
-<td>The executor labels the run as <code>development</code>, prepares the local provider <code>local-fast</code>, runs one <code>generate</code> step for <code>signal</code> fragments, reads <code>source_docs/signals/</code>, writes draft fragments to <code>generated/fragments/</code>, and exposes that folder as <code>draft-fragments</code>.</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/ci-validate-generated-fragments.yaml"><code>ci-validate-generated-fragments.yaml</code></a></td>
-<td>CI must generate draft fragments and fail if the generated output is invalid.</td>
-<td>The executor labels the run as <code>ci</code>, generates <code>signal</code> fragments, exposes <code>generated/fragments/</code> as <code>generated-fragments</code>, validates <code>generated/fragments/signal.yaml</code>, and enforces the required <code>fragments-valid</code> validation gate before the CI job can pass.</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/release-portfolio-review.yaml"><code>release-portfolio-review.yaml</code></a></td>
-<td>A release process must refresh, localize, explain, and review a portfolio before publication.</td>
-<td>The executor labels the run as <code>production</code>, uses a hosted <code>production-quality</code> provider, refreshes <code>portfolio/</code>, localizes it to Finnish and Swedish, generates an explanation, exposes localized pages and explanation output paths, applies a release timeout, and requires human review before publishing.</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/portfolio-localization.yaml"><code>portfolio-localization.yaml</code></a></td>
-<td>A portfolio workspace must be localized into configured target languages.</td>
-<td>The executor uses the hosted <code>production-quality</code> provider, localizes <code>portfolio/</code> to Finnish and Swedish using a YAML language list, exposes the localized HTML paths, and requires release-owner review.</td>
-</tr>
-<tr>
-<td><a href="recipes/examples/hybrid-graph-review.yaml"><code>hybrid-graph-review.yaml</code></a></td>
-<td>A workflow should combine local graph work with hosted review or explanation.</td>
-<td>The executor labels the run as <code>staging</code>, builds graph context locally from <code>generated/fragments/</code>, exposes <code>generated/graph.yaml</code> as <code>graph-context</code>, then uses a hosted <code>production-quality</code> provider to explain the portfolio, with both automated and human review expected.</td>
-</tr>
-</tbody></table>
-
-<p>The library is intentionally small. Each example should demonstrate a distinct
-workflow pattern rather than every possible command option. Local organizations
-can extend these recipes with <code>x-</code> fields or implementation-specific command
-bindings without changing ODPR semantics.</p>
-
-<p>ODPR also publishes Provider examples under <code>/providers/examples/</code>. Use these
-when a recipe references a provider profile such as <code>local-fast</code>,
-<code>local-graph</code>, <code>production-quality</code>, or <code>internal-secure</code>.</p>
-
-<table><thead>
-<tr>
-<th>Provider</th>
-<th>Use when</th>
-<th>What it standardizes</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><a href="providers/examples/local-fast.yaml"><code>local-fast.yaml</code></a></td>
-<td>Local development should use a fast local model profile.</td>
-<td><code>providerRef: local-fast</code> resolves to an Ollama-backed local provider profile with a development environment label and low temperature.</td>
-</tr>
-<tr>
-<td><a href="providers/examples/local-graph.yaml"><code>local-graph.yaml</code></a></td>
-<td>Graph-building steps should run locally without hosted model routing.</td>
-<td><code>providerRef: local-graph</code> resolves to a local graph-building provider profile with a deterministic temperature.</td>
-</tr>
-<tr>
-<td><a href="providers/examples/production-quality.yaml"><code>production-quality.yaml</code></a></td>
-<td>Release, CI, or agent workflows need a hosted production-grade model profile.</td>
-<td><code>providerRef: production-quality</code> resolves to an OpenAI hosted provider profile with <code>gpt-4.1</code>, hosted provider class, production label, credentials reference, and <code>temperature: 0.2</code>.</td>
-</tr>
-<tr>
-<td><a href="providers/examples/internal-secure.yaml"><code>internal-secure.yaml</code></a></td>
-<td>Enterprise workflows must route model calls through an approved internal gateway.</td>
-<td><code>providerRef: internal-secure</code> resolves to a gateway provider profile with endpoint and credentials references instead of raw secrets.</td>
-</tr>
-</tbody></table>
-<h1 id='odpr-recipecatalog'>ODPR RecipeCatalog</h1>
-<p>The <code>RecipeCatalog</code> object is the ODPR root object for recipe discovery. It
-lists available recipes and points to their complete <code>Recipe</code> files.</p>
-
-<p>A catalog is metadata-only. It MUST NOT contain full recipe step bodies,
-credentials, provider readiness results, runtime status, planned writes, run
-ids, or logs. Catalog entries should be treated as stale until the referenced
-recipe file is loaded and validated.</p>
-<h2 id='root-structure'>Root structure</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">RecipeCatalog</span>
-<span class="na">recipeCatalog</span><span class="pi">:</span>
-  <span class="na">metadata</span><span class="pi">:</span>
-    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-CATALOG-001</span>
-    <span class="na">name</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">ODPR Example Recipe Catalog</span>
-  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
-  <span class="na">groups</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">examples</span>
-      <span class="na">name</span><span class="pi">:</span>
-        <span class="na">en</span><span class="pi">:</span> <span class="s">Example Recipes</span>
-      <span class="na">description</span><span class="pi">:</span>
-        <span class="na">en</span><span class="pi">:</span> <span class="s">Complete learning and demonstration recipes.</span>
-  <span class="na">recipes</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">recipes/examples/release-portfolio-review.yaml</span>
-      <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-RELEASE-001</span>
-      <span class="na">groupRef</span><span class="pi">:</span> <span class="s">examples</span>
-      <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
-      <span class="na">type</span><span class="pi">:</span> <span class="s">release</span>
-      <span class="na">name</span><span class="pi">:</span>
-        <span class="na">en</span><span class="pi">:</span> <span class="s">Release Portfolio Review</span>
-      <span class="na">description</span><span class="pi">:</span>
-        <span class="na">en</span><span class="pi">:</span> <span class="s">Refresh, localize, explain, and review a portfolio before release.</span>
-      <span class="na">tags</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">portfolio</span>
-        <span class="pi">-</span> <span class="s">release</span>
-      <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span>
-      <span class="na">executionMode</span><span class="pi">:</span> <span class="s">hosted</span>
-      <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
-      <span class="na">contextFormat</span><span class="pi">:</span> <span class="s">gcf</span>
-      <span class="na">requiresReview</span><span class="pi">:</span> <span class="no">true</span>
-      <span class="na">commands</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">portfolio.refresh</span>
-        <span class="pi">-</span> <span class="s">portfolio.localize</span>
-        <span class="pi">-</span> <span class="s">portfolio.explain</span>
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Element</th>
+<th>Element name</th>
 <th>Type</th>
-<th>Required</th>
+<th>Options</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><code>schema</code></td>
 <td>string</td>
-<td>required</td>
-<td>URI of the ODPR schema used to validate the catalog file.</td>
+<td>ODPR schema URI</td>
+<td>URI of the ODPR schema used to validate the document.</td>
 </tr>
 <tr>
 <td><code>version</code></td>
 <td>string</td>
-<td>required</td>
-<td>Version of the ODPR specification used by the catalog file.</td>
+<td>ODPR specification version</td>
+<td>Version of the ODPR specification used by the document.</td>
 </tr>
 <tr>
 <td><code>kind</code></td>
 <td>string</td>
-<td>required</td>
-<td>ODPR root object type. Catalog files MUST use <code>RecipeCatalog</code>.</td>
-</tr>
-<tr>
-<td><code>recipeCatalog</code></td>
-<td>object</td>
-<td>required</td>
-<td>Top-level object that defines recipe discovery metadata.</td>
-</tr>
-</tbody></table>
-<h2 id='recipecatalog-fields'>RecipeCatalog fields</h2>
-<table><thead>
-<tr>
-<th>Element</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>metadata.id</code></td>
-<td>string</td>
-<td>required</td>
-<td>Stable catalog id.</td>
-</tr>
-<tr>
-<td><code>metadata.name</code></td>
-<td>language map</td>
-<td>required</td>
-<td>Human-readable catalog name.</td>
-</tr>
-<tr>
-<td><code>version</code></td>
-<td>string</td>
-<td>required</td>
-<td>Catalog artifact version. This is separate from the root ODPR specification <code>version</code>.</td>
-</tr>
-<tr>
-<td><code>groups</code></td>
-<td>array</td>
-<td>optional</td>
-<td>Metadata-only group definitions for organizing catalog entries.</td>
-</tr>
-<tr>
-<td><code>recipes</code></td>
-<td>array</td>
-<td>required</td>
-<td>Metadata entries pointing to complete recipe files.</td>
-</tr>
-</tbody></table>
-<h2 id='catalog-group-fields'>Catalog group fields</h2>
-<table><thead>
-<tr>
-<th>Element</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>id</code></td>
-<td>string</td>
-<td>required</td>
-<td>Stable group id, unique within the catalog.</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td>language map</td>
-<td>required</td>
-<td>Human-readable group name.</td>
-</tr>
-<tr>
-<td><code>description</code></td>
-<td>language map</td>
-<td>optional</td>
-<td>Short group description.</td>
-</tr>
-</tbody></table>
-<h2 id='catalog-entry-fields'>Catalog entry fields</h2>
-<table><thead>
-<tr>
-<th>Element</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>path</code></td>
-<td>string</td>
-<td>required</td>
-<td>Project-relative path to the complete <code>Recipe</code> file.</td>
-</tr>
-<tr>
-<td><code>id</code></td>
-<td>string</td>
-<td>required</td>
-<td>Recipe id copied from the referenced recipe metadata.</td>
-</tr>
-<tr>
-<td><code>groupRef</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Reference to a declared catalog group id. Entries without <code>groupRef</code> are ungrouped.</td>
-</tr>
-<tr>
-<td><code>version</code></td>
-<td>string</td>
-<td>required</td>
-<td>Recipe version copied from the referenced recipe.</td>
-</tr>
-<tr>
-<td><code>type</code></td>
-<td>string</td>
-<td>required</td>
-<td>Recipe type such as <code>dev</code>, <code>ci</code>, <code>release</code>, <code>localization</code>, <code>hybrid</code>, or <code>agent</code>.</td>
-</tr>
-<tr>
-<td><code>scope</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Recipe scope copied from the referenced recipe when present. Allowed values are <code>data-product</code>, <code>catalog</code>, <code>graph</code>, and <code>portfolio</code>.</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td>language map</td>
-<td>required</td>
-<td>Human-readable recipe name.</td>
-</tr>
-<tr>
-<td><code>description</code></td>
-<td>language map</td>
-<td>optional</td>
-<td>Short recipe description.</td>
-</tr>
-<tr>
-<td><code>tags</code></td>
-<td>array</td>
-<td>optional</td>
-<td>Discovery tags.</td>
-</tr>
-<tr>
-<td><code>environment</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Intended environment label.</td>
-</tr>
-<tr>
-<td><code>executionMode</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Expected runtime/provider class: <code>local</code>, <code>hosted</code>, <code>hybrid</code>, or <code>none</code>.</td>
-</tr>
-<tr>
-<td><code>providerRef</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Default provider profile reference for LLM-backed steps.</td>
-</tr>
-<tr>
-<td><code>contextFormat</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Preferred context format: <code>yaml</code>, <code>toon</code>, <code>gcf</code>, or <code>auto</code>.</td>
-</tr>
-<tr>
-<td><code>requiresReview</code></td>
-<td>boolean</td>
-<td>optional</td>
-<td>Whether the referenced recipe declares required review.</td>
-</tr>
-<tr>
-<td><code>commands</code></td>
-<td>array</td>
-<td>optional</td>
-<td>Command names used by the referenced recipe.</td>
-</tr>
-</tbody></table>
-<h1 id='odpr-recipe'>ODPR Recipe</h1>
-<p>The <code>Recipe</code> object is the root ODPR object. It declares one repeatable workflow
-for data product delivery, validation, review, localization, publishing, or
-automation.</p>
-
-<p>Recipes are intended to be readable by humans and executable by tools. A recipe
-should be specific enough for an SDK, CI/CD system, MCP server, or agent to
-understand the workflow before it runs, while staying portable enough to avoid
-binding the standard to one implementation.</p>
-<h2 id='root-structure'>Root structure</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Recipe</span>
-<span class="na">recipe</span><span class="pi">:</span>
-  <span class="na">metadata</span><span class="pi">:</span>
-    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-DEV-001</span>
-    <span class="na">name</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">Local Fragment Draft</span>
-    <span class="na">description</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">Generate draft fragments locally.</span>
-  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
-  <span class="na">type</span><span class="pi">:</span> <span class="s">dev</span>
-  <span class="na">steps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generate-signals</span>
-      <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
-        <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
-        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Element</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>schema</code></td>
-<td>string</td>
-<td>required</td>
-<td>URI of the ODPR schema used to validate the recipe file.</td>
-</tr>
-<tr>
-<td><code>version</code></td>
-<td>string</td>
-<td>required</td>
-<td>Version of the ODPR specification used by the recipe file.</td>
-</tr>
-<tr>
-<td><code>kind</code></td>
-<td>string</td>
-<td>required</td>
-<td>ODPR root object type. Recipe files MUST use <code>Recipe</code>.</td>
+<td><code>Recipe</code></td>
+<td>ODPR root object type. Delivery flows are encoded as <code>Recipe</code> documents.</td>
 </tr>
 <tr>
 <td><code>recipe</code></td>
 <td>object</td>
-<td>required</td>
-<td>Top-level object that defines the workflow recipe.</td>
+<td>-</td>
+<td>Top-level object that declares the delivery flow contract.</td>
 </tr>
-</tbody></table>
-<h2 id='recipe-fields'>Recipe fields</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">recipe</span><span class="pi">:</span>
-  <span class="na">metadata</span><span class="pi">:</span>
-    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-CI-001</span>
-    <span class="na">name</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">CI Validate Generated Fragments</span>
-    <span class="na">description</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">Generate and validate fragments.</span>
-  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
-  <span class="na">type</span><span class="pi">:</span> <span class="s">ci</span>
-  <span class="na">scope</span><span class="pi">:</span> <span class="s">catalog</span>
-  <span class="na">environment</span><span class="pi">:</span> <span class="s">ci</span>
-  <span class="na">execution</span><span class="pi">:</span>
-    <span class="na">mode</span><span class="pi">:</span> <span class="s">local</span>
-    <span class="na">providerRef</span><span class="pi">:</span> <span class="s">local-fast</span>
-  <span class="na">context</span><span class="pi">:</span>
-    <span class="na">format</span><span class="pi">:</span> <span class="s">gcf</span>
-    <span class="na">fallback</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">toon</span>
-      <span class="pi">-</span> <span class="s">yaml</span>
-  <span class="na">steps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">validate-fragments</span>
-      <span class="na">command</span><span class="pi">:</span> <span class="s">validate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">document</span><span class="pi">:</span> <span class="s">generated/fragments/signal.yaml</span>
-  <span class="na">outputs</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generated-fragments</span>
-      <span class="na">path</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
-  <span class="na">gates</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">fragments-valid</span>
-      <span class="na">type</span><span class="pi">:</span> <span class="s">validation</span>
-      <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
-  <span class="na">review</span><span class="pi">:</span>
-    <span class="na">required</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="na">runPolicy</span><span class="pi">:</span>
-    <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="m">300</span>
-</code></pre></div>
-<table><thead>
 <tr>
-<th>Element</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>metadata</code></td>
+<td><code>recipe.metadata</code></td>
 <td>object</td>
-<td>required</td>
-<td>Stable recipe identity, name, optional description, owner, and tags.</td>
+<td>-</td>
+<td>Stable delivery flow identity and name.</td>
 </tr>
 <tr>
-<td><code>version</code></td>
+<td><code>recipe.metadata.id</code></td>
 <td>string</td>
-<td>required</td>
-<td>Version of this recipe workflow. This is separate from the top-level ODPR specification version.</td>
+<td>-</td>
+<td>Stable delivery flow identifier.</td>
 </tr>
 <tr>
-<td><code>type</code></td>
+<td><code>recipe.metadata.name</code></td>
+<td>object</td>
+<td>localized text object</td>
+<td>Human-readable delivery flow name.</td>
+</tr>
+<tr>
+<td><code>recipe.version</code></td>
 <td>string</td>
-<td>required</td>
-<td>Recipe type such as <code>dev</code>, <code>ci</code>, <code>release</code>, <code>localization</code>, <code>hybrid</code>, or <code>agent</code>.</td>
+<td>semantic version</td>
+<td>Version of this delivery flow artifact. This is separate from the top-level ODPR specification version.</td>
 </tr>
 <tr>
-<td><code>scope</code></td>
+<td><code>recipe.type</code></td>
 <td>string</td>
-<td>optional</td>
-<td>Standards-family target governed by the recipe. Allowed values are <code>data-product</code>, <code>catalog</code>, <code>graph</code>, and <code>portfolio</code>.</td>
+<td><code>development</code>, <code>ci</code>, <code>release</code>, <code>agent</code>, <code>custom</code></td>
+<td>Delivery flow intent. Use <code>development</code> for draft generation or working artifacts, <code>ci</code> for automated validation, <code>release</code> for portfolio preparation or publication review, <code>agent</code> for agent-assisted delivery work, and <code>custom</code> only when the standard intents do not fit.</td>
 </tr>
 <tr>
-<td><code>steps</code></td>
-<td>array</td>
-<td>required</td>
-<td>Ordered workflow operations.</td>
-</tr>
-<tr>
-<td><code>inputs</code></td>
-<td>array</td>
-<td>optional</td>
-<td>Named workflow inputs.</td>
-</tr>
-<tr>
-<td><code>outputs</code></td>
-<td>array</td>
-<td>optional</td>
-<td>Named workflow outputs.</td>
-</tr>
-<tr>
-<td><code>context</code></td>
-<td>object</td>
-<td>optional</td>
-<td>Context format policy such as YAML, TOON, GCF, or automatic fallback.</td>
-</tr>
-<tr>
-<td><code>execution</code></td>
-<td>object</td>
-<td>optional</td>
-<td>Workflow intent such as local, hosted, hybrid, or model-free runtime/provider class.</td>
-</tr>
-<tr>
-<td><code>gates</code></td>
-<td>array</td>
-<td>optional</td>
-<td>Validation, quality, or review gates.</td>
-</tr>
-<tr>
-<td><code>review</code></td>
-<td>object</td>
-<td>optional</td>
-<td>Human or agent review expectations.</td>
-</tr>
-<tr>
-<td><code>environment</code></td>
+<td><code>recipe.scope</code></td>
 <td>string</td>
-<td>optional</td>
-<td>Environment label such as development, CI, staging, or production.</td>
+<td><code>data-product</code>, <code>portfolio</code>, <code>graph</code>, <code>catalog</code>, <code>fragment</code>, <code>custom</code></td>
+<td>Artifact area affected by the delivery flow.</td>
 </tr>
 <tr>
-<td><code>runPolicy</code></td>
-<td>object</td>
-<td>optional</td>
-<td>Runtime limits such as timeout or retry guidance.</td>
+<td><code>recipe.execution.mode</code></td>
+<td>string</td>
+<td><code>local</code>, <code>hosted</code>, <code>hybrid</code>, <code>none</code></td>
+<td>Runtime expectation for the delivery flow.</td>
+</tr>
+<tr>
+<td><code>recipe.execution.providerRef</code></td>
+<td>string</td>
+<td>provider reference</td>
+<td>Named provider profile used by model-backed steps.</td>
+</tr>
+<tr>
+<td><code>recipe.steps</code></td>
+<td>array</td>
+<td>ordered step objects</td>
+<td>Ordered delivery operations that run.</td>
+</tr>
+<tr>
+<td><code>recipe.outputs</code></td>
+<td>array</td>
+<td>output objects</td>
+<td>Durable files, folders, reports, rendered pages, or review notes expected after the run.</td>
+</tr>
+<tr>
+<td><code>recipe.gates</code></td>
+<td>array</td>
+<td>gate objects</td>
+<td>Validation, quality, publication, or release conditions.</td>
+</tr>
+<tr>
+<td><code>recipe.review.required</code></td>
+<td>boolean</td>
+<td><code>true</code>, <code>false</code></td>
+<td>Whether human review is required before accepting the delivery flow result.</td>
 </tr>
 </tbody></table>
-<h2 id='recipe-types'>Recipe types</h2>
-<table><thead>
-<tr>
-<th>Type</th>
-<th>Purpose</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>dev</code></td>
-<td>Local development, drafting, and fast iteration.</td>
-</tr>
-<tr>
-<td><code>ci</code></td>
-<td>Automated validation and build checks.</td>
-</tr>
-<tr>
-<td><code>release</code></td>
-<td>Production-grade review, refresh, localization, rendering, and publishing.</td>
-</tr>
-<tr>
-<td><code>localization</code></td>
-<td>Translation and multilingual portfolio or product work.</td>
-</tr>
-<tr>
-<td><code>hybrid</code></td>
-<td>Workflows that mix local and hosted execution.</td>
-</tr>
-<tr>
-<td><code>agent</code></td>
-<td>Agent-safe workflows that AI agents can inspect and run.</td>
-</tr>
-</tbody></table>
-<h2 id='recipe-scopes'>Recipe scopes</h2>
-<p><code>recipe.scope</code> identifies the standards-family target the recipe primarily
-governs. <code>recipe.type</code> describes the workflow category, while <code>recipe.scope</code>
-describes what kind of artifact or standards-family area the recipe is for.</p>
-
-<table><thead>
-<tr>
-<th>Scope</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>data-product</code></td>
-<td>Workflow automation that generates, validates, or reviews Data Product Recipe handoff artifacts for one data product.</td>
-</tr>
-<tr>
-<td><code>catalog</code></td>
-<td>Catalog or portfolio catalog generation, validation, publication, synchronization, or review.</td>
-</tr>
-<tr>
-<td><code>graph</code></td>
-<td>Graph/context generation, relationship extraction, validation, rendering, or review.</td>
-</tr>
-<tr>
-<td><code>portfolio</code></td>
-<td>Portfolio assembly, refresh, localization, rendering, explanation, review, or release work.</td>
-</tr>
-</tbody></table>
-
-<p><code>recipe.scope: data-product</code> does not make the <code>Recipe</code> itself a Data Product
-Recipe. A scoped recipe can generate, validate, or review a handoff artifact,
-but the handoff artifact uses the <code>DataProductRecipe</code> root kind and
-<code>dataProductRecipe</code> manifest object. ODPR does not define a separate
-<code>ProductRecipe</code> root kind.</p>
-<h2 id='execution-modes'>Execution modes</h2>
-<p>A <code>Recipe</code> is the portable workflow contract. The same recipe document can be
-validated, dry-run, executed, or resumed by an SDK or platform. ODPR does not
-store invocation mode in the recipe body. Invocation mode belongs to the
-executing tool, for example an SDK command using <code>--dry-run</code> or <code>--execute</code>.
-<code>recipe.execution.mode</code> describes runtime/provider class such as local, hosted,
-hybrid, or none.</p>
-
-<table><thead>
-<tr>
-<th>Mode</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>local</code></td>
-<td>Runs with local model or local tooling.</td>
-</tr>
-<tr>
-<td><code>hosted</code></td>
-<td>Runs with hosted model or hosted service.</td>
-</tr>
-<tr>
-<td><code>hybrid</code></td>
-<td>Uses local and hosted execution in the same recipe.</td>
-</tr>
-<tr>
-<td><code>none</code></td>
-<td>Does not require model execution.</td>
-</tr>
-</tbody></table>
-<h2 id='context-formats'>Context formats</h2>
-<table><thead>
-<tr>
-<th>Format</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>yaml</code></td>
-<td>Use canonical YAML context.</td>
-</tr>
-<tr>
-<td><code>toon</code></td>
-<td>Use TOON compact context when available.</td>
-</tr>
-<tr>
-<td><code>gcf</code></td>
-<td>Use GCF compact graph/catalog context when available.</td>
-</tr>
-<tr>
-<td><code>auto</code></td>
-<td>Let the executing tool choose the preferred available context.</td>
-</tr>
-</tbody></table>
-<h2 id='provider-references'>Provider references</h2>
-<p><code>providerRef</code> identifies a standardized ODPR <code>Provider</code> profile by
-<code>provider.id</code>. The recipe does not embed provider internals; it only names the
-profile that should be used.</p>
-
-<p>A recipe can declare a default provider in <code>execution.providerRef</code>. Individual
-steps can override it with <code>step.providerRef</code> when one workflow mixes local and
-hosted execution.</p>
-
-<p>The referenced <code>Provider</code> object defines the provider family, model, provider
-class, endpoint reference, credentials reference, and safe runtime defaults.
-Raw secrets MUST NOT be stored in recipes or provider documents.</p>
-
-<p><code>execution.providerRef</code> is the default provider profile for LLM-backed steps.
-Step-level <code>providerRef</code> overrides <code>execution.providerRef</code>. Step-level <code>model</code>
-overrides the provider model for that step. Deterministic and report commands
-MUST NOT use <code>providerRef</code> or <code>model</code>.</p>
-
-<p>ODPR validation tools SHOULD reject embedded secrets or API keys in recipes.
-Use <code>providerRef</code> in recipes and <code>credentialsRef</code> in Provider documents instead
-of fields such as <code>apiKey</code>, <code>token</code>, <code>password</code>, or inline secret values.</p>
-<h2 id='recommended-commands'>Recommended commands</h2>
-<p>ODPR keeps commands lightweight so recipes stay portable across implementations.
-Implementations SHOULD support the recommended command names where the
-underlying capability exists. Implementations MAY support additional commands.</p>
-
-<table><thead>
-<tr>
-<th>Command</th>
-<th>Classification</th>
-<th>Required <code>with</code></th>
-<th>Optional <code>with</code></th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>generate</code></td>
-<td><code>llm-backed</code></td>
-<td><code>input</code>, <code>kind</code>, <code>output</code></td>
-<td><code>config</code>, <code>prompts</code>, <code>profile</code>, <code>includeComponents</code>, <code>maxSourceChars</code>, <code>ollamaUrl</code></td>
-</tr>
-<tr>
-<td><code>odpc.build</code></td>
-<td><code>deterministic</code></td>
-<td><code>input</code>, <code>output</code></td>
-<td><code>html</code>, <code>toon</code>, <code>gcf</code>, <code>id</code>, <code>name</code>, <code>description</code>, <code>recursive</code>, <code>validate</code></td>
-</tr>
-<tr>
-<td><code>odpg.build</code></td>
-<td><code>llm-backed</code></td>
-<td><code>input</code>, <code>output</code></td>
-<td><code>toon</code>, <code>gcf</code>, <code>contextGraph</code>, <code>id</code>, <code>name</code>, <code>description</code>, <code>recursive</code>, <code>validate</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code></td>
-</tr>
-<tr>
-<td><code>odpg.render</code></td>
-<td><code>deterministic</code></td>
-<td><code>graph</code>, <code>output</code></td>
-<td>none</td>
-</tr>
-<tr>
-<td><code>portfolio.build</code></td>
-<td><code>llm-backed</code></td>
-<td>at least one of <code>objectives</code>, <code>useCases</code>, <code>signals</code>, or <code>products</code>; and <code>output</code>, <code>workspace</code>, or both</td>
-<td><code>title</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
-</tr>
-<tr>
-<td><code>portfolio.refresh</code></td>
-<td><code>llm-backed</code></td>
-<td><code>workspace</code></td>
-<td><code>objectives</code>, <code>useCases</code>, <code>signals</code>, <code>products</code>, <code>title</code>, <code>config</code>, <code>allSources</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
-</tr>
-<tr>
-<td><code>portfolio.sync</code></td>
-<td><code>deterministic</code></td>
-<td><code>workspace</code></td>
-<td><code>strictValidation</code></td>
-</tr>
-<tr>
-<td><code>portfolio.localize</code></td>
-<td><code>llm-backed</code></td>
-<td><code>workspace</code>, <code>languages</code></td>
-<td><code>defaultLanguage</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
-</tr>
-<tr>
-<td><code>portfolio.render</code></td>
-<td><code>deterministic</code></td>
-<td><code>workspace</code></td>
-<td><code>output</code>, <code>strictValidation</code></td>
-</tr>
-<tr>
-<td><code>portfolio.explain</code></td>
-<td><code>report</code></td>
-<td><code>workspace</code></td>
-<td>none</td>
-</tr>
-<tr>
-<td><code>validate</code></td>
-<td><code>deterministic</code></td>
-<td><code>document</code></td>
-<td>none</td>
-</tr>
-<tr>
-<td><code>explain</code></td>
-<td><code>report</code></td>
-<td><code>document</code></td>
-<td>none</td>
-</tr>
-</tbody></table>
-
-<p><code>with</code> is the argument object for the selected command. <code>providerRef</code> and
-<code>model</code> stay beside <code>command</code>; they do not belong inside <code>with</code>.
-<code>portfolio.localize.with.languages</code> SHOULD be written as a YAML list of BCP 47
-language tags.</p>
-
-<table><thead>
-<tr>
-<th>Classification</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>deterministic</code></td>
-<td>No provider needed; repeatable from files and options.</td>
-</tr>
-<tr>
-<td><code>llm-backed</code></td>
-<td>Calls a configured provider and model.</td>
-</tr>
-<tr>
-<td><code>review</code></td>
-<td>Requires human or external approval.</td>
-</tr>
-<tr>
-<td><code>report</code></td>
-<td>Reads artifacts and produces summaries, diagnostics, or review material.</td>
-</tr>
-</tbody></table>
-<h2 id='outputs'>Outputs</h2>
-<p>Use <code>inputs</code> and <code>outputs</code> when a workflow uses or creates durable artifacts
-that later steps, CI
-jobs, reviewers, or agents should inspect. Outputs are named paths. They do not
-replace the command-specific <code>with.output</code> argument; they make expected durable
-results visible at the recipe level.</p>
-
-<p>Recipe-level paths should be project-relative. Recipes should not use absolute
-paths or <code>..</code> traversal. ODPR states this safety expectation; SDKs and
-platforms enforce write-scope policy.</p>
-<h2 id='gates-review-and-runtime-policy'>Gates, review, and runtime policy</h2>
-<p>Required gates SHOULD be evaluated or reported by the executing tool. Tools
-SHOULD NOT silently skip required gates.</p>
-
-<p><code>review.required</code> declares whether a recipe expects review after automated
-steps complete. <code>review.mode</code> can be <code>human</code>, <code>agent</code>, <code>both</code>, or <code>none</code>.</p>
-
-<p><code>runPolicy</code> gives lightweight runtime guidance such as timeout, stop-on-failure
-behavior, and retry expectations. It is useful for CI jobs, local model calls,
-portfolio localization, and hosted provider calls. ODPR v1 does not define
-approval records, workflow pauses, run manifests, or gate status storage.</p>
-<h2 id='environment-labels'>Environment labels</h2>
-<p>Use <code>environment</code> to label the intended operating context, such as
-<code>development</code>, <code>ci</code>, <code>staging</code>, or <code>production</code>. The value is a string so teams
-can use local naming conventions while keeping common labels readable.</p>
-<h2 id='example'>Example</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Recipe</span>
-<span class="na">recipe</span><span class="pi">:</span>
-  <span class="na">metadata</span><span class="pi">:</span>
-    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-RELEASE-001</span>
-    <span class="na">name</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">Release Portfolio Review</span>
-    <span class="na">description</span><span class="pi">:</span>
-      <span class="na">en</span><span class="pi">:</span> <span class="s">Refresh, localize, and explain a portfolio for release review.</span>
-  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+<h2 id='delivery-flow-model'>Delivery flow model</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">recipe</span><span class="pi">:</span>
   <span class="na">type</span><span class="pi">:</span> <span class="s">release</span>
+  <span class="na">scope</span><span class="pi">:</span> <span class="s">portfolio</span>
   <span class="na">execution</span><span class="pi">:</span>
     <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
     <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
-  <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span>
-  <span class="na">context</span><span class="pi">:</span>
-    <span class="na">format</span><span class="pi">:</span> <span class="s">gcf</span>
-    <span class="na">fallback</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">toon</span>
-      <span class="pi">-</span> <span class="s">yaml</span>
-  <span class="na">runPolicy</span><span class="pi">:</span>
-    <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="m">900</span>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">refresh-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.refresh</span>
       <span class="na">with</span><span class="pi">:</span>
         <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localize-portfolio</span>
-      <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.localize</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
-        <span class="na">languages</span><span class="pi">:</span>
-          <span class="pi">-</span> <span class="s">fi</span>
-          <span class="pi">-</span> <span class="s">sv</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.explain</span>
       <span class="na">with</span><span class="pi">:</span>
         <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
   <span class="na">outputs</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localized-portfolio-fi</span>
-      <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/index.fi.html</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localized-portfolio-sv</span>
-      <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/index.sv.html</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">release-explanation</span>
       <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/explanation.md</span>
   <span class="na">gates</span><span class="pi">:</span>
@@ -1933,30 +817,131 @@ can use local naming conventions while keeping common labels readable.</p>
       <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
   <span class="na">review</span><span class="pi">:</span>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">mode</span><span class="pi">:</span> <span class="s">human</span>
-    <span class="na">instructions</span><span class="pi">:</span> <span class="s">Review localized pages and generated reports before publishing.</span>
 </code></pre></div>
-<p>This release recipe describes a portfolio review workflow. When an executor
-runs it, the expected flow is:</p>
+<p>A delivery flow is the portable operating contract for a repeatable delivery
+activity. It is not the artifact being produced and it is not the runtime that
+executes the work. It declares the work in a form that a developer, CI runner,
+SDK executor, MCP server, or AI agent can inspect before the run starts.</p>
 
-<ol>
-<li>Validate the recipe against the ODPR schema and confirm it is a <code>Recipe</code>.</li>
-<li>Treat the workflow as a <code>release</code> recipe, which means it is intended for a
-publication or release-review process rather than local drafting.</li>
-<li>Use hosted execution through the configured provider reference
-<code>production-quality</code>. The matching ODPR <code>Provider</code> object describes the
-runtime profile, while raw credentials and live endpoint resolution stay in
-the executing SDK or platform.</li>
-<li>Prepare compact context in GCF format, with TOON and YAML as fallback
-formats.</li>
-<li>Run <code>portfolio.refresh</code> for the <code>portfolio/</code> workspace.</li>
-<li>Run <code>portfolio.localize</code> for the same workspace and produce Finnish and
-Swedish localized outputs.</li>
-<li>Run <code>portfolio.explain</code> so reviewers get generated explanation material for
-the refreshed portfolio.</li>
-<li>Require human review before the release workflow is considered complete.</li>
-</ol>
-<h1 id='data-product-recipe'>Data Product Recipe</h1><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<p><img src="images/delivery-flow-model-f519c0b5.svg" alt="Delivery flow contract model." /></p>
+
+<p>Every delivery flow SHOULD make these parts visible:</p>
+
+<table><thead>
+<tr>
+<th>Part</th>
+<th>Purpose</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Work intent</td>
+<td>The delivery activity being performed, such as draft generation, validation, portfolio refresh, localization, release review, or publishing preparation.</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>The artifact area affected by the work, such as one product workspace, generated fragments, graph context, catalog input, or portfolio output.</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td>The ordered delivery operations that run, including the command names and the minimal inputs needed by each operation.</td>
+</tr>
+<tr>
+<td>Runtime expectation</td>
+<td>Whether the flow expects local, hosted, hybrid, or model-free execution, and which provider reference is used when model-backed work is required.</td>
+</tr>
+<tr>
+<td>Durable outputs</td>
+<td>The files, folders, rendered pages, reports, or review notes that should exist after the run.</td>
+</tr>
+<tr>
+<td>Gates and review</td>
+<td>The validation checks, quality checks, human review, or release ownership expectations that determine whether the result can be accepted.</td>
+</tr>
+</tbody></table>
+
+<p>The supporting <code>Recipe</code> building block carries the structured fields for these
+parts. The delivery flow section defines why the flow exists and what contract
+it represents; the <code>Recipe</code> section defines the reusable YAML shape.</p>
+<h2 id='delivery-flow-examples'>Delivery flow examples</h2>
+<p>Canonical examples live in <code>/recipes/examples/</code>. They are complete ODPR files
+that demonstrate delivery flow patterns without making this section a YAML
+reference manual.</p>
+
+<table><thead>
+<tr>
+<th>Example</th>
+<th>Demonstrates</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="recipes/examples/minimal.yaml"><code>minimal.yaml</code></a></td>
+<td>A smallest valid delivery flow for local draft generation.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/ci-validate-generated-fragments.yaml"><code>ci-validate-generated-fragments.yaml</code></a></td>
+<td>A CI delivery flow that generates fragments, validates them, and fails when a required gate fails.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/release-portfolio-review.yaml"><code>release-portfolio-review.yaml</code></a></td>
+<td>A production delivery flow that refreshes, localizes, explains, and requires review before release.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/portfolio-localization.yaml"><code>portfolio-localization.yaml</code></a></td>
+<td>A localization delivery flow that turns portfolio input into configured language outputs.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/hybrid-graph-review.yaml"><code>hybrid-graph-review.yaml</code></a></td>
+<td>A hybrid delivery flow where local graph context is prepared before hosted explanation or review.</td>
+</tr>
+</tbody></table>
+<h1 id='product-handoff-flows'>Product Handoff Flows</h1>
+<p>Product handoff flows create a reviewable handoff for developers and AI agents
+implementing one data product. The <code>DataProductRecipe</code> manifest is the
+structured building block for that handoff.</p>
+
+<p>The manifest indexes a reviewable set of files. Mandatory core sections make
+every data product recipe understandable and validatable, including the graph
+context for the product. Optional standardized sections add detail only when
+the product needs them.</p>
+
+<p><img src="images/data-product-recipe-1910b2cd.svg" alt="Data Product Recipe manifest with mandatory core sections and optional standardized sections." /></p>
+
+<p><code>DataProductRecipe</code> is the ODPR root object for the reviewable handoff artifact
+used by developers and AI agents when planning and implementing one data
+product.</p>
+
+<p>The data product recipe manifest describes the handoff artifact. It does not
+define implementation workflow execution, and it does not define the ODPS
+product itself. Developers and AI agents may use their own repositories,
+platforms, CI/CD systems, SDKs, and agent tools to implement the product. The
+source product specification remains an ODPS file referenced by the data product
+recipe.</p>
+<h2 id='root-structure'>Root structure</h2>
+<blockquote>
+<p>Root shape example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">&lt;ODPR schema URI&gt;</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">DataProductRecipe</span>
+<span class="na">dataProductRecipe</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">&lt;data product recipe id&gt;</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">&lt;localized data product recipe name&gt;</span>
+    <span class="na">description</span><span class="pi">:</span> <span class="s">&lt;localized data product recipe description&gt;</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s">&lt;data product recipe artifact version&gt;</span>
+  <span class="na">status</span><span class="pi">:</span> <span class="s">draft</span>
+  <span class="na">sections</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">readiness</span><span class="pi">:</span> <span class="pi">{}</span>
+  <span class="na">review</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div>
+<p>The data product recipe root uses the same ODPR document envelope as other ODPR
+objects: <code>schema</code>, <code>version</code>, and <code>kind</code> identify the document, and
+<code>dataProductRecipe</code> contains the manifest.</p>
+<h3 id='manifest'>Manifest</h3>
+<blockquote>
+<p>Example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
 <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">DataProductRecipe</span>
 <span class="na">dataProductRecipe</span><span class="pi">:</span>
@@ -1997,24 +982,6 @@ the refreshed portfolio.</li>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
     <span class="na">status</span><span class="pi">:</span> <span class="s">pending</span>
 </code></pre></div>
-<p>The data product recipe manifest indexes a reviewable set of files. Mandatory
-core sections make every data product recipe understandable and validatable,
-including the graph context for the product. Optional standardized sections add
-detail only when the product needs them.</p>
-
-<p><img src="images/data-product-recipe-1910b2cd.svg" alt="Data Product Recipe manifest with mandatory core sections and optional standardized sections." /></p>
-
-<p><code>DataProductRecipe</code> is the ODPR root object for the reviewable handoff artifact
-used by developers and AI agents when planning and implementing one data
-product.</p>
-
-<p>The data product recipe manifest describes the handoff artifact. It does not
-define implementation workflow execution, and it does not define the ODPS
-product itself. Developers and AI agents may use their own repositories,
-platforms, CI/CD systems, SDKs, and agent tools to implement the product. The
-source product specification remains an ODPS file referenced by the data product
-recipe.</p>
-<h2 id='manifest-boundary'>Manifest boundary</h2>
 <p><code>data-product-recipe.yaml</code> is mostly structure and metadata. More precisely, it
 is the manifest index for the handoff artifact. It answers these questions:</p>
 
@@ -2032,51 +999,104 @@ relationship graph, pricing details, implementation instructions, or AI-agent
 operating brief. Those details belong in referenced files such as
 <code>plans/delivery-plan.md</code>, <code>product-context/odps.yaml</code>, <code>context/odpg.yaml</code>,
 optional plan sections, and <code>agent/ai-agent-brief.md</code>.</p>
-<h2 id='root-structure'>Root structure</h2>
-<blockquote>
-<p>Root shape example:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">&lt;ODPR schema URI&gt;</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">DataProductRecipe</span>
-<span class="na">dataProductRecipe</span><span class="pi">:</span>
-  <span class="na">metadata</span><span class="pi">:</span>
-    <span class="na">id</span><span class="pi">:</span> <span class="s">&lt;data product recipe id&gt;</span>
-    <span class="na">name</span><span class="pi">:</span> <span class="s">&lt;localized data product recipe name&gt;</span>
-    <span class="na">description</span><span class="pi">:</span> <span class="s">&lt;localized data product recipe description&gt;</span>
-  <span class="na">version</span><span class="pi">:</span> <span class="s">&lt;data product recipe artifact version&gt;</span>
-  <span class="na">status</span><span class="pi">:</span> <span class="s">draft</span>
-  <span class="na">sections</span><span class="pi">:</span> <span class="pi">[]</span>
-  <span class="na">readiness</span><span class="pi">:</span> <span class="pi">{}</span>
-  <span class="na">review</span><span class="pi">:</span> <span class="pi">{}</span>
-</code></pre></div>
-<p>The data product recipe root uses the same ODPR document envelope as other ODPR
-objects: <code>schema</code>, <code>version</code>, and <code>kind</code> identify the document, and
-<code>dataProductRecipe</code> contains the manifest.</p>
-
-<p>The manifest is intentionally an index, not the full delivery plan. It points to
-the files that developers, reviewers, SDKs, CI checks, and AI agents should
-inspect:</p>
-
-<ul>
-<li><code>version</code> identifies the data product recipe artifact version, separate from
-the ODPR specification version.</li>
-<li><code>recipeRef</code>, when present, identifies provenance or generation context for
-the data product recipe. It is not an instruction for developers or AI agents
-to execute an ODPR workflow recipe.</li>
-<li><code>sections</code> lists the stable section IDs, paths, and formats. The source ODPS
-product specification and recipe README are referenced through mandatory
-section entries instead of duplicate top-level fields.</li>
-<li><code>readiness.score</code> is a confidence value from <code>0</code> to <code>100</code>.</li>
-<li><code>review.status</code> records whether the data product recipe is still pending,
-approved, or needs changes.</li>
-</ul>
 
 <p>The YAML example shows the minimal valid data product recipe manifest. It
 includes every schema-required field and every mandatory section ID, including
 <code>relationship-context</code>, but omits optional metadata and optional sections such
 as <code>pricing-plan</code>, <code>sla-plan</code>, and <code>relationship-plan</code>.</p>
-<h2 id='minimum-folder-structure'>Minimum folder structure</h2>
+<h3 id='manifest-fields'>Manifest fields</h3>
+<table><thead>
+<tr>
+<th>Element name</th>
+<th>Type</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>metadata</code></td>
+<td>object</td>
+<td>-</td>
+<td>Stable data product recipe identity and name.</td>
+</tr>
+<tr>
+<td><code>metadata.id</code></td>
+<td>string</td>
+<td>-</td>
+<td>Stable data product recipe identifier.</td>
+</tr>
+<tr>
+<td><code>metadata.name</code></td>
+<td>object</td>
+<td>localized text object</td>
+<td>Human-readable data product recipe name.</td>
+</tr>
+<tr>
+<td><code>metadata.description</code></td>
+<td>object</td>
+<td>localized text object</td>
+<td>Short data product recipe description for human readers.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>semantic version</td>
+<td>Version of this data product recipe artifact. This is separate from the top-level ODPR specification version.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>string</td>
+<td><code>announcement</code>, <code>draft</code>, <code>development</code>, <code>testing</code>, <code>acceptance</code>, <code>production</code>, <code>sunset</code>, <code>retired</code></td>
+<td>Data product recipe lifecycle status aligned with ODPS status values.</td>
+</tr>
+<tr>
+<td><code>sections</code></td>
+<td>array</td>
+<td>mandatory section IDs</td>
+<td>Data product recipe section index with stable section IDs, paths, and formats. The source ODPS product specification and recipe README are referenced through mandatory section entries instead of duplicate top-level fields.</td>
+</tr>
+<tr>
+<td><code>readiness.score</code></td>
+<td>number</td>
+<td><code>0</code>-<code>100</code></td>
+<td>Readiness confidence; <code>0</code> means no readiness confidence and <code>100</code> means full readiness confidence.</td>
+</tr>
+<tr>
+<td><code>readiness.status</code></td>
+<td>string</td>
+<td><code>missing</code>, <code>partial</code>, <code>ready</code></td>
+<td>Readiness status.</td>
+</tr>
+<tr>
+<td><code>review.required</code></td>
+<td>boolean</td>
+<td><code>true</code>, <code>false</code></td>
+<td>Whether human review is required before implementation, publication, automation, or agent-assisted code work.</td>
+</tr>
+<tr>
+<td><code>review.status</code></td>
+<td>string</td>
+<td><code>pending</code>, <code>approved</code>, <code>changes-requested</code></td>
+<td>Review state for the manifest: still pending, approved, or requiring changes.</td>
+</tr>
+</tbody></table>
+<h4 id='optional-data-product-recipe-fields'>Optional data product recipe fields</h4>
+<table><thead>
+<tr>
+<th>Element name</th>
+<th>Type</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>recipeRef</code></td>
+<td>relative path</td>
+<td>-</td>
+<td>Optional provenance or generation-context reference for the ODPR recipe that created or informed the data product recipe. It is not an instruction for developers or AI agents to execute an ODPR workflow recipe.</td>
+</tr>
+</tbody></table>
+<h2 id='package-structure'>Package structure</h2>
 <blockquote>
 <p>Minimum folder structure example:</p>
 </blockquote>
@@ -2145,7 +1165,7 @@ standard.</p>
 <code>dataProductRecipe.sections</code>. It does not require every data product recipe to
 use identical directory names, but using the minimum structure makes packages
 predictable for humans, SDKs, CI checks, and AI agents.</p>
-<h2 id='full-folder-structure'>Full folder structure</h2>
+<h3 id='full-folder-structure'>Full folder structure</h3>
 <blockquote>
 <p>Full folder structure example:</p>
 </blockquote>
@@ -2197,102 +1217,11 @@ sections may use <code>implementation/</code>, and portfolio context may use <co
 corresponding optional section IDs, paths, and formats are declared in
 <code>dataProductRecipe.sections</code>. Files that are not declared in the manifest are
 supporting material, not standardized Data Product Recipe sections.</p>
-<h2 id='mandatory-data-product-recipe-fields'>Mandatory data product recipe fields</h2>
-<table><thead>
-<tr>
-<th>Element name</th>
-<th>Type</th>
-<th>Options</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>metadata</code></td>
-<td>object</td>
-<td>-</td>
-<td>Stable data product recipe identity and name.</td>
-</tr>
-<tr>
-<td><code>metadata.id</code></td>
-<td>string</td>
-<td>-</td>
-<td>Stable data product recipe identifier.</td>
-</tr>
-<tr>
-<td><code>metadata.name</code></td>
-<td>object</td>
-<td>localized text object</td>
-<td>Human-readable data product recipe name.</td>
-</tr>
-<tr>
-<td><code>metadata.description</code></td>
-<td>object</td>
-<td>localized text object</td>
-<td>Short data product recipe description for human readers.</td>
-</tr>
-<tr>
-<td><code>version</code></td>
-<td>string</td>
-<td>semantic version</td>
-<td>Version of this data product recipe artifact. This is separate from the top-level ODPR specification version.</td>
-</tr>
-<tr>
-<td><code>status</code></td>
-<td>string</td>
-<td><code>announcement</code>, <code>draft</code>, <code>development</code>, <code>testing</code>, <code>acceptance</code>, <code>production</code>, <code>sunset</code>, <code>retired</code></td>
-<td>Data product recipe lifecycle status aligned with ODPS status values.</td>
-</tr>
-<tr>
-<td><code>sections</code></td>
-<td>array</td>
-<td>mandatory section IDs</td>
-<td>Data product recipe section index with stable section IDs, paths, and formats.</td>
-</tr>
-<tr>
-<td><code>readiness.score</code></td>
-<td>number</td>
-<td><code>0</code>-<code>100</code></td>
-<td>Readiness confidence; <code>0</code> means no readiness confidence.</td>
-</tr>
-<tr>
-<td><code>readiness.status</code></td>
-<td>string</td>
-<td><code>missing</code>, <code>partial</code>, <code>ready</code></td>
-<td>Readiness status.</td>
-</tr>
-<tr>
-<td><code>review.required</code></td>
-<td>boolean</td>
-<td><code>true</code>, <code>false</code></td>
-<td>Whether human review is required before implementation, publication, automation, or agent-assisted code work.</td>
-</tr>
-<tr>
-<td><code>review.status</code></td>
-<td>string</td>
-<td><code>pending</code>, <code>approved</code>, <code>changes-requested</code></td>
-<td>Review status.</td>
-</tr>
-</tbody></table>
-<h2 id='optional-data-product-recipe-fields'>Optional data product recipe fields</h2>
-<table><thead>
-<tr>
-<th>Element name</th>
-<th>Type</th>
-<th>Options</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>recipeRef</code></td>
-<td>relative path</td>
-<td>-</td>
-<td>Optional provenance or generation-context reference for the ODPR recipe that created or informed the data product recipe. This is not an implementation dependency for developers or AI agents.</td>
-</tr>
-</tbody></table>
-<h2 id='mandatory-core-section-ids'>Mandatory core section IDs</h2>
-<p>The following core section IDs define the minimum data product recipe that a
+<h2 id='required-handoff-contents'>Required handoff contents</h2>
+<p>The following core files define the minimum data product recipe that a
 developer, reviewer, SDK, CI check, or AI agent can rely on. A valid
-<code>DataProductRecipe</code> manifest MUST include each one in <code>dataProductRecipe.sections</code>.</p>
+<code>DataProductRecipe</code> manifest MUST reference each one through
+<code>dataProductRecipe.sections</code>.</p>
 
 <p><img src="images/data-product-recipe-core-6f656e7b.svg" alt="Mandatory Data Product Recipe core section files." /></p>
 
@@ -2769,7 +1698,7 @@ machine-readable.</p>
 presence of mandatory core section IDs. A repository checker SHOULD validate
 the <code>recipe-readme</code> heading order because JSON Schema should not parse
 Markdown bodies.</p>
-<h2 id='optional-standardized-section-ids'>Optional standardized section IDs</h2>
+<h3 id='optional-standardized-section-ids'>Optional standardized section IDs</h3>
 <p>Optional standardized section IDs add detail only when the data product recipe
 needs it. They are not required for a valid handoff artifact, but when present
 they MUST use one of the standardized IDs below in <code>dataProductRecipe.sections</code>.
@@ -3223,9 +2152,993 @@ build commands, local test commands, and repository-specific tool rules.</p>
 <td>Avoid context bloat, conflicting instructions, and leaked tool-specific rules in the schema.</td>
 </tr>
 </tbody></table>
-<h1 id='odpr-provider'>ODPR Provider</h1>
-<p>The <code>Provider</code> object is the second ODPR root object. It defines a named
-runtime provider profile that recipes can reference with <code>providerRef</code>.</p>
+<h1 id='trigger-based-flows'>Trigger-Based Flows</h1>
+<blockquote>
+<p>Root shape example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Recipe</span>
+<span class="na">recipe</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-GRAPH-001</span>
+    <span class="na">name</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Graph Triggered Impact Review</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">agent</span>
+  <span class="na">scope</span><span class="pi">:</span> <span class="s">graph</span>
+  <span class="na">trigger</span><span class="pi">:</span>
+    <span class="na">source</span><span class="pi">:</span> <span class="s">odpg</span>
+    <span class="na">event</span><span class="pi">:</span> <span class="s">node.attributeChanged</span>
+    <span class="na">subject</span><span class="pi">:</span>
+      <span class="na">nodeType</span><span class="pi">:</span> <span class="s2">"</span><span class="s">*"</span>
+      <span class="na">attribute</span><span class="pi">:</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">status</span>
+        <span class="na">to</span><span class="pi">:</span> <span class="s">production</span>
+  <span class="na">graphContext</span><span class="pi">:</span>
+    <span class="na">graphRef</span><span class="pi">:</span> <span class="s">graphs/portfolio.odpg.yaml</span>
+    <span class="na">start</span><span class="pi">:</span> <span class="s">trigger.subject</span>
+    <span class="na">depth</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="na">steps</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">outputs</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">review</span><span class="pi">:</span>
+    <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>
+<p>Trigger-based flows are composite flows that become applicable when a graph
+change matches a declared trigger. They use <code>Recipe</code> as the reusable workflow
+unit, with <code>trigger</code> for the graph change and optional <code>graphContext</code> for the
+graph context the steps need.</p>
+
+<p>ODPG owns graph structure and state. The runtime owns observation, execution,
+and run evidence. ODPR only declares the recipe contract.</p>
+<h3 id='trigger-flow-boundaries'>Trigger flow boundaries</h3>
+<p>A trigger-based flow SHOULD answer five practical questions:</p>
+
+<ul>
+<li>Which graph source is observed?</li>
+<li>Which graph change can make the flow applicable?</li>
+<li>Which node, edge, attribute, or named condition must match?</li>
+<li>Which graph context is needed after the match?</li>
+<li>Which delivery or review operations should run?</li>
+</ul>
+
+<p>A trigger-based flow MUST NOT redefine ODPG graph structure, store observed
+graph state, embed graph queries as workflow logic, bind ordinary flow logic to
+one node id by default, or activate simply because a signal was observed. It
+declares the boundary where a graph change should make action applicable.</p>
+<h3 id='trigger-flow-fields'>Trigger flow fields</h3>
+<table><thead>
+<tr>
+<th>Element name</th>
+<th>Type</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>schema</code></td>
+<td>string</td>
+<td>ODPR schema URI</td>
+<td>URI of the ODPR schema used to validate the document.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>ODPR specification version</td>
+<td>Version of the ODPR specification used by the document.</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>string</td>
+<td><code>Recipe</code></td>
+<td>ODPR root object type. Trigger-based flows are encoded as <code>Recipe</code> documents.</td>
+</tr>
+<tr>
+<td><code>recipe</code></td>
+<td>object</td>
+<td>-</td>
+<td>Top-level object that declares the trigger-based flow contract.</td>
+</tr>
+<tr>
+<td><code>recipe.metadata</code></td>
+<td>object</td>
+<td>-</td>
+<td>Stable trigger-based flow identity and name.</td>
+</tr>
+<tr>
+<td><code>recipe.metadata.id</code></td>
+<td>string</td>
+<td>-</td>
+<td>Stable trigger-based flow identifier.</td>
+</tr>
+<tr>
+<td><code>recipe.metadata.name</code></td>
+<td>object</td>
+<td>localized text object</td>
+<td>Human-readable trigger-based flow name.</td>
+</tr>
+<tr>
+<td><code>recipe.version</code></td>
+<td>string</td>
+<td>semantic version</td>
+<td>Version of this trigger-based flow artifact. This is separate from the top-level ODPR specification version.</td>
+</tr>
+<tr>
+<td><code>recipe.type</code></td>
+<td>string</td>
+<td><code>development</code>, <code>ci</code>, <code>release</code>, <code>agent</code>, <code>custom</code></td>
+<td>Flow intent. Trigger-based flows commonly use <code>agent</code> or <code>release</code>.</td>
+</tr>
+<tr>
+<td><code>recipe.scope</code></td>
+<td>string</td>
+<td><code>data-product</code>, <code>portfolio</code>, <code>graph</code>, <code>catalog</code>, <code>fragment</code>, <code>custom</code></td>
+<td>Artifact or graph area affected by the trigger-based flow.</td>
+</tr>
+<tr>
+<td><code>recipe.trigger</code></td>
+<td>object</td>
+<td>graph trigger object</td>
+<td>Graph change boundary that can make the flow applicable.</td>
+</tr>
+<tr>
+<td><code>recipe.trigger.source</code></td>
+<td>string</td>
+<td><code>odpg</code></td>
+<td>Graph source observed by the runtime.</td>
+</tr>
+<tr>
+<td><code>recipe.trigger.event</code></td>
+<td>string</td>
+<td><code>node.added</code>, <code>node.removed</code>, <code>node.attributeChanged</code>, <code>edge.added</code>, <code>edge.removed</code>, <code>edge.attributeChanged</code>, <code>graph.conditionMatched</code></td>
+<td>Graph change category that can activate the flow.</td>
+</tr>
+<tr>
+<td><code>recipe.trigger.subject</code></td>
+<td>object</td>
+<td>node or edge subject</td>
+<td>Node, edge, endpoint, and attribute boundary that must match the observed graph change.</td>
+</tr>
+<tr>
+<td><code>recipe.trigger.subject.nodeType</code></td>
+<td>string</td>
+<td>controlled node type, <code>*</code></td>
+<td>Node type boundary for node triggers. <code>*</code> allows any controlled node type.</td>
+</tr>
+<tr>
+<td><code>recipe.trigger.subject.attribute.name</code></td>
+<td>string</td>
+<td>explicit attribute name</td>
+<td>Attribute that must change. Attribute names are not wildcards.</td>
+</tr>
+<tr>
+<td><code>recipe.trigger.subject.attribute.to</code></td>
+<td>string</td>
+<td>target value</td>
+<td>Target attribute value that makes action applicable.</td>
+</tr>
+<tr>
+<td><code>recipe.graphContext</code></td>
+<td>object</td>
+<td>graph context request</td>
+<td>Minimal ODPG context needed after a trigger matches.</td>
+</tr>
+<tr>
+<td><code>recipe.graphContext.graphRef</code></td>
+<td>string</td>
+<td>graph file or graph reference</td>
+<td>ODPG graph source used to materialize context.</td>
+</tr>
+<tr>
+<td><code>recipe.graphContext.start</code></td>
+<td>string</td>
+<td><code>trigger.subject</code>, graph reference</td>
+<td>Starting point for context collection.</td>
+</tr>
+<tr>
+<td><code>recipe.graphContext.depth</code></td>
+<td>integer</td>
+<td>positive integer</td>
+<td>Graph neighborhood depth requested after the trigger match.</td>
+</tr>
+<tr>
+<td><code>recipe.steps</code></td>
+<td>array</td>
+<td>ordered step objects</td>
+<td>Ordered delivery, impact review, explanation, validation, or review operations that run after the trigger matches.</td>
+</tr>
+<tr>
+<td><code>recipe.outputs</code></td>
+<td>array</td>
+<td>output objects</td>
+<td>Durable graph context, impact notes, reports, rendered artifacts, or review notes expected after the run.</td>
+</tr>
+<tr>
+<td><code>recipe.review.required</code></td>
+<td>boolean</td>
+<td><code>true</code>, <code>false</code></td>
+<td>Whether human review is required before accepting the trigger-based flow result.</td>
+</tr>
+</tbody></table>
+<h2 id='trigger-flow-model'>Trigger flow model</h2>
+<p>A trigger-based flow declares when a graph change should make follow-up work
+applicable. The trigger is the boundary: it names the observed graph source, the
+change event, and the subject pattern that must match. The flow then declares
+the graph context and operations needed after the match.</p>
+
+<p>A trigger-based flow SHOULD make these field groups visible:</p>
+
+<table><thead>
+<tr>
+<th>Part</th>
+<th>Purpose</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>trigger.source</code></td>
+<td>Graph source observed by the runtime. In v1 this is <code>odpg</code>.</td>
+</tr>
+<tr>
+<td><code>trigger.event</code></td>
+<td>Graph change category, such as node added, edge removed, or attribute changed.</td>
+</tr>
+<tr>
+<td><code>trigger.subject</code></td>
+<td>Node or edge boundary that must match, including node type, edge type, endpoint pattern, and explicit attribute condition when needed.</td>
+</tr>
+<tr>
+<td><code>graphContext</code></td>
+<td>Minimal graph neighborhood or context artifact needed by the follow-up steps.</td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>Ordered delivery, impact review, explanation, validation, or review operations that should run after the trigger matches.</td>
+</tr>
+<tr>
+<td><code>outputs</code>, <code>gates</code>, <code>review</code></td>
+<td>Durable results and acceptance expectations for the triggered run.</td>
+</tr>
+</tbody></table>
+
+<p>The runtime observes graph changes and decides whether they match the trigger.
+ODPR declares the portable contract for that match and the work that follows.</p>
+<h2 id='trigger-events'>Trigger events</h2>
+<p>ODPR v1 supports graph-change triggers on nodes and edges. These events are
+intentionally small so a trigger can be evaluated without turning ODPR into a
+graph query language.</p>
+
+<table><thead>
+<tr>
+<th>Event</th>
+<th>Use when</th>
+<th>Required boundary</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>node.added</code></td>
+<td>A new graph node appears and should cause delivery or review work.</td>
+<td><code>subject.nodeType</code>.</td>
+</tr>
+<tr>
+<td><code>node.removed</code></td>
+<td>A graph node is removed and impact should be reviewed or artifacts refreshed.</td>
+<td><code>subject.nodeType</code>.</td>
+</tr>
+<tr>
+<td><code>node.attributeChanged</code></td>
+<td>A node attribute crosses a declared boundary, such as <code>status</code> changing to <code>production</code>.</td>
+<td><code>subject.nodeType</code> and <code>subject.attribute.name</code>; the attribute condition SHOULD name <code>from</code>, <code>to</code>, or both when relevant.</td>
+</tr>
+<tr>
+<td><code>edge.added</code></td>
+<td>A new relationship appears and should cause downstream delivery or review work.</td>
+<td><code>subject.edgeType</code>; endpoint patterns SHOULD be declared when the flow depends on which node types are connected.</td>
+</tr>
+<tr>
+<td><code>edge.removed</code></td>
+<td>A relationship is removed and impact should be reviewed or artifacts refreshed.</td>
+<td><code>subject.edgeType</code>; endpoint patterns SHOULD be declared when relationship direction matters.</td>
+</tr>
+<tr>
+<td><code>edge.attributeChanged</code></td>
+<td>A relationship attribute crosses a declared boundary.</td>
+<td><code>subject.edgeType</code> and <code>subject.attribute.name</code>; the attribute condition SHOULD name <code>from</code>, <code>to</code>, or both when relevant.</td>
+</tr>
+<tr>
+<td><code>graph.conditionMatched</code></td>
+<td>A named graph condition becomes true and should make a flow applicable.</td>
+<td><code>condition.name</code>.</td>
+</tr>
+</tbody></table>
+
+<p><code>subject.nodeType</code> MAY be a controlled node type or <code>*</code>. Attribute names are
+not wildcards; attribute-change triggers MUST name the attribute explicitly.</p>
+<h2 id='trigger-patterns'>Trigger patterns</h2>
+<p>Trigger-based flows are intended for graph changes that create a need for
+action, not for every observation in the graph. A trigger SHOULD represent a
+meaningful boundary such as:</p>
+
+<table><thead>
+<tr>
+<th>Pattern</th>
+<th>Example use</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>New node</td>
+<td>A data product, objective, signal, or policy node is added and related artifacts should be prepared or reviewed.</td>
+</tr>
+<tr>
+<td>Removed node</td>
+<td>A graph node is removed and dependent artifacts or reviews need impact analysis.</td>
+</tr>
+<tr>
+<td>Node state transition</td>
+<td>A data product, objective, signal, or other graph node changes status and review work should start.</td>
+</tr>
+<tr>
+<td>New relationship</td>
+<td>A dependency, ownership, enablement, or lineage edge is added and generated artifacts should be refreshed.</td>
+</tr>
+<tr>
+<td>Removed relationship</td>
+<td>A dependency or ownership edge is removed and impact notes should be generated.</td>
+</tr>
+<tr>
+<td>Relationship state transition</td>
+<td>An edge-level attribute changes and connected artifacts need validation or review.</td>
+</tr>
+<tr>
+<td>Named graph condition</td>
+<td>A graph-level condition such as objective enablement or portfolio readiness is detected by the runtime.</td>
+</tr>
+</tbody></table>
+
+<p>The runtime decides whether an observed graph change matches the trigger and
+when to execute the recipe. ODPR does not define scheduler behavior, event
+delivery, retry policy, run logs, or approval records.</p>
+<h2 id='trigger-flow-examples'>Trigger flow examples</h2>
+<p>Canonical examples live in <code>/recipes/examples/</code>. They are complete ODPR files
+that demonstrate trigger-based flow patterns without making this section a YAML
+reference manual.</p>
+
+<table><thead>
+<tr>
+<th>Example</th>
+<th>Demonstrates</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="recipes/examples/graph-triggered-impact-review.yaml"><code>graph-triggered-impact-review.yaml</code></a></td>
+<td>A node attribute transition where any node type can match if <code>status</code> changes to <code>production</code>, graph context is collected, and impact notes require human review.</td>
+</tr>
+</tbody></table>
+<h3 id='trigger-shape-examples'>Trigger shape examples</h3>
+<p>The examples below show only the <code>recipe.trigger</code> shape. They are intended to
+show matching boundaries, not complete runnable recipes.</p>
+
+<p>Node added:</p>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">trigger</span><span class="pi">:</span>
+  <span class="na">source</span><span class="pi">:</span> <span class="s">odpg</span>
+  <span class="na">event</span><span class="pi">:</span> <span class="s">node.added</span>
+  <span class="na">subject</span><span class="pi">:</span>
+    <span class="na">nodeType</span><span class="pi">:</span> <span class="s">DataProduct</span>
+</code></pre></div>
+<p>Node state transition:</p>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">trigger</span><span class="pi">:</span>
+  <span class="na">source</span><span class="pi">:</span> <span class="s">odpg</span>
+  <span class="na">event</span><span class="pi">:</span> <span class="s">node.attributeChanged</span>
+  <span class="na">subject</span><span class="pi">:</span>
+    <span class="na">nodeType</span><span class="pi">:</span> <span class="s">DataProduct</span>
+    <span class="na">attribute</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">status</span>
+      <span class="na">from</span><span class="pi">:</span> <span class="s">acceptance</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">production</span>
+</code></pre></div>
+<p>Edge added:</p>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">trigger</span><span class="pi">:</span>
+  <span class="na">source</span><span class="pi">:</span> <span class="s">odpg</span>
+  <span class="na">event</span><span class="pi">:</span> <span class="s">edge.added</span>
+  <span class="na">subject</span><span class="pi">:</span>
+    <span class="na">edgeType</span><span class="pi">:</span> <span class="s">enables</span>
+    <span class="na">fromNodeType</span><span class="pi">:</span> <span class="s">DataProduct</span>
+    <span class="na">toNodeType</span><span class="pi">:</span> <span class="s">BusinessObjective</span>
+</code></pre></div>
+<p>Edge removed:</p>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">trigger</span><span class="pi">:</span>
+  <span class="na">source</span><span class="pi">:</span> <span class="s">odpg</span>
+  <span class="na">event</span><span class="pi">:</span> <span class="s">edge.removed</span>
+  <span class="na">subject</span><span class="pi">:</span>
+    <span class="na">edgeType</span><span class="pi">:</span> <span class="s">dependsOn</span>
+    <span class="na">fromNodeType</span><span class="pi">:</span> <span class="s2">"</span><span class="s">*"</span>
+    <span class="na">toNodeType</span><span class="pi">:</span> <span class="s">DataProduct</span>
+</code></pre></div>
+<p>Edge state transition:</p>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">trigger</span><span class="pi">:</span>
+  <span class="na">source</span><span class="pi">:</span> <span class="s">odpg</span>
+  <span class="na">event</span><span class="pi">:</span> <span class="s">edge.attributeChanged</span>
+  <span class="na">subject</span><span class="pi">:</span>
+    <span class="na">edgeType</span><span class="pi">:</span> <span class="s">dependsOn</span>
+    <span class="na">attribute</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">status</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">deprecated</span>
+</code></pre></div>
+<p>Named graph condition:</p>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">trigger</span><span class="pi">:</span>
+  <span class="na">source</span><span class="pi">:</span> <span class="s">odpg</span>
+  <span class="na">event</span><span class="pi">:</span> <span class="s">graph.conditionMatched</span>
+  <span class="na">condition</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">business-objective-enabled</span>
+</code></pre></div><h1 id='recipe'>Recipe</h1>
+<p>The <code>Recipe</code> object is a supporting ODPR building block. It declares one
+reusable workflow unit that delivery flows and trigger-based flows can use.</p>
+
+<p>Recipes are intended to be readable by humans and executable by tools. A recipe
+should be specific enough for an SDK, CI/CD system, MCP server, or agent to
+understand the workflow before it runs, while staying portable enough to avoid
+binding the standard to one implementation.</p>
+<h2 id='recipe-design-principle'>Recipe design principle</h2>
+<p>A recipe is not a script. A recipe is a portable, declarative workflow
+contract. Scripts tell one tool what to do. Recipes tell teams, tools, agents,
+and automation systems how a data product workflow should run.</p>
+<h2 id='recipe-structure'>Recipe structure</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Recipe</span>
+<span class="na">recipe</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-DEV-001</span>
+    <span class="na">name</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Local Fragment Draft</span>
+    <span class="na">description</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Generate draft fragments locally.</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">dev</span>
+  <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generate-signals</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
+        <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
+        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>schema</code></td>
+<td>string</td>
+<td>required</td>
+<td>URI of the ODPR schema used to validate the recipe file.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>required</td>
+<td>Version of the ODPR specification used by the recipe file.</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>string</td>
+<td>required</td>
+<td>ODPR root object type. Recipe files MUST use <code>Recipe</code>.</td>
+</tr>
+<tr>
+<td><code>recipe</code></td>
+<td>object</td>
+<td>required</td>
+<td>Top-level object that defines the workflow recipe.</td>
+</tr>
+</tbody></table>
+<h3 id='recipe-fields'>Recipe fields</h3><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">recipe</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-CI-001</span>
+    <span class="na">name</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">CI Validate Generated Fragments</span>
+    <span class="na">description</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Generate and validate fragments.</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">ci</span>
+  <span class="na">scope</span><span class="pi">:</span> <span class="s">catalog</span>
+  <span class="na">environment</span><span class="pi">:</span> <span class="s">ci</span>
+  <span class="na">execution</span><span class="pi">:</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">local</span>
+    <span class="na">providerRef</span><span class="pi">:</span> <span class="s">local-fast</span>
+  <span class="na">context</span><span class="pi">:</span>
+    <span class="na">format</span><span class="pi">:</span> <span class="s">gcf</span>
+    <span class="na">fallback</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">toon</span>
+      <span class="pi">-</span> <span class="s">yaml</span>
+  <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">validate-fragments</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">validate</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">document</span><span class="pi">:</span> <span class="s">generated/fragments/signal.yaml</span>
+  <span class="na">outputs</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generated-fragments</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
+  <span class="na">gates</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">fragments-valid</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">validation</span>
+      <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">review</span><span class="pi">:</span>
+    <span class="na">required</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">runPolicy</span><span class="pi">:</span>
+    <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="m">300</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>metadata</code></td>
+<td>object</td>
+<td>required</td>
+<td>Stable recipe identity, name, optional description, owner, and tags.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>required</td>
+<td>Version of this recipe workflow. This is separate from the top-level ODPR specification version.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td>required</td>
+<td>Recipe type such as <code>dev</code>, <code>ci</code>, <code>release</code>, <code>localization</code>, <code>hybrid</code>, or <code>agent</code>.</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Standards-family target governed by the recipe. Allowed values are <code>data-product</code>, <code>catalog</code>, <code>graph</code>, and <code>portfolio</code>.</td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>array</td>
+<td>required</td>
+<td>Ordered workflow operations.</td>
+</tr>
+<tr>
+<td><code>inputs</code></td>
+<td>array</td>
+<td>optional</td>
+<td>Named workflow inputs.</td>
+</tr>
+<tr>
+<td><code>outputs</code></td>
+<td>array</td>
+<td>optional</td>
+<td>Named workflow outputs.</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>object</td>
+<td>optional</td>
+<td>Context format policy such as YAML, TOON, GCF, or automatic fallback.</td>
+</tr>
+<tr>
+<td><code>execution</code></td>
+<td>object</td>
+<td>optional</td>
+<td>Workflow intent such as local, hosted, hybrid, or model-free runtime/provider class.</td>
+</tr>
+<tr>
+<td><code>trigger</code></td>
+<td>object</td>
+<td>optional</td>
+<td>Graph change pattern that can make a graph-triggered recipe applicable.</td>
+</tr>
+<tr>
+<td><code>graphContext</code></td>
+<td>object</td>
+<td>optional</td>
+<td>Minimal ODPG graph context needed after a graph trigger matches.</td>
+</tr>
+<tr>
+<td><code>gates</code></td>
+<td>array</td>
+<td>optional</td>
+<td>Validation, quality, or review gates.</td>
+</tr>
+<tr>
+<td><code>review</code></td>
+<td>object</td>
+<td>optional</td>
+<td>Human or agent review expectations.</td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Environment label such as development, CI, staging, or production.</td>
+</tr>
+<tr>
+<td><code>runPolicy</code></td>
+<td>object</td>
+<td>optional</td>
+<td>Runtime limits such as timeout or retry guidance.</td>
+</tr>
+</tbody></table>
+<h3 id='recipe-types'>Recipe types</h3>
+<table><thead>
+<tr>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>dev</code></td>
+<td>Local development, drafting, and fast iteration.</td>
+</tr>
+<tr>
+<td><code>ci</code></td>
+<td>Automated validation and build checks.</td>
+</tr>
+<tr>
+<td><code>release</code></td>
+<td>Production-grade review, refresh, localization, rendering, and publishing.</td>
+</tr>
+<tr>
+<td><code>localization</code></td>
+<td>Translation and multilingual portfolio or product work.</td>
+</tr>
+<tr>
+<td><code>hybrid</code></td>
+<td>Workflows that mix local and hosted execution.</td>
+</tr>
+<tr>
+<td><code>agent</code></td>
+<td>Agent-safe workflows that AI agents can inspect and run.</td>
+</tr>
+</tbody></table>
+<h3 id='recipe-scopes'>Recipe scopes</h3>
+<p><code>recipe.scope</code> identifies the standards-family target the recipe primarily
+governs. <code>recipe.type</code> describes the workflow category, while <code>recipe.scope</code>
+describes what kind of artifact or standards-family area the recipe is for.</p>
+
+<table><thead>
+<tr>
+<th>Scope</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>data-product</code></td>
+<td>Workflow automation that generates, validates, or reviews Data Product Recipe handoff artifacts for one data product.</td>
+</tr>
+<tr>
+<td><code>catalog</code></td>
+<td>Catalog or portfolio catalog generation, validation, publication, synchronization, or review.</td>
+</tr>
+<tr>
+<td><code>graph</code></td>
+<td>Graph/context generation, relationship extraction, validation, rendering, or review.</td>
+</tr>
+<tr>
+<td><code>portfolio</code></td>
+<td>Portfolio assembly, refresh, localization, rendering, explanation, review, or release work.</td>
+</tr>
+</tbody></table>
+
+<p><code>recipe.scope: data-product</code> does not make the <code>Recipe</code> itself a Data Product
+Recipe. A scoped recipe can generate, validate, or review a handoff artifact,
+but the handoff artifact uses the <code>DataProductRecipe</code> root kind and
+<code>dataProductRecipe</code> manifest object. ODPR does not define a separate
+<code>ProductRecipe</code> root kind.</p>
+<h3 id='recipe-patterns'>Recipe patterns</h3>
+<p>ODPR uses one shared <code>Recipe</code> structure. Product delivery recipes use that
+structure for delivery work and handoff support. Graph-triggered recipes use
+that structure when a graph change should make the recipe applicable.</p>
+<h2 id='runtime-behavior'>Runtime behavior</h2>
+<p>A <code>Recipe</code> is the portable workflow contract. The same recipe document can be
+validated, dry-run, executed, or resumed by an SDK or platform. ODPR does not
+store invocation mode in the recipe body. Invocation mode belongs to the
+executing tool, for example an SDK command using <code>--dry-run</code> or <code>--execute</code>.
+<code>recipe.execution.mode</code> describes runtime/provider class such as local, hosted,
+hybrid, or none.</p>
+
+<table><thead>
+<tr>
+<th>Mode</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>local</code></td>
+<td>Runs with local model or local tooling.</td>
+</tr>
+<tr>
+<td><code>hosted</code></td>
+<td>Runs with hosted model or hosted service.</td>
+</tr>
+<tr>
+<td><code>hybrid</code></td>
+<td>Uses local and hosted execution in the same recipe.</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>Does not require model execution.</td>
+</tr>
+</tbody></table>
+<h3 id='context-formats'>Context formats</h3>
+<table><thead>
+<tr>
+<th>Format</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>yaml</code></td>
+<td>Use canonical YAML context.</td>
+</tr>
+<tr>
+<td><code>toon</code></td>
+<td>Use TOON compact context when available.</td>
+</tr>
+<tr>
+<td><code>gcf</code></td>
+<td>Use GCF compact graph/catalog context when available.</td>
+</tr>
+<tr>
+<td><code>auto</code></td>
+<td>Let the executing tool choose the preferred available context.</td>
+</tr>
+</tbody></table>
+<h3 id='provider-references'>Provider references</h3>
+<p><code>providerRef</code> identifies a standardized ODPR <code>Provider</code> profile by
+<code>provider.id</code>. The recipe does not embed provider internals; it only names the
+profile that should be used.</p>
+
+<p>A recipe can declare a default provider in <code>execution.providerRef</code>. Individual
+steps can override it with <code>step.providerRef</code> when one workflow mixes local and
+hosted execution.</p>
+
+<p>The referenced <code>Provider</code> object defines the provider family, model, provider
+class, endpoint reference, credentials reference, and safe runtime defaults.
+Raw secrets MUST NOT be stored in recipes or provider documents.</p>
+
+<p><code>execution.providerRef</code> is the default provider profile for LLM-backed steps.
+Step-level <code>providerRef</code> overrides <code>execution.providerRef</code>. Step-level <code>model</code>
+overrides the provider model for that step. Deterministic and report commands
+MUST NOT use <code>providerRef</code> or <code>model</code>.</p>
+
+<p>ODPR validation tools SHOULD reject embedded secrets or API keys in recipes.
+Use <code>providerRef</code> in recipes and <code>credentialsRef</code> in Provider documents instead
+of fields such as <code>apiKey</code>, <code>token</code>, <code>password</code>, or inline secret values.</p>
+<h3 id='recommended-commands'>Recommended commands</h3>
+<p>ODPR keeps commands lightweight so recipes stay portable across implementations.
+Implementations SHOULD support the recommended command names where the
+underlying capability exists. Implementations MAY support additional commands.</p>
+
+<table><thead>
+<tr>
+<th>Command</th>
+<th>Classification</th>
+<th>Required <code>with</code></th>
+<th>Optional <code>with</code></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>generate</code></td>
+<td><code>llm-backed</code></td>
+<td><code>input</code>, <code>kind</code>, <code>output</code></td>
+<td><code>config</code>, <code>prompts</code>, <code>profile</code>, <code>includeComponents</code>, <code>maxSourceChars</code>, <code>ollamaUrl</code></td>
+</tr>
+<tr>
+<td><code>odpc.build</code></td>
+<td><code>deterministic</code></td>
+<td><code>input</code>, <code>output</code></td>
+<td><code>html</code>, <code>toon</code>, <code>gcf</code>, <code>id</code>, <code>name</code>, <code>description</code>, <code>recursive</code>, <code>validate</code></td>
+</tr>
+<tr>
+<td><code>odpg.build</code></td>
+<td><code>llm-backed</code></td>
+<td><code>input</code>, <code>output</code></td>
+<td><code>toon</code>, <code>gcf</code>, <code>contextGraph</code>, <code>id</code>, <code>name</code>, <code>description</code>, <code>recursive</code>, <code>validate</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code></td>
+</tr>
+<tr>
+<td><code>odpg.agent-context</code></td>
+<td><code>deterministic</code></td>
+<td><code>graph</code>, <code>start</code>, <code>output</code></td>
+<td><code>depth</code></td>
+</tr>
+<tr>
+<td><code>odpg.render</code></td>
+<td><code>deterministic</code></td>
+<td><code>graph</code>, <code>output</code></td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>portfolio.build</code></td>
+<td><code>llm-backed</code></td>
+<td>at least one of <code>objectives</code>, <code>useCases</code>, <code>signals</code>, or <code>products</code>; and <code>output</code>, <code>workspace</code>, or both</td>
+<td><code>title</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
+</tr>
+<tr>
+<td><code>portfolio.refresh</code></td>
+<td><code>llm-backed</code></td>
+<td><code>workspace</code></td>
+<td><code>objectives</code>, <code>useCases</code>, <code>signals</code>, <code>products</code>, <code>title</code>, <code>config</code>, <code>allSources</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
+</tr>
+<tr>
+<td><code>portfolio.sync</code></td>
+<td><code>deterministic</code></td>
+<td><code>workspace</code></td>
+<td><code>strictValidation</code></td>
+</tr>
+<tr>
+<td><code>portfolio.localize</code></td>
+<td><code>llm-backed</code></td>
+<td><code>workspace</code>, <code>languages</code></td>
+<td><code>defaultLanguage</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
+</tr>
+<tr>
+<td><code>portfolio.render</code></td>
+<td><code>deterministic</code></td>
+<td><code>workspace</code></td>
+<td><code>output</code>, <code>strictValidation</code></td>
+</tr>
+<tr>
+<td><code>portfolio.explain</code></td>
+<td><code>report</code></td>
+<td><code>workspace</code></td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>validate</code></td>
+<td><code>deterministic</code></td>
+<td><code>document</code></td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>explain</code></td>
+<td><code>report</code></td>
+<td><code>document</code></td>
+<td>none</td>
+</tr>
+</tbody></table>
+
+<p><code>with</code> is the argument object for the selected command. <code>providerRef</code> and
+<code>model</code> stay beside <code>command</code>; they do not belong inside <code>with</code>.
+<code>portfolio.localize.with.languages</code> SHOULD be written as a YAML list of BCP 47
+language tags.</p>
+
+<table><thead>
+<tr>
+<th>Classification</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>deterministic</code></td>
+<td>No provider needed; repeatable from files and options.</td>
+</tr>
+<tr>
+<td><code>llm-backed</code></td>
+<td>Calls a configured provider and model.</td>
+</tr>
+<tr>
+<td><code>review</code></td>
+<td>Requires human or external approval.</td>
+</tr>
+<tr>
+<td><code>report</code></td>
+<td>Reads artifacts and produces summaries, diagnostics, or review material.</td>
+</tr>
+</tbody></table>
+<h3 id='outputs'>Outputs</h3>
+<p>Use <code>inputs</code> and <code>outputs</code> when a workflow uses or creates durable artifacts
+that later steps, CI
+jobs, reviewers, or agents should inspect. Outputs are named paths. They do not
+replace the command-specific <code>with.output</code> argument; they make expected durable
+results visible at the recipe level.</p>
+
+<p>Recipe-level paths should be project-relative. Recipes should not use absolute
+paths or <code>..</code> traversal. ODPR states this safety expectation; SDKs and
+platforms enforce write-scope policy.</p>
+<h3 id='gates-review-and-runtime-policy'>Gates, review, and runtime policy</h3>
+<p>Required gates SHOULD be evaluated or reported by the executing tool. Tools
+SHOULD NOT silently skip required gates.</p>
+
+<p><code>review.required</code> declares whether a recipe expects review after automated
+steps complete. <code>review.mode</code> can be <code>human</code>, <code>agent</code>, <code>both</code>, or <code>none</code>.</p>
+
+<p><code>runPolicy</code> gives lightweight runtime guidance such as timeout, stop-on-failure
+behavior, and retry expectations. It is useful for CI jobs, local model calls,
+portfolio localization, and hosted provider calls. ODPR v1 does not define
+approval records, workflow pauses, run manifests, or gate status storage.</p>
+<h3 id='environment-labels'>Environment labels</h3>
+<p>Use <code>environment</code> to label the intended operating context, such as
+<code>development</code>, <code>ci</code>, <code>staging</code>, or <code>production</code>. The value is a string so teams
+can use local naming conventions while keeping common labels readable.</p>
+<h2 id='recipe-example'>Recipe example</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Recipe</span>
+<span class="na">recipe</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-RELEASE-001</span>
+    <span class="na">name</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Release Portfolio Review</span>
+    <span class="na">description</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Refresh, localize, and explain a portfolio for release review.</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">release</span>
+  <span class="na">execution</span><span class="pi">:</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
+    <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
+  <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span>
+  <span class="na">context</span><span class="pi">:</span>
+    <span class="na">format</span><span class="pi">:</span> <span class="s">gcf</span>
+    <span class="na">fallback</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">toon</span>
+      <span class="pi">-</span> <span class="s">yaml</span>
+  <span class="na">runPolicy</span><span class="pi">:</span>
+    <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="m">900</span>
+  <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">refresh-portfolio</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.refresh</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localize-portfolio</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.localize</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
+        <span class="na">languages</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">fi</span>
+          <span class="pi">-</span> <span class="s">sv</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-portfolio</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.explain</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
+  <span class="na">outputs</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localized-portfolio-fi</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/index.fi.html</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localized-portfolio-sv</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/index.sv.html</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">release-explanation</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/explanation.md</span>
+  <span class="na">gates</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">human-review</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">review</span>
+      <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">review</span><span class="pi">:</span>
+    <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">human</span>
+    <span class="na">instructions</span><span class="pi">:</span> <span class="s">Review localized pages and generated reports before publishing.</span>
+</code></pre></div>
+<p>This release recipe describes a portfolio review workflow. When an executor
+runs it, the expected flow is:</p>
+
+<ol>
+<li>Validate the recipe against the ODPR schema and confirm it is a <code>Recipe</code>.</li>
+<li>Treat the workflow as a <code>release</code> recipe, which means it is intended for a
+publication or release-review process rather than local drafting.</li>
+<li>Use hosted execution through the configured provider reference
+<code>production-quality</code>. The matching ODPR <code>Provider</code> object describes the
+runtime profile, while raw credentials and live endpoint resolution stay in
+the executing SDK or platform.</li>
+<li>Prepare compact context in GCF format, with TOON and YAML as fallback
+formats.</li>
+<li>Run <code>portfolio.refresh</code> for the <code>portfolio/</code> workspace.</li>
+<li>Run <code>portfolio.localize</code> for the same workspace and produce Finnish and
+Swedish localized outputs.</li>
+<li>Run <code>portfolio.explain</code> so reviewers get generated explanation material for
+the refreshed portfolio.</li>
+<li>Require human review before the release workflow is considered complete.</li>
+</ol>
+<h1 id='provider'>Provider</h1>
+<p>The <code>Provider</code> object is a supporting ODPR object. It defines a named runtime
+profile that recipes can reference with <code>providerRef</code>.</p>
 
 <p>Providers standardize the shape of LLM and execution-provider configuration
 without putting provider details inside workflow recipes. A recipe stays focused
@@ -3237,7 +3150,7 @@ and model settings.</p>
 implementation-specific secret references instead.
 ODPR validation tools SHOULD reject embedded secrets or API keys, including
 fields such as <code>apiKey</code>, <code>token</code>, <code>password</code>, or raw secret-looking values.</p>
-<h2 id='root-structure'>Root structure</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<h2 id='provider-structure'>Provider structure</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
 <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Provider</span>
 <span class="na">provider</span><span class="pi">:</span>
@@ -3280,7 +3193,7 @@ fields such as <code>apiKey</code>, <code>token</code>, <code>password</code>, o
 <td>Top-level object that defines one named provider profile.</td>
 </tr>
 </tbody></table>
-<h2 id='provider-fields'>Provider fields</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">provider</span><span class="pi">:</span>
+<h3 id='provider-fields'>Provider fields</h3><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">provider</span><span class="pi">:</span>
   <span class="na">id</span><span class="pi">:</span> <span class="s">production-quality</span>
   <span class="na">provider</span><span class="pi">:</span> <span class="s">openai</span>
   <span class="na">model</span><span class="pi">:</span> <span class="s">gpt-4.1</span>
@@ -3360,7 +3273,7 @@ fields such as <code>apiKey</code>, <code>token</code>, <code>password</code>, o
 <td>Environment label such as development, CI, staging, or production.</td>
 </tr>
 </tbody></table>
-<h2 id='provider-references'>Provider references</h2>
+<h3 id='provider-references'>Provider references</h3>
 <p>A recipe uses <code>providerRef</code> to select a Provider profile by <code>provider.id</code>:</p>
 <div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">execution</span><span class="pi">:</span>
   <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
@@ -3383,7 +3296,7 @@ standardize workflow intent. Providers standardize named runtime profiles.
 Executing SDKs, CI/CD systems, MCP servers, agent runtimes, and platforms then
 resolve <code>endpointRef</code>, <code>credentialsRef</code>, and any implementation-specific
 settings during execution.</p>
-<h2 id='example-profiles'>Example profiles</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<h2 id='provider-examples'>Provider examples</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
 <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Provider</span>
 <span class="na">provider</span><span class="pi">:</span>
@@ -3419,6 +3332,647 @@ environments. A recipe that uses <code>providerRef: internal-secure</code> asks 
 executor to route model calls through an approved internal gateway. The profile
 names the gateway endpoint and credential reference, but it does not embed the
 actual credential or API key.</p>
+<h1 id='recipecatalog'>RecipeCatalog</h1>
+<p>The <code>RecipeCatalog</code> object is a supporting ODPR object for recipe discovery. It
+lists available recipes and points to their complete <code>Recipe</code> files.</p>
+
+<p>A catalog is metadata-only. It MUST NOT contain full recipe step bodies,
+credentials, provider readiness results, runtime status, planned writes, run
+ids, or logs. Catalog entries should be treated as stale until the referenced
+recipe file is loaded and validated.</p>
+<h2 id='catalog-structure'>Catalog structure</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">RecipeCatalog</span>
+<span class="na">recipeCatalog</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-CATALOG-001</span>
+    <span class="na">name</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">ODPR Example Recipe Catalog</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+  <span class="na">groups</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">examples</span>
+      <span class="na">name</span><span class="pi">:</span>
+        <span class="na">en</span><span class="pi">:</span> <span class="s">Example Recipes</span>
+      <span class="na">description</span><span class="pi">:</span>
+        <span class="na">en</span><span class="pi">:</span> <span class="s">Complete learning and demonstration recipes.</span>
+  <span class="na">recipes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">recipes/examples/release-portfolio-review.yaml</span>
+      <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-RELEASE-001</span>
+      <span class="na">groupRef</span><span class="pi">:</span> <span class="s">examples</span>
+      <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">release</span>
+      <span class="na">name</span><span class="pi">:</span>
+        <span class="na">en</span><span class="pi">:</span> <span class="s">Release Portfolio Review</span>
+      <span class="na">description</span><span class="pi">:</span>
+        <span class="na">en</span><span class="pi">:</span> <span class="s">Refresh, localize, explain, and review a portfolio before release.</span>
+      <span class="na">tags</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">portfolio</span>
+        <span class="pi">-</span> <span class="s">release</span>
+      <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span>
+      <span class="na">executionMode</span><span class="pi">:</span> <span class="s">hosted</span>
+      <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
+      <span class="na">contextFormat</span><span class="pi">:</span> <span class="s">gcf</span>
+      <span class="na">requiresReview</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">commands</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">portfolio.refresh</span>
+        <span class="pi">-</span> <span class="s">portfolio.localize</span>
+        <span class="pi">-</span> <span class="s">portfolio.explain</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>schema</code></td>
+<td>string</td>
+<td>required</td>
+<td>URI of the ODPR schema used to validate the catalog file.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>required</td>
+<td>Version of the ODPR specification used by the catalog file.</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>string</td>
+<td>required</td>
+<td>ODPR root object type. Catalog files MUST use <code>RecipeCatalog</code>.</td>
+</tr>
+<tr>
+<td><code>recipeCatalog</code></td>
+<td>object</td>
+<td>required</td>
+<td>Top-level object that defines recipe discovery metadata.</td>
+</tr>
+</tbody></table>
+<h3 id='recipecatalog-fields'>RecipeCatalog fields</h3>
+<table><thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>metadata.id</code></td>
+<td>string</td>
+<td>required</td>
+<td>Stable catalog id.</td>
+</tr>
+<tr>
+<td><code>metadata.name</code></td>
+<td>language map</td>
+<td>required</td>
+<td>Human-readable catalog name.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>required</td>
+<td>Catalog artifact version. This is separate from the root ODPR specification <code>version</code>.</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>array</td>
+<td>optional</td>
+<td>Metadata-only group definitions for organizing catalog entries.</td>
+</tr>
+<tr>
+<td><code>recipes</code></td>
+<td>array</td>
+<td>required</td>
+<td>Metadata entries pointing to complete recipe files.</td>
+</tr>
+</tbody></table>
+<h3 id='catalog-group-fields'>Catalog group fields</h3>
+<table><thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>required</td>
+<td>Stable group id, unique within the catalog.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>language map</td>
+<td>required</td>
+<td>Human-readable group name.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>language map</td>
+<td>optional</td>
+<td>Short group description.</td>
+</tr>
+</tbody></table>
+<h3 id='catalog-entry-fields'>Catalog entry fields</h3>
+<table><thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>path</code></td>
+<td>string</td>
+<td>required</td>
+<td>Project-relative path to the complete <code>Recipe</code> file.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>required</td>
+<td>Recipe id copied from the referenced recipe metadata.</td>
+</tr>
+<tr>
+<td><code>groupRef</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Reference to a declared catalog group id. Entries without <code>groupRef</code> are ungrouped.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>required</td>
+<td>Recipe version copied from the referenced recipe.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td>required</td>
+<td>Recipe type such as <code>dev</code>, <code>ci</code>, <code>release</code>, <code>localization</code>, <code>hybrid</code>, or <code>agent</code>.</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Recipe scope copied from the referenced recipe when present. Allowed values are <code>data-product</code>, <code>catalog</code>, <code>graph</code>, and <code>portfolio</code>.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>language map</td>
+<td>required</td>
+<td>Human-readable recipe name.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>language map</td>
+<td>optional</td>
+<td>Short recipe description.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>array</td>
+<td>optional</td>
+<td>Discovery tags.</td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Intended environment label.</td>
+</tr>
+<tr>
+<td><code>executionMode</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Expected runtime/provider class: <code>local</code>, <code>hosted</code>, <code>hybrid</code>, or <code>none</code>.</td>
+</tr>
+<tr>
+<td><code>providerRef</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Default provider profile reference for LLM-backed steps.</td>
+</tr>
+<tr>
+<td><code>contextFormat</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Preferred context format: <code>yaml</code>, <code>toon</code>, <code>gcf</code>, or <code>auto</code>.</td>
+</tr>
+<tr>
+<td><code>requiresReview</code></td>
+<td>boolean</td>
+<td>optional</td>
+<td>Whether the referenced recipe declares required review.</td>
+</tr>
+<tr>
+<td><code>commands</code></td>
+<td>array</td>
+<td>optional</td>
+<td>Command names used by the referenced recipe.</td>
+</tr>
+</tbody></table>
+<h1 id='recipe-library'>Recipe Library</h1>
+<p>ODPR publishes a small library of canonical recipes under
+<code>/recipes/examples/</code>. These examples are not decorative snippets. They are
+complete recipe files that can be copied, validated, adapted, and used by SDKs,
+CI/CD systems, MCP servers, or other ODPR-aware platforms.</p>
+
+<p>Agents and tools can also use <code>/recipes/recipes.jsonl</code> as a lightweight lookup
+file for selecting the right recipe pattern before loading the full YAML
+example.</p>
+
+<p>Use <code>/recipes/catalog.yaml</code> when a tool needs metadata-only discovery of
+available recipe files. Catalog entries point to complete recipes; they do not
+embed step bodies or runtime output.</p>
+
+<table><thead>
+<tr>
+<th>Recipe</th>
+<th>Use when</th>
+<th>What happens</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="recipes/examples/minimal.yaml"><code>minimal.yaml</code></a></td>
+<td>A developer wants the smallest valid local recipe for fast iteration.</td>
+<td>The executor labels the run as <code>development</code>, prepares the local provider <code>local-fast</code>, runs one <code>generate</code> step for <code>signal</code> fragments, reads <code>source_docs/signals/</code>, writes draft fragments to <code>generated/fragments/</code>, and exposes that folder as <code>draft-fragments</code>.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/ci-validate-generated-fragments.yaml"><code>ci-validate-generated-fragments.yaml</code></a></td>
+<td>CI must generate draft fragments and fail if the generated output is invalid.</td>
+<td>The executor labels the run as <code>ci</code>, generates <code>signal</code> fragments, exposes <code>generated/fragments/</code> as <code>generated-fragments</code>, validates <code>generated/fragments/signal.yaml</code>, and enforces the required <code>fragments-valid</code> validation gate before the CI job can pass.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/release-portfolio-review.yaml"><code>release-portfolio-review.yaml</code></a></td>
+<td>A release process must refresh, localize, explain, and review a portfolio before publication.</td>
+<td>The executor labels the run as <code>production</code>, uses a hosted <code>production-quality</code> provider, refreshes <code>portfolio/</code>, localizes it to Finnish and Swedish, generates an explanation, exposes localized pages and explanation output paths, applies a release timeout, and requires human review before publishing.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/portfolio-localization.yaml"><code>portfolio-localization.yaml</code></a></td>
+<td>A portfolio workspace must be localized into configured target languages.</td>
+<td>The executor uses the hosted <code>production-quality</code> provider, localizes <code>portfolio/</code> to Finnish and Swedish using a YAML language list, exposes the localized HTML paths, and requires release-owner review.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/hybrid-graph-review.yaml"><code>hybrid-graph-review.yaml</code></a></td>
+<td>A workflow should combine local graph work with hosted review or explanation.</td>
+<td>The executor labels the run as <code>staging</code>, builds graph context locally from <code>generated/fragments/</code>, exposes <code>generated/graph.yaml</code> as <code>graph-context</code>, then uses a hosted <code>production-quality</code> provider to explain the portfolio, with both automated and human review expected.</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/graph-triggered-impact-review.yaml"><code>graph-triggered-impact-review.yaml</code></a></td>
+<td>A graph change should activate a review recipe without binding the workflow to one node id.</td>
+<td>The executor matches an ODPG node attribute transition, prepares declared graph context, materializes that context as GCF, then uses a hosted provider to generate impact notes for human review.</td>
+</tr>
+</tbody></table>
+
+<p>The library is intentionally small. Each example should demonstrate a distinct
+workflow pattern rather than every possible command option. Local organizations
+can extend these recipes with <code>x-</code> fields or implementation-specific command
+bindings without changing ODPR semantics.</p>
+
+<p>ODPR also publishes Provider examples under <code>/providers/examples/</code>. Use these
+when a recipe references a provider profile such as <code>local-fast</code>,
+<code>local-graph</code>, <code>production-quality</code>, or <code>internal-secure</code>.</p>
+
+<table><thead>
+<tr>
+<th>Provider</th>
+<th>Use when</th>
+<th>What it standardizes</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="providers/examples/local-fast.yaml"><code>local-fast.yaml</code></a></td>
+<td>Local development should use a fast local model profile.</td>
+<td><code>providerRef: local-fast</code> resolves to an Ollama-backed local provider profile with a development environment label and low temperature.</td>
+</tr>
+<tr>
+<td><a href="providers/examples/local-graph.yaml"><code>local-graph.yaml</code></a></td>
+<td>Graph-building steps should run locally without hosted model routing.</td>
+<td><code>providerRef: local-graph</code> resolves to a local graph-building provider profile with a deterministic temperature.</td>
+</tr>
+<tr>
+<td><a href="providers/examples/production-quality.yaml"><code>production-quality.yaml</code></a></td>
+<td>Release, CI, or agent workflows need a hosted production-grade model profile.</td>
+<td><code>providerRef: production-quality</code> resolves to an OpenAI hosted provider profile with <code>gpt-4.1</code>, hosted provider class, production label, credentials reference, and <code>temperature: 0.2</code>.</td>
+</tr>
+<tr>
+<td><a href="providers/examples/internal-secure.yaml"><code>internal-secure.yaml</code></a></td>
+<td>Enterprise workflows must route model calls through an approved internal gateway.</td>
+<td><code>providerRef: internal-secure</code> resolves to a gateway provider profile with endpoint and credentials references instead of raw secrets.</td>
+</tr>
+</tbody></table>
+<h1 id='recipe-toolkit'>Recipe Toolkit</h1>
+<blockquote>
+<p>Snippet of YAML version:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Recipe</span>
+<span class="na">recipe</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">id</span><span class="pi">:</span> <span class="s">RCP-DEV-001</span>
+    <span class="na">name</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Local Fragment Draft</span>
+    <span class="na">description</span><span class="pi">:</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Generate draft ODPC fragments locally for fast iteration.</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">dev</span>
+  <span class="na">execution</span><span class="pi">:</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">local</span>
+    <span class="na">providerRef</span><span class="pi">:</span> <span class="s">local-fast</span>
+  <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generate-signals</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
+        <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
+        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
+</code></pre></div>
+<p>ODPR is published in several forms for different users and tools. This
+specification provides the human-readable documentation, while the schema,
+recipe records, provider records, and example files provide machine-readable
+resources for validation, workflow automation, AI retrieval, and agent use.</p>
+
+<p>Use <code>odpr.yaml</code> or <code>odpr.json</code> to validate Recipe, Provider, RecipeCatalog, and
+DataProductRecipe files, <code>recipes.jsonl</code> for lightweight object
+selection and retrieval, and the examples when generating or repairing ODPR
+YAML.</p>
+
+<p>The <a href="https://opendataproducts.org/sdk/">ODP Agent SDK</a> supports ODPR and is the
+first reference implementation for validating and executing ODPR recipes. Use
+it when building agents or automation across ODPS, ODPC, ODPG, and ODPV
+workflows. ODPR recipes remain portable workflow contracts and can also be used
+with other conforming SDKs, CI/CD systems, MCP servers, or platform
+implementations.</p>
+
+<!-- AI_AGENT_GUIDANCE:
+Use /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe, Provider, RecipeCatalog, and DataProductRecipe files.
+Use /recipes/recipes.jsonl for retrieval, classification, ODPR object selection, and lightweight tool calls.
+Use /recipes/catalog.yaml for metadata-only discovery of complete Recipe files.
+Use /recipes/examples/*.yaml when generating or repairing ODPR recipe content.
+Use /providers/examples/*.yaml when generating or repairing ODPR Provider content.
+Use the ODP Agent SDK as the first reference implementation for validating and executing ODPR recipes; do not treat it as the only possible ODPR implementation.
+Keep recipes declarative. Do not turn ODPR into a shell scripting language or orchestration engine.
+Keep Provider objects free of raw secrets and provider-specific API schemas.
+-->
+
+<table><thead>
+<tr>
+<th>Resource</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="https://opendataproducts.org/sdk/">ODP Agent SDK</a></td>
+<td>SDK</td>
+<td>First reference implementation for validating and executing ODPR recipes; ODPR can also be used with other conforming implementations</td>
+</tr>
+<tr>
+<td><a href="llms.txt"><code>llms.txt</code></a></td>
+<td>Text</td>
+<td>AI agent guidance for discovering and using ODPR resources</td>
+</tr>
+<tr>
+<td><a href="schema/odpr.yaml"><code>odpr.yaml</code></a></td>
+<td>YAML Schema</td>
+<td>YAML representation of the ODPR validation schema</td>
+</tr>
+<tr>
+<td><a href="schema/odpr.json"><code>odpr.json</code></a></td>
+<td>JSON Schema</td>
+<td>JSON representation of the ODPR validation schema</td>
+</tr>
+<tr>
+<td><a href="recipes/recipes.jsonl"><code>recipes.jsonl</code></a></td>
+<td>JSONL</td>
+<td>Agent-friendly one-recipe-per-line file for retrieval and lightweight tools</td>
+</tr>
+<tr>
+<td><a href="recipes/catalog.yaml"><code>catalog.yaml</code></a></td>
+<td>YAML</td>
+<td>Metadata-only RecipeCatalog that points to canonical recipe examples</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/minimal.yaml"><code>minimal.yaml</code></a></td>
+<td>YAML</td>
+<td>Minimal valid ODPR recipe example</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/ci-validate-generated-fragments.yaml"><code>ci-validate-generated-fragments.yaml</code></a></td>
+<td>YAML</td>
+<td>CI recipe that generates and validates fragments</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/release-portfolio-review.yaml"><code>release-portfolio-review.yaml</code></a></td>
+<td>YAML</td>
+<td>Release recipe for portfolio refresh, localization, and explanation</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/portfolio-localization.yaml"><code>portfolio-localization.yaml</code></a></td>
+<td>YAML</td>
+<td>Localization recipe with YAML list language targets</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/hybrid-graph-review.yaml"><code>hybrid-graph-review.yaml</code></a></td>
+<td>YAML</td>
+<td>Hybrid recipe that mixes local and hosted execution</td>
+</tr>
+<tr>
+<td><a href="recipes/examples/data-product-delivery.yaml"><code>data-product-delivery.yaml</code></a></td>
+<td>YAML</td>
+<td>Data Product Recipe example using <code>recipe.scope: data-product</code></td>
+</tr>
+<tr>
+<td><a href="recipes/examples/graph-triggered-impact-review.yaml"><code>graph-triggered-impact-review.yaml</code></a></td>
+<td>YAML</td>
+<td>Graph-triggered recipe example using <code>recipe.trigger</code> and <code>recipe.graphContext</code></td>
+</tr>
+<tr>
+<td><a href="recipes/examples/data-product-recipe.yaml"><code>data-product-recipe.yaml</code></a></td>
+<td>YAML</td>
+<td>Minimal DataProductRecipe manifest example</td>
+</tr>
+<tr>
+<td><a href="providers/examples/production-quality.yaml"><code>production-quality.yaml</code></a></td>
+<td>YAML</td>
+<td>Hosted Provider profile for production-quality generation</td>
+</tr>
+<tr>
+<td><a href="providers/examples/local-fast.yaml"><code>local-fast.yaml</code></a></td>
+<td>YAML</td>
+<td>Local Provider profile for fast development runs</td>
+</tr>
+<tr>
+<td><a href="providers/examples/local-graph.yaml"><code>local-graph.yaml</code></a></td>
+<td>YAML</td>
+<td>Local Provider profile for graph-building workflows</td>
+</tr>
+<tr>
+<td><a href="providers/examples/internal-secure.yaml"><code>internal-secure.yaml</code></a></td>
+<td>YAML</td>
+<td>Internal gateway Provider profile for controlled production use</td>
+</tr>
+</tbody></table>
+
+<p>Agent-oriented helper scripts are available in the source repository for
+maintaining and using recipe artifacts.</p>
+
+<!-- AI_AGENT_SCRIPT_GUIDANCE:
+When working from the source repository, use scripts/search_recipes.py for repeatable local ODPR recipe lookup.
+Use scripts/search_recipes.py --json when another tool or agent will consume the result.
+Use scripts/validate_recipe.py to validate ODPR YAML or JSON Recipe, Provider, RecipeCatalog, or DataProductRecipe files against source/schema/odpr.yaml and reject embedded secrets or API keys.
+Use scripts/build_recipe_catalog.py to regenerate source/recipes/catalog.yaml from canonical recipe examples; use --check in CI or review workflows.
+Use scripts/check_agent_artifacts.py in CI or review workflows to detect drift between schema, recipe artifacts, examples, and llms.txt.
+Use scripts/generate_recipe_artifacts.py after editing source/schema/odpr.yaml to regenerate source/schema/odpr.json; use --check in CI or review workflows.
+Install script dependencies with python -m pip install -r scripts/requirements-agent.txt.
+Do not edit generated or derived artifacts without checking alignment across llms.txt, schema files, recipe artifacts, examples, and tests.
+-->
+
+<table><thead>
+<tr>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/build_recipe_catalog.py"><code>build_recipe_catalog.py</code></a></td>
+<td>Regenerates the metadata-only <code>source/recipes/catalog.yaml</code> from canonical recipe examples; use <code>--check</code> to detect catalog drift</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/check_agent_artifacts.py"><code>check_agent_artifacts.py</code></a></td>
+<td>Checks schema alignment, example files, recipe JSONL records, and <code>llms.txt</code> references</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/generate_recipe_artifacts.py"><code>generate_recipe_artifacts.py</code></a></td>
+<td>Regenerates derived recipe artifacts such as <code>source/schema/odpr.json</code> from canonical source files; use <code>--check</code> to detect drift</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/search_recipes.py"><code>search_recipes.py</code></a></td>
+<td>Searches ODPR recipe records by keyword or exact recipe id; use <code>--json</code> for machine-readable results</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Open-Data-Product-Initiative/odpr-v1.0/blob/main/scripts/validate_recipe.py"><code>validate_recipe.py</code></a></td>
+<td>Validates ODPR YAML or JSON Recipe, Provider, RecipeCatalog, or DataProductRecipe files against the ODPR schema and rejects embedded secrets or API keys</td>
+</tr>
+</tbody></table>
+
+<p>The Markdown tables in this specification are intended for human readers. The
+schema, JSONL, and YAML example files are intended for programmable use,
+automation, validation, AI retrieval, and recipe tooling.</p>
+<h1 id='ai-agent-usage-patterns'>AI Agent Usage Patterns</h1>
+<p>ODPR is designed to be usable by AI agents, SDKs, CI/CD systems, and automation
+tools. From an agent perspective, ODPR provides three composite flow contracts:
+delivery flows, product handoff flows, and trigger-based flows driven by graph
+changes. Recipes, provider profiles, and recipe catalogs support those flows as
+building blocks.</p>
+
+<p>ODPS defines one data product. ODPC defines catalogs and reusable portfolio
+objects. ODPG defines relationships between data product artifacts. ODPV
+provides shared vocabulary terms. ODPR defines delivery work, handoff
+manifests, and trigger-based flows around those artifacts.</p>
+
+<!-- AI_AGENT_USAGE_PATTERNS:
+Use ODPR for delivery flows, product handoff flows, and trigger-based flows; do not use it for defining the data product, catalog, graph, or vocabulary model itself.
+Use providerRef as an execution reference only; provider configuration belongs to the SDK, CI system, or platform executing the recipe.
+Use RecipeCatalog only for metadata-only discovery; load and validate the referenced Recipe before execution.
+Use DataProductRecipe as a handoff manifest for one data product; do not treat it as a workflow execution script.
+Prefer declarative steps and gates over arbitrary shell scripts.
+Use context.format to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
+Use recipe.trigger and recipe.graphContext for graph-triggered recipes; treat triggers as graph change patterns, not graph queries or bindings to one graph node id.
+-->
+<h2 id='agent-capabilities-enabled-by-odpr'>Agent capabilities enabled by ODPR</h2>
+<p>Agents can use ODPR to:</p>
+
+<ul>
+<li>discover safe workflow recipes before running SDK tools</li>
+<li>read a <code>DataProductRecipe</code> to understand mandatory handoff files, readiness,
+review state, and agent instructions</li>
+<li>use a <code>RecipeCatalog</code> to find complete recipe files</li>
+<li>explain what a recipe will do before execution</li>
+<li>validate recipe files against <code>odpr.yaml</code> or <code>odpr.json</code></li>
+<li>select a development, CI, release, localization, hybrid, or agent recipe</li>
+<li>inspect whether a workflow expects local, hosted, hybrid, or no model execution</li>
+<li>inspect graph-triggered recipes whose ODPG graph change patterns make the
+recipe applicable</li>
+<li>follow declared gates and review requirements</li>
+<li>reuse a recipe in CI/CD or production automation</li>
+<li>preserve stable workflow intent while model providers vary by environment</li>
+</ul>
+<h2 id='common-agent-workflows'>Common agent workflows</h2>
+<table><thead>
+<tr>
+<th>Workflow</th>
+<th>Agent behavior</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Recipe validation</td>
+<td>Validate ODPR recipe files and report schema-compliant repairs.</td>
+</tr>
+<tr>
+<td>Recipe selection</td>
+<td>Choose a recipe based on task type, execution mode, context format, or required review.</td>
+</tr>
+<tr>
+<td>CI/CD preparation</td>
+<td>Convert a repeatable SDK command sequence into a declared recipe.</td>
+</tr>
+<tr>
+<td>Local development</td>
+<td>Run draft recipes that use local providers for fast iteration.</td>
+</tr>
+<tr>
+<td>Production review</td>
+<td>Run release recipes that use hosted providers, validation gates, and review expectations.</td>
+</tr>
+<tr>
+<td>Hybrid execution</td>
+<td>Combine local generation or graph inference with hosted review or localization.</td>
+</tr>
+<tr>
+<td>Graph-triggered workflow</td>
+<td>Match an ODPG graph change to an ODPR recipe trigger, prepare declared graph context, and run the recipe steps.</td>
+</tr>
+<tr>
+<td>Agent handoff</td>
+<td>Inspect recipe steps and gates before invoking SDK tools.</td>
+</tr>
+</tbody></table>
+<h2 id='agent-behavior-constraints'>Agent behavior constraints</h2>
+<p>Agents using ODPR should keep boundaries clear:</p>
+
+<ul>
+<li>Do not treat ODPR as a data product definition; use ODPS for product metadata.</li>
+<li>Do not treat ODPR as a catalog object model; use ODPC for catalogs and
+portfolio objects.</li>
+<li>Do not treat ODPR as a graph model; use ODPG for nodes, edges, and
+relationships.</li>
+<li>Do not attach recipe logic to one graph node id by default; graph-triggered
+recipes should use declared graph change patterns.</li>
+<li>Do not embed secrets or API keys in recipes.</li>
+<li>Do not put dry-run responses, run manifests, provider readiness results,
+planned writes, write-scope checks, run ids, or logs in ODPR documents.</li>
+<li>Do not assume <code>providerRef</code> is globally meaningful; it must be resolved by the
+executing SDK, CI system, or platform.</li>
+<li>Do not silently skip required gates or human review requirements.</li>
+</ul>
+<h2 id='example-prompts-odpr-enables'>Example prompts ODPR enables</h2>
+<ul>
+<li>&quot;Validate this ODPR recipe and suggest schema-compliant repairs.&quot;</li>
+<li>&quot;Create a CI recipe that generates signal fragments and validates them.&quot;</li>
+<li>&quot;Create a release recipe that refreshes, localizes, and explains a portfolio.&quot;</li>
+<li>&quot;Create a graph-triggered recipe that reacts when any graph node status changes to production.&quot;</li>
+<li>&quot;Explain which steps this recipe will run and whether human review is required.&quot;</li>
+<li>&quot;Convert this local development workflow into a hosted production recipe.&quot;</li>
+</ul>
 <h1 id='specification-extensions'>Specification extensions</h1>
 <p>While ODPR defines the core recipe object and attributes, organizations may need
 to add implementation-specific metadata for local tools, CI/CD systems,
@@ -3497,12 +4051,24 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.</p>
 </tr>
 </thead><tbody>
 <tr>
+<td>Delivery flow</td>
+<td>A composite ODPR flow for repeatable delivery work such as portfolio building, validation, localization, publishing, or release review.</td>
+</tr>
+<tr>
 <td>Recipe</td>
-<td>A portable, declarative workflow contract for repeatable data product work.</td>
+<td>A supporting portable workflow unit used inside delivery flows and trigger-based flows.</td>
+</tr>
+<tr>
+<td>Product Delivery Recipe</td>
+<td>A recipe pattern or handoff agreement for delivering or changing one data product. In ODPR v1, the handoff manifest is the <code>DataProductRecipe</code> root object.</td>
 </tr>
 <tr>
 <td>Data Product Recipe</td>
 <td>A reviewable handoff artifact for delivery planning, readiness, validation, implementation guidance, AI-agent guidance, and review around one data product.</td>
+</tr>
+<tr>
+<td>Trigger-based flow</td>
+<td>A workflow made applicable by a declared graph change.</td>
 </tr>
 <tr>
 <td>Workflow</td>
@@ -3522,15 +4088,19 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.</p>
 </tr>
 <tr>
 <td>Provider</td>
-<td>A named ODPR runtime profile that recipes can reference with <code>providerRef</code>.</td>
+<td>A supporting runtime profile that recipes can reference with <code>providerRef</code>.</td>
 </tr>
 <tr>
 <td>Recipe catalog</td>
-<td>Metadata-only discovery list for available recipe files.</td>
+<td>Supporting metadata-only discovery list for available recipe files.</td>
 </tr>
 <tr>
 <td>Review</td>
 <td>A human or agent review expectation declared by the recipe.</td>
+</tr>
+<tr>
+<td>Graph trigger</td>
+<td>A small recipe trigger pattern that makes a normal ODPR Recipe applicable when an ODPG graph change matches.</td>
 </tr>
 </tbody></table>
 <h2 id='odpr-specific-usage-notes'>ODPR-specific usage notes</h2>
@@ -3542,15 +4112,15 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.</p>
 </thead><tbody>
 <tr>
 <td><code>Recipe</code></td>
-<td>The ODPR root object that declares one repeatable data product workflow.</td>
+<td>Supporting ODPR object that declares one reusable workflow unit.</td>
 </tr>
 <tr>
 <td><code>Provider</code></td>
-<td>The ODPR root object that declares one named provider profile.</td>
+<td>Supporting ODPR object that declares one named provider profile.</td>
 </tr>
 <tr>
 <td><code>RecipeCatalog</code></td>
-<td>The ODPR root object that lists recipe metadata and paths to full recipe files.</td>
+<td>Supporting ODPR object that lists recipe metadata and paths to full recipe files.</td>
 </tr>
 <tr>
 <td><code>DataProductRecipe</code></td>
@@ -3571,6 +4141,14 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.</p>
 <tr>
 <td><code>context.format</code></td>
 <td>The preferred context format for a recipe, such as <code>yaml</code>, <code>toon</code>, <code>gcf</code>, or <code>auto</code>.</td>
+</tr>
+<tr>
+<td><code>trigger</code></td>
+<td>Optional Recipe field that declares which ODPG graph change can make the recipe applicable.</td>
+</tr>
+<tr>
+<td><code>graphContext</code></td>
+<td>Optional Recipe field that requests minimal ODPG context after a trigger match.</td>
 </tr>
 <tr>
 <td><code>execution.mode</code></td>

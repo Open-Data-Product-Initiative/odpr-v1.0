@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" role="img" aria-labelledby="title desc">
+  <title id="title">Delivery flow model</title>
+  <desc id="desc">Conceptual illustration showing the visible parts of an ODPR delivery flow: work intent, scope, operations, runtime expectation, durable outputs, and gates and review.</desc>
+  <defs>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f001f"/>
+      <stop offset="1" stop-color="#35004f"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#35000c" flood-opacity="0.14"/>
+    </filter>
+    <style>
+      .label { font-family: Inter, Arial, sans-serif; fill: #230336; }
+      .title { font-size: 32px; font-weight: 700; }
+      .subtitle { font-size: 17px; fill: #5f4854; }
+      .card-title { font-size: 20px; font-weight: 700; }
+      .small { font-size: 14px; fill: #5f4854; }
+      .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 14px; fill: #8f001f; }
+      .tiny { font-size: 13px; fill: #230336; }
+      .white { fill: #ffffff; }
+      .card { fill: #ffffff; stroke: #c97a7e; stroke-width: 1.8; }
+      .band { fill: #fff8fa; stroke: #e3b8c2; stroke-width: 1.5; }
+      .line { fill: none; stroke: #a10027; stroke-width: 2.2; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="560" rx="22" fill="#f7fafc"/>
+  <rect x="36" y="34" width="1028" height="492" rx="22" fill="#ffffff" stroke="#ead2d8"/>
+
+  <text x="68" y="86" class="label title">Delivery Flow Contract</text>
+  <text x="68" y="116" class="label subtitle">The visual names the same Recipe fields used in the YAML example.</text>
+
+  <rect x="390" y="190" width="320" height="126" rx="22" fill="url(#core)" filter="url(#shadow)"/>
+  <text x="550" y="238" text-anchor="middle" class="label card-title white">recipe</text>
+  <text x="550" y="272" text-anchor="middle" class="label small white">delivery flow contract</text>
+  <line x1="448" y1="292" x2="652" y2="292" stroke="#ffffff" stroke-opacity="0.45"/>
+  <text x="550" y="310" text-anchor="middle" class="label tiny white">encoded with a Recipe building block</text>
+
+  <path class="line" d="M390 228 H292"/>
+  <path class="line" d="M390 282 H292"/>
+  <path class="line" d="M710 228 H808"/>
+  <path class="line" d="M710 282 H808"/>
+  <path class="line" d="M480 316 V390"/>
+  <path class="line" d="M620 316 V390"/>
+
+  <rect x="76" y="176" width="216" height="82" rx="16" class="card"/>
+  <text x="102" y="207" class="label card-title">Work intent</text>
+  <text x="102" y="232" class="code">type</text>
+  <text x="102" y="252" class="label small">release, ci, agent</text>
+
+  <rect x="76" y="270" width="216" height="82" rx="16" class="card"/>
+  <text x="102" y="301" class="label card-title">Scope</text>
+  <text x="102" y="326" class="code">scope</text>
+  <text x="102" y="346" class="label small">portfolio, graph</text>
+
+  <rect x="808" y="176" width="216" height="82" rx="16" class="card"/>
+  <text x="834" y="207" class="label card-title">Operations</text>
+  <text x="834" y="232" class="code">steps</text>
+  <text x="834" y="252" class="label small">ordered commands</text>
+
+  <rect x="808" y="270" width="216" height="82" rx="16" class="card"/>
+  <text x="834" y="301" class="label card-title">Runtime</text>
+  <text x="834" y="326" class="code">execution</text>
+  <text x="834" y="346" class="label small">mode, providerRef</text>
+
+  <rect x="264" y="390" width="256" height="82" rx="16" class="card"/>
+  <text x="290" y="421" class="label card-title">Durable outputs</text>
+  <text x="290" y="446" class="code">outputs</text>
+  <text x="290" y="466" class="label small">files, reports, notes</text>
+
+  <rect x="580" y="390" width="256" height="82" rx="16" class="card"/>
+  <text x="606" y="421" class="label card-title">Gates and review</text>
+  <text x="606" y="446" class="code">gates</text>
+  <text x="668" y="446" class="label small">+</text>
+  <text x="686" y="446" class="code">review</text>
+  <text x="606" y="466" class="label small">checks before acceptance</text>
+
+  <rect x="242" y="488" width="616" height="26" rx="13" class="band"/>
+  <text x="550" y="506" text-anchor="middle" class="label tiny">ODPR declares the contract; the runtime owns execution, credentials, logs, and run evidence.</text>
+</svg>

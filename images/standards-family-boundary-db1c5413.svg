@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 500" role="img" aria-labelledby="title desc">
+  <title id="title">ODPR relationship to the OpenDataProducts.org standards family</title>
+  <desc id="desc">Diagram showing ODPS, ODPC, ODPG, and ODPV as artifact model standards, with ODPR as a separate delivery workflow and handoff contract layer around those artifacts.</desc>
+  <defs>
+    <linearGradient id="odpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f001f"/>
+      <stop offset="1" stop-color="#35004f"/>
+    </linearGradient>
+    <style>
+      .label { font-family: Inter, Arial, sans-serif; fill: #230336; }
+      .title { font-size: 30px; font-weight: 700; }
+      .subtitle { font-size: 16px; fill: #5f4854; }
+      .card-title { font-size: 20px; font-weight: 700; }
+      .small { font-size: 15px; fill: #5f4854; }
+      .tiny { font-size: 13px; fill: #230336; }
+      .white { fill: #ffffff; }
+      .artifact { fill: #ffffff; stroke: #c97a7e; stroke-width: 1.7; }
+      .artifact-band { fill: #fff8fa; stroke: #ead2d8; stroke-width: 1.5; }
+      .odpr-band { fill: url(#odpr); }
+      .connector { stroke: #b95e6f; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 5 7; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="500" rx="22" fill="#f7fafc"/>
+  <rect x="42" y="38" width="1016" height="424" rx="22" fill="#ffffff" stroke="#ead2d8"/>
+
+  <text x="76" y="88" class="label title">Standards Family Boundary</text>
+  <text x="76" y="118" class="label subtitle">ODPR declares delivery contracts around artifacts defined by the other standards.</text>
+
+  <rect x="92" y="154" width="916" height="138" rx="22" class="artifact-band"/>
+  <text x="550" y="184" text-anchor="middle" class="label small">Artifact model standards</text>
+
+  <rect x="130" y="206" width="180" height="64" rx="16" class="artifact"/>
+  <text x="220" y="233" text-anchor="middle" class="label card-title">ODPS</text>
+  <text x="220" y="256" text-anchor="middle" class="label tiny">product model</text>
+
+  <rect x="344" y="206" width="180" height="64" rx="16" class="artifact"/>
+  <text x="434" y="233" text-anchor="middle" class="label card-title">ODPC</text>
+  <text x="434" y="256" text-anchor="middle" class="label tiny">catalogs and portfolio</text>
+
+  <rect x="558" y="206" width="180" height="64" rx="16" class="artifact"/>
+  <text x="648" y="233" text-anchor="middle" class="label card-title">ODPG</text>
+  <text x="648" y="256" text-anchor="middle" class="label tiny">graphs and relationships</text>
+
+  <rect x="772" y="206" width="180" height="64" rx="16" class="artifact"/>
+  <text x="862" y="233" text-anchor="middle" class="label card-title">ODPV</text>
+  <text x="862" y="256" text-anchor="middle" class="label tiny">vocabulary and terms</text>
+
+  <line x1="550" y1="304" x2="550" y2="334" class="connector"/>
+
+  <rect x="132" y="334" width="836" height="82" rx="22" class="odpr-band"/>
+  <text x="550" y="368" text-anchor="middle" class="label card-title white">ODPR</text>
+  <text x="550" y="396" text-anchor="middle" class="label small white">delivery flows, product handoff flows, and trigger-based flows around those artifacts</text>
+
+  <text x="550" y="446" text-anchor="middle" class="label tiny">ODPR does not redefine the product, catalog, graph, or vocabulary model.</text>
+</svg>

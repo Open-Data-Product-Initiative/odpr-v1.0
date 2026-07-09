@@ -1,12 +1,10 @@
 # Data Product Recipe Specification (ODPR)
 
 ODPR is a lightweight, vendor-neutral, machine-readable standard for reusable
-data product workflow recipes, named provider profiles, metadata-only recipe
-catalogs, and Data Product Recipe handoff manifests. It defines portable
-recipes for creating, validating, reviewing, localizing, publishing, and
-refreshing data product artifacts, plus portable Provider objects that recipes
-can reference through `providerRef`, RecipeCatalog objects for discovery, and
-DataProductRecipe objects for reviewable data product delivery work.
+data product delivery work. It has three primary composite flows: delivery
+flows, product handoff flows for one data product, and trigger-based flows
+driven by graph changes. Recipe, Provider, and RecipeCatalog objects are
+supporting building blocks.
 
 Base URL:
 - https://opendataproducts.org/odpr-v1.0
@@ -20,12 +18,16 @@ Family-level toolkit:
 - ODP Agent SDK: https://opendataproducts.org/sdk/
 - The ODP Agent SDK supports ODPR and is the first reference implementation for
   validating and executing ODPR recipes.
-- ODPR recipes are portable workflow contracts and may also be used with other
-  conforming SDKs, CI/CD systems, MCP servers, or platform implementations.
+- ODPR recipes are reusable workflow units inside delivery and trigger-based
+  flows. They may also be used with other conforming SDKs, CI/CD systems, MCP
+  servers, or platform implementations.
 - Use ODPR-specific schemas, examples, recipes.jsonl, and helper scripts
   together with the ODP Agent SDK when the task focuses on recipe documents.
 - When explaining or running a recipe, inspect command names, step `with`
   arguments, declared outputs, gates, review policy, environment, and runPolicy.
+- When explaining graph-triggered recipes, inspect `recipe.trigger` and
+  `recipe.graphContext`. Treat triggers as graph change patterns, not graph
+  queries or bindings to one graph node id.
 - Do not model SDK invocation mode, dry-run responses, run manifests, logs,
   provider readiness, planned writes, write-scope checks, or run ids as ODPR
   root objects.
@@ -64,6 +66,7 @@ Recipe example files:
 - /recipes/examples/portfolio-localization.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/portfolio-localization.yaml)
 - /recipes/examples/hybrid-graph-review.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/hybrid-graph-review.yaml)
 - /recipes/examples/data-product-delivery.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/data-product-delivery.yaml)
+- /recipes/examples/graph-triggered-impact-review.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/graph-triggered-impact-review.yaml)
 - /recipes/examples/data-product-recipe.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/data-product-recipe.yaml)
 
 Provider example files:
@@ -96,15 +99,23 @@ Knowledge base:
 - https://opendataproducts.org/howto/
 
 Core ODPR concepts:
-- Recipe: root workflow document that declares metadata, recipe version, type,
-  execution policy, context policy, steps, gates, and review expectations.
-- Provider: root provider profile document that declares the provider family,
-  model, provider class, endpoint reference, credentials reference, and safe
-  runtime defaults for a named `providerRef`.
-- RecipeCatalog: root metadata-only discovery document that lists available
-  recipes and points to complete Recipe files.
+- Delivery flow: repeatable delivery work such as portfolio building,
+  validation, localization, publishing, and release review.
+- Recipe: supporting workflow unit used by delivery flows and trigger-based
+  flows; represented with `kind: Recipe`.
 - DataProductRecipe: root Data Product Recipe handoff document for developers
   and AI agents planning and implementing one data product.
+- Trigger-based flow: recipe applicability driven by an ODPG graph change.
+- GraphTrigger: optional Recipe trigger contract that declares which ODPG graph
+  change pattern can make a recipe applicable.
+- GraphContext: optional Recipe graph context contract that declares the ODPG
+  graph reference, trigger-derived start point, and context depth needed by a
+  graph-triggered recipe.
+- Provider: supporting provider profile document that declares the provider family,
+  model, provider class, endpoint reference, credentials reference, and safe
+  runtime defaults for a named `providerRef`.
+- RecipeCatalog: supporting metadata-only discovery document that lists available
+  recipes and points to complete Recipe files.
 - Step: one operation in a recipe, such as generate, validate, portfolio.build,
   portfolio.localize, portfolio.explain, or odpg.build.
 - Execution: runtime policy for local, hosted, hybrid, or model-free execution.
@@ -134,10 +145,11 @@ Recommended agent workflow:
    Provider objects into raw secret stores.
 
 Modeling constraints:
-- ODPR defines workflow recipes, provider profile documents, metadata-only
-  recipe catalogs, and DataProductRecipe documents. It does not
-  define data products, ODPC catalog object models, graphs, vocabularies, SDK
-  internals, CI/CD engines, or provider-specific APIs.
+- ODPR defines three primary composite flows: delivery flows, product handoff
+  flows, and trigger-based flows. Recipe, Provider, and RecipeCatalog documents
+  are supporting building blocks. ODPR does not define data products, ODPC
+  catalog object models, graphs, vocabularies, SDK internals, CI/CD engines, or
+  provider-specific APIs.
 - Recipe documents use `kind: Recipe`. Provider documents use `kind: Provider`.
   Recipe catalog documents use `kind: RecipeCatalog`. Data Product Recipe
   documents use `kind: DataProductRecipe`.
@@ -155,6 +167,16 @@ Modeling constraints:
 - Execution mode should be one of local, hosted, hybrid, or none. It is not SDK
   invocation mode such as validate, dry-run, execute, or resume.
 - Context format should be one of yaml, toon, gcf, or auto.
+- Graph-triggered recipes use `recipe.trigger.source: odpg` and a closed
+  `recipe.trigger.event` value such as `node.added`, `node.removed`,
+  `node.attributeChanged`, `edge.added`, `edge.removed`,
+  `edge.attributeChanged`, or `graph.conditionMatched`.
+- Graph trigger subjects match graph change patterns. `subject.nodeType` may
+  be a controlled node type or `*`; `subject.attribute.name` must be explicit
+  and must not be `*`.
+- ODPG may reference ODPR recipes for graph-local discovery, but ODPR remains
+  the source of truth for trigger semantics, steps, provider references, gates,
+  and review policy.
 - Provider profiles should use `credentialsRef` instead of raw credentials.
 - Validation should reject embedded secrets or API keys in Recipe, Provider,
   and RecipeCatalog documents.

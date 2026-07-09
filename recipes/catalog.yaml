@@ -131,3 +131,24 @@ recipeCatalog:
         - explain
         - generate
         - validate
+    - path: recipes/examples/graph-triggered-impact-review.yaml
+      id: RCP-GRAPH-001
+      groupRef: examples
+      version: 1.0.0
+      type: agent
+      name:
+        en: Graph Triggered Impact Review
+      scope: graph
+      description:
+        en: Review graph impact when a node status changes to production.
+      tags:
+        - graph
+        - trigger
+        - review
+      executionMode: hosted
+      providerRef: production-quality
+      contextFormat: gcf
+      requiresReview: true
+      commands:
+        - odpg.agent-context
+        - generate

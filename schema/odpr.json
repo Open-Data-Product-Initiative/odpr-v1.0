@@ -264,6 +264,305 @@
         "portfolio"
       ]
     },
+    "GraphNodeType": {
+      "type": "string",
+      "enum": [
+        "DataProduct",
+        "BusinessObjective",
+        "UseCase",
+        "Signal",
+        "Policy",
+        "DataContract",
+        "DataService",
+        "API",
+        "Owner",
+        "System",
+        "*"
+      ]
+    },
+    "GraphTriggerAttributeValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "GraphTriggerAttribute": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!\\*$).+"
+        },
+        "from": {
+          "$ref": "#/$defs/GraphTriggerAttributeValue"
+        },
+        "to": {
+          "$ref": "#/$defs/GraphTriggerAttributeValue"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "from"
+          ]
+        },
+        {
+          "required": [
+            "to"
+          ]
+        }
+      ]
+    },
+    "GraphTriggerSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "properties": {
+        "nodeType": {
+          "$ref": "#/$defs/GraphNodeType"
+        },
+        "edgeType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fromNodeType": {
+          "$ref": "#/$defs/GraphNodeType"
+        },
+        "toNodeType": {
+          "$ref": "#/$defs/GraphNodeType"
+        },
+        "attribute": {
+          "$ref": "#/$defs/GraphTriggerAttribute"
+        }
+      }
+    },
+    "GraphTriggerCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "GraphTrigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": [
+        "source",
+        "event"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "odpg"
+          ]
+        },
+        "event": {
+          "type": "string",
+          "enum": [
+            "node.added",
+            "node.removed",
+            "node.attributeChanged",
+            "edge.added",
+            "edge.removed",
+            "edge.attributeChanged",
+            "graph.conditionMatched"
+          ]
+        },
+        "subject": {
+          "$ref": "#/$defs/GraphTriggerSubject"
+        },
+        "condition": {
+          "$ref": "#/$defs/GraphTriggerCondition"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "event": {
+                "enum": [
+                  "node.added",
+                  "node.removed"
+                ]
+              }
+            },
+            "required": [
+              "event"
+            ]
+          },
+          "then": {
+            "required": [
+              "subject"
+            ],
+            "properties": {
+              "subject": {
+                "required": [
+                  "nodeType"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event": {
+                "const": "node.attributeChanged"
+              }
+            },
+            "required": [
+              "event"
+            ]
+          },
+          "then": {
+            "required": [
+              "subject"
+            ],
+            "properties": {
+              "subject": {
+                "required": [
+                  "attribute"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event": {
+                "enum": [
+                  "edge.added",
+                  "edge.removed"
+                ]
+              }
+            },
+            "required": [
+              "event"
+            ]
+          },
+          "then": {
+            "required": [
+              "subject"
+            ],
+            "properties": {
+              "subject": {
+                "required": [
+                  "edgeType"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event": {
+                "const": "edge.attributeChanged"
+              }
+            },
+            "required": [
+              "event"
+            ]
+          },
+          "then": {
+            "required": [
+              "subject"
+            ],
+            "properties": {
+              "subject": {
+                "required": [
+                  "edgeType",
+                  "attribute"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event": {
+                "const": "graph.conditionMatched"
+              }
+            },
+            "required": [
+              "event"
+            ]
+          },
+          "then": {
+            "required": [
+              "condition"
+            ]
+          }
+        }
+      ]
+    },
+    "GraphContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": [
+        "graphRef",
+        "start"
+      ],
+      "properties": {
+        "graphRef": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/RelativePath"
+            },
+            {
+              "type": "string",
+              "pattern": "^https?://.+"
+            }
+          ]
+        },
+        "start": {
+          "type": "string",
+          "minLength": 1
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
     "ContextPolicy": {
       "type": "object",
       "additionalProperties": false,
@@ -372,6 +671,9 @@
           "$ref": "#/$defs/OdpgBuildStepRule"
         },
         {
+          "$ref": "#/$defs/OdpgAgentContextStepRule"
+        },
+        {
           "$ref": "#/$defs/OdpgRenderStepRule"
         },
         {
@@ -404,6 +706,7 @@
               "command": {
                 "enum": [
                   "odpc.build",
+                  "odpg.agent-context",
                   "odpg.render",
                   "portfolio.sync",
                   "portfolio.render",
@@ -629,6 +932,41 @@
             },
             "output": {
               "$ref": "#/$defs/RelativePath"
+            }
+          }
+        }
+      ]
+    },
+    "OdpgAgentContextWith": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/WithBase"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {}
+          },
+          "required": [
+            "graph",
+            "start",
+            "output"
+          ],
+          "properties": {
+            "graph": {
+              "$ref": "#/$defs/RelativePath"
+            },
+            "start": {
+              "type": "string",
+              "minLength": 1
+            },
+            "output": {
+              "$ref": "#/$defs/RelativePath"
+            },
+            "depth": {
+              "type": "integer",
+              "minimum": 1
             }
           }
         }
@@ -999,6 +1337,28 @@
         "properties": {
           "with": {
             "$ref": "#/$defs/OdpgBuildWith"
+          }
+        }
+      }
+    },
+    "OdpgAgentContextStepRule": {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "odpg.agent-context"
+          }
+        },
+        "required": [
+          "command"
+        ]
+      },
+      "then": {
+        "required": [
+          "with"
+        ],
+        "properties": {
+          "with": {
+            "$ref": "#/$defs/OdpgAgentContextWith"
           }
         }
       }
@@ -1809,6 +2169,12 @@
         },
         "context": {
           "$ref": "#/$defs/ContextPolicy"
+        },
+        "trigger": {
+          "$ref": "#/$defs/GraphTrigger"
+        },
+        "graphContext": {
+          "$ref": "#/$defs/GraphContext"
         },
         "execution": {
           "$ref": "#/$defs/ExecutionPolicy"
