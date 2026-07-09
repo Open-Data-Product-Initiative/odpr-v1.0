@@ -23,6 +23,7 @@ EXPECTED_EXAMPLES = [
     "portfolio-localization.yaml",
     "hybrid-graph-review.yaml",
     "data-product-delivery.yaml",
+    "graph-triggered-impact-review.yaml",
     "data-product-recipe.yaml",
 ]
 
@@ -33,7 +34,7 @@ EXPECTED_PROVIDER_EXAMPLES = [
     "internal-secure.yaml",
 ]
 
-EXPECTED_RECORD_IDS = {"Recipe", "Provider", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"}
+EXPECTED_RECORD_IDS = {"Recipe", "Provider", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "GraphTrigger", "Gate"}
 
 
 def load_yaml(path):
@@ -146,8 +147,21 @@ def check_schema():
     assert recipe["properties"]["scope"]["$ref"] == "#/$defs/RecipeScope", "Recipe must define optional scope"
     assert "execution" in recipe["properties"], "Recipe must define execution policy"
     assert "context" in recipe["properties"], "Recipe must define context policy"
+    assert "trigger" in recipe["properties"], "Recipe must define optional graph trigger"
+    assert "graphContext" in recipe["properties"], "Recipe must define optional graph context"
     assert "gates" in recipe["properties"], "Recipe must define gates"
     assert "review" in recipe["properties"], "Recipe must define review"
+    trigger = schema["$defs"]["GraphTrigger"]
+    assert trigger["properties"]["event"]["enum"] == [
+        "node.added",
+        "node.removed",
+        "node.attributeChanged",
+        "edge.added",
+        "edge.removed",
+        "edge.attributeChanged",
+        "graph.conditionMatched",
+    ], "GraphTrigger event enum changed unexpectedly"
+    assert "*" in schema["$defs"]["GraphNodeType"]["enum"], "GraphNodeType must allow wildcard node type"
 
     provider = schema["$defs"][schema["properties"]["provider"]["$ref"].split("/")[-1]]
     assert provider["required"] == ["id", "provider"], "Provider required fields changed unexpectedly"
@@ -180,6 +194,14 @@ def check_examples():
     data_product_recipe = load_yaml(EXAMPLES_DIR / "data-product-delivery.yaml")
     assert_recipe_document(data_product_recipe, "agent")
     assert data_product_recipe["recipe"]["scope"] == "data-product"
+    graph_triggered_recipe = load_yaml(EXAMPLES_DIR / "graph-triggered-impact-review.yaml")
+    assert_recipe_document(graph_triggered_recipe, "agent")
+    assert graph_triggered_recipe["recipe"]["scope"] == "graph"
+    assert graph_triggered_recipe["recipe"]["trigger"]["source"] == "odpg"
+    assert graph_triggered_recipe["recipe"]["trigger"]["event"] == "node.attributeChanged"
+    assert graph_triggered_recipe["recipe"]["trigger"]["subject"]["nodeType"] == "*"
+    assert graph_triggered_recipe["recipe"]["trigger"]["subject"]["attribute"]["name"] == "status"
+    assert graph_triggered_recipe["recipe"]["graphContext"]["start"] == "trigger.subject"
     assert_data_product_recipe_document(load_yaml(EXAMPLES_DIR / "data-product-recipe.yaml"))
     assert_recipe_catalog_document(load_yaml(RECIPES_DIR / "catalog.yaml"))
 
@@ -228,6 +250,7 @@ def check_recipes_and_llms():
         "/recipes/examples/ci-validate-generated-fragments.yaml",
         "/recipes/examples/portfolio-localization.yaml",
         "/recipes/examples/data-product-delivery.yaml",
+        "/recipes/examples/graph-triggered-impact-review.yaml",
         "/recipes/examples/data-product-recipe.yaml",
         "/recipes/catalog.yaml",
         "/providers/examples/production-quality.yaml",

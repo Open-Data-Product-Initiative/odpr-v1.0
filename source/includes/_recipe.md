@@ -1,15 +1,20 @@
-# ODPR Recipe
+# Recipe
 
-The `Recipe` object is the root ODPR object. It declares one repeatable workflow
-for data product delivery, validation, review, localization, publishing, or
-automation.
+The `Recipe` object is a supporting ODPR building block. It declares one
+reusable workflow unit that delivery flows and trigger-based flows can use.
 
 Recipes are intended to be readable by humans and executable by tools. A recipe
 should be specific enough for an SDK, CI/CD system, MCP server, or agent to
 understand the workflow before it runs, while staying portable enough to avoid
 binding the standard to one implementation.
 
-## Root structure
+## Recipe design principle
+
+A recipe is not a script. A recipe is a portable, declarative workflow
+contract. Scripts tell one tool what to do. Recipes tell teams, tools, agents,
+and automation systems how a data product workflow should run.
+
+## Recipe structure
 
 ```yaml
 schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
@@ -40,7 +45,7 @@ recipe:
 | `kind` | string | required | ODPR root object type. Recipe files MUST use `Recipe`. |
 | `recipe` | object | required | Top-level object that defines the workflow recipe. |
 
-## Recipe fields
+### Recipe fields
 
 ```yaml
 recipe:
@@ -91,12 +96,14 @@ recipe:
 | `outputs` | array | optional | Named workflow outputs. |
 | `context` | object | optional | Context format policy such as YAML, TOON, GCF, or automatic fallback. |
 | `execution` | object | optional | Workflow intent such as local, hosted, hybrid, or model-free runtime/provider class. |
+| `trigger` | object | optional | Graph change pattern that can make a graph-triggered recipe applicable. |
+| `graphContext` | object | optional | Minimal ODPG graph context needed after a graph trigger matches. |
 | `gates` | array | optional | Validation, quality, or review gates. |
 | `review` | object | optional | Human or agent review expectations. |
 | `environment` | string | optional | Environment label such as development, CI, staging, or production. |
 | `runPolicy` | object | optional | Runtime limits such as timeout or retry guidance. |
 
-## Recipe types
+### Recipe types
 
 | Type | Purpose |
 |---|---|
@@ -107,7 +114,7 @@ recipe:
 | `hybrid` | Workflows that mix local and hosted execution. |
 | `agent` | Agent-safe workflows that AI agents can inspect and run. |
 
-## Recipe scopes
+### Recipe scopes
 
 `recipe.scope` identifies the standards-family target the recipe primarily
 governs. `recipe.type` describes the workflow category, while `recipe.scope`
@@ -126,7 +133,13 @@ but the handoff artifact uses the `DataProductRecipe` root kind and
 `dataProductRecipe` manifest object. ODPR does not define a separate
 `ProductRecipe` root kind.
 
-## Execution modes
+### Recipe patterns
+
+ODPR uses one shared `Recipe` structure. Product delivery recipes use that
+structure for delivery work and handoff support. Graph-triggered recipes use
+that structure when a graph change should make the recipe applicable.
+
+## Runtime behavior
 
 A `Recipe` is the portable workflow contract. The same recipe document can be
 validated, dry-run, executed, or resumed by an SDK or platform. ODPR does not
@@ -142,7 +155,7 @@ hybrid, or none.
 | `hybrid` | Uses local and hosted execution in the same recipe. |
 | `none` | Does not require model execution. |
 
-## Context formats
+### Context formats
 
 | Format | Meaning |
 |---|---|
@@ -151,7 +164,7 @@ hybrid, or none.
 | `gcf` | Use GCF compact graph/catalog context when available. |
 | `auto` | Let the executing tool choose the preferred available context. |
 
-## Provider references
+### Provider references
 
 `providerRef` identifies a standardized ODPR `Provider` profile by
 `provider.id`. The recipe does not embed provider internals; it only names the
@@ -174,7 +187,7 @@ ODPR validation tools SHOULD reject embedded secrets or API keys in recipes.
 Use `providerRef` in recipes and `credentialsRef` in Provider documents instead
 of fields such as `apiKey`, `token`, `password`, or inline secret values.
 
-## Recommended commands
+### Recommended commands
 
 ODPR keeps commands lightweight so recipes stay portable across implementations.
 Implementations SHOULD support the recommended command names where the
@@ -185,6 +198,7 @@ underlying capability exists. Implementations MAY support additional commands.
 | `generate` | `llm-backed` | `input`, `kind`, `output` | `config`, `prompts`, `profile`, `includeComponents`, `maxSourceChars`, `ollamaUrl` |
 | `odpc.build` | `deterministic` | `input`, `output` | `html`, `toon`, `gcf`, `id`, `name`, `description`, `recursive`, `validate` |
 | `odpg.build` | `llm-backed` | `input`, `output` | `toon`, `gcf`, `contextGraph`, `id`, `name`, `description`, `recursive`, `validate`, `config`, `prompts`, `ollamaUrl` |
+| `odpg.agent-context` | `deterministic` | `graph`, `start`, `output` | `depth` |
 | `odpg.render` | `deterministic` | `graph`, `output` | none |
 | `portfolio.build` | `llm-backed` | at least one of `objectives`, `useCases`, `signals`, or `products`; and `output`, `workspace`, or both | `title`, `config`, `prompts`, `ollamaUrl`, `strictValidation` |
 | `portfolio.refresh` | `llm-backed` | `workspace` | `objectives`, `useCases`, `signals`, `products`, `title`, `config`, `allSources`, `prompts`, `ollamaUrl`, `strictValidation` |
@@ -207,7 +221,7 @@ language tags.
 | `review` | Requires human or external approval. |
 | `report` | Reads artifacts and produces summaries, diagnostics, or review material. |
 
-## Outputs
+### Outputs
 
 Use `inputs` and `outputs` when a workflow uses or creates durable artifacts
 that later steps, CI
@@ -219,7 +233,7 @@ Recipe-level paths should be project-relative. Recipes should not use absolute
 paths or `..` traversal. ODPR states this safety expectation; SDKs and
 platforms enforce write-scope policy.
 
-## Gates, review, and runtime policy
+### Gates, review, and runtime policy
 
 Required gates SHOULD be evaluated or reported by the executing tool. Tools
 SHOULD NOT silently skip required gates.
@@ -232,13 +246,13 @@ behavior, and retry expectations. It is useful for CI jobs, local model calls,
 portfolio localization, and hosted provider calls. ODPR v1 does not define
 approval records, workflow pauses, run manifests, or gate status storage.
 
-## Environment labels
+### Environment labels
 
 Use `environment` to label the intended operating context, such as
 `development`, `ci`, `staging`, or `production`. The value is a string so teams
 can use local naming conventions while keeping common labels readable.
 
-## Example
+## Recipe example
 
 ```yaml
 schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml

@@ -115,8 +115,27 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertEqual(schema["$defs"][scope_ref]["enum"], ["data-product", "catalog", "graph", "portfolio"])
         self.assertIn("execution", recipe["properties"])
         self.assertIn("context", recipe["properties"])
+        self.assertIn("trigger", recipe["properties"])
+        self.assertIn("graphContext", recipe["properties"])
         self.assertIn("gates", recipe["properties"])
         self.assertIn("review", recipe["properties"])
+        trigger = schema["$defs"]["GraphTrigger"]
+        self.assertEqual(
+            trigger["properties"]["event"]["enum"],
+            [
+                "node.added",
+                "node.removed",
+                "node.attributeChanged",
+                "edge.added",
+                "edge.removed",
+                "edge.attributeChanged",
+                "graph.conditionMatched",
+            ],
+        )
+        node_type = schema["$defs"]["GraphNodeType"]
+        self.assertIn("*", node_type["enum"])
+        attribute = schema["$defs"]["GraphTriggerAttribute"]
+        self.assertNotIn("*", attribute["properties"]["name"].get("enum", []))
 
         provider_ref = schema["properties"]["provider"]["$ref"].split("/")[-1]
         provider = schema["$defs"][provider_ref]
@@ -147,6 +166,7 @@ class AgentArtifactsTest(unittest.TestCase):
             "portfolio-localization.yaml",
             "hybrid-graph-review.yaml",
             "data-product-delivery.yaml",
+            "graph-triggered-impact-review.yaml",
         ]
 
         for filename in expected:
@@ -188,6 +208,28 @@ class AgentArtifactsTest(unittest.TestCase):
         )
         assert_recipe_document(data_product_recipe, "agent")
         self.assertEqual(data_product_recipe["recipe"]["scope"], "data-product")
+
+        graph_triggered_recipe = load_yaml(
+            SOURCE / "recipes" / "examples" / "graph-triggered-impact-review.yaml"
+        )
+        assert_recipe_document(graph_triggered_recipe, "agent")
+        self.assertEqual(graph_triggered_recipe["recipe"]["scope"], "graph")
+        self.assertEqual(
+            graph_triggered_recipe["recipe"]["trigger"]["event"],
+            "node.attributeChanged",
+        )
+        self.assertEqual(
+            graph_triggered_recipe["recipe"]["trigger"]["subject"]["nodeType"],
+            "*",
+        )
+        self.assertEqual(
+            graph_triggered_recipe["recipe"]["trigger"]["subject"]["attribute"]["name"],
+            "status",
+        )
+        self.assertEqual(
+            graph_triggered_recipe["recipe"]["graphContext"]["start"],
+            "trigger.subject",
+        )
 
     def test_examples_cover_recipe_catalog(self):
         document = load_yaml(SOURCE / "recipes" / "catalog.yaml")
@@ -236,7 +278,7 @@ class AgentArtifactsTest(unittest.TestCase):
         ]
 
         ids = {record["id"] for record in records}
-        self.assertEqual(ids, {"Recipe", "Provider", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "Gate"})
+        self.assertEqual(ids, {"Recipe", "Provider", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "GraphTrigger", "Gate"})
 
         for record in records:
             self.assertTrue(record["definition"])
@@ -268,8 +310,10 @@ class AgentArtifactsTest(unittest.TestCase):
 
         self.assertNotIn("provider reference or provider class", index)
         self.assertNotIn("operation against `generated/fragments/`", index)
+        self.assertNotIn("operation against `generated/fragments/signal.yaml`", index)
         self.assertIn("data_product_recipe", index)
-        self.assertIn("operation against `generated/fragments/signal.yaml`", index)
+        self.assertIn("three composite flow contracts", index)
+        self.assertIn("Read the three flow sections first", index)
         self.assertIn("validates `generated/fragments/signal.yaml`", library)
 
 

@@ -1,0 +1,59 @@
+schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
+version: "1.0"
+kind: Recipe
+recipe:
+  metadata:
+    id: RCP-GRAPH-001
+    name:
+      en: Graph Triggered Impact Review
+    description:
+      en: Review graph impact when a node status changes to production.
+    tags:
+      - graph
+      - trigger
+      - review
+  version: "1.0.0"
+  type: agent
+  scope: graph
+  trigger:
+    source: odpg
+    event: node.attributeChanged
+    subject:
+      nodeType: "*"
+      attribute:
+        name: status
+        to: production
+  graphContext:
+    graphRef: graphs/portfolio.odpg.yaml
+    start: trigger.subject
+    depth: 2
+  execution:
+    mode: hosted
+    providerRef: production-quality
+  context:
+    format: gcf
+    fallback:
+      - yaml
+  steps:
+    - id: collect-graph-context
+      command: odpg.agent-context
+      with:
+        graph: graphs/portfolio.odpg.yaml
+        start: trigger.subject
+        depth: 2
+        output: generated/graph-context.gcf
+    - id: explain-impact
+      command: generate
+      with:
+        kind: graph
+        input: generated/graph-context.gcf
+        output: generated/graph-impact.md
+  outputs:
+    - id: graph-context
+      path: generated/graph-context.gcf
+      kind: gcf
+    - id: graph-impact
+      path: generated/graph-impact.md
+  review:
+    required: true
+    mode: human

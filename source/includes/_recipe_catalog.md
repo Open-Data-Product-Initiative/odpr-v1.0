@@ -1,6 +1,6 @@
-# ODPR RecipeCatalog
+# RecipeCatalog
 
-The `RecipeCatalog` object is the ODPR root object for recipe discovery. It
+The `RecipeCatalog` object is a supporting ODPR object for recipe discovery. It
 lists available recipes and points to their complete `Recipe` files.
 
 A catalog is metadata-only. It MUST NOT contain full recipe step bodies,
@@ -8,7 +8,7 @@ credentials, provider readiness results, runtime status, planned writes, run
 ids, or logs. Catalog entries should be treated as stale until the referenced
 recipe file is loaded and validated.
 
-## Root structure
+## Catalog structure
 
 ```yaml
 schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
@@ -57,7 +57,7 @@ recipeCatalog:
 | `kind` | string | required | ODPR root object type. Catalog files MUST use `RecipeCatalog`. |
 | `recipeCatalog` | object | required | Top-level object that defines recipe discovery metadata. |
 
-## RecipeCatalog fields
+### RecipeCatalog fields
 
 | Element | Type | Required | Description |
 |---|---|---|---|
@@ -67,7 +67,7 @@ recipeCatalog:
 | `groups` | array | optional | Metadata-only group definitions for organizing catalog entries. |
 | `recipes` | array | required | Metadata entries pointing to complete recipe files. |
 
-## Catalog group fields
+### Catalog group fields
 
 | Element | Type | Required | Description |
 |---|---|---|---|
@@ -75,7 +75,7 @@ recipeCatalog:
 | `name` | language map | required | Human-readable group name. |
 | `description` | language map | optional | Short group description. |
 
-## Catalog entry fields
+### Catalog entry fields
 
 | Element | Type | Required | Description |
 |---|---|---|---|

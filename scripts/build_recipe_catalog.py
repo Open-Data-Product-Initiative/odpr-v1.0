@@ -36,6 +36,7 @@ DEFAULT_EXAMPLE_ORDER = [
     "portfolio-localization.yaml",
     "hybrid-graph-review.yaml",
     "data-product-delivery.yaml",
+    "graph-triggered-impact-review.yaml",
 ]
 
 

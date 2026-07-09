@@ -68,6 +68,7 @@ Keep Provider objects free of raw secrets and provider-specific API schemas.
 | [`portfolio-localization.yaml`](/recipes/examples/portfolio-localization.yaml) | YAML | Localization recipe with YAML list language targets |
 | [`hybrid-graph-review.yaml`](/recipes/examples/hybrid-graph-review.yaml) | YAML | Hybrid recipe that mixes local and hosted execution |
 | [`data-product-delivery.yaml`](/recipes/examples/data-product-delivery.yaml) | YAML | Data Product Recipe example using `recipe.scope: data-product` |
+| [`graph-triggered-impact-review.yaml`](/recipes/examples/graph-triggered-impact-review.yaml) | YAML | Graph-triggered recipe example using `recipe.trigger` and `recipe.graphContext` |
 | [`data-product-recipe.yaml`](/recipes/examples/data-product-recipe.yaml) | YAML | Minimal DataProductRecipe manifest example |
 | [`production-quality.yaml`](/providers/examples/production-quality.yaml) | YAML | Hosted Provider profile for production-quality generation |
 | [`local-fast.yaml`](/providers/examples/local-fast.yaml) | YAML | Local Provider profile for fast development runs |

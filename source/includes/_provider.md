@@ -1,7 +1,7 @@
-# ODPR Provider
+# Provider
 
-The `Provider` object is the second ODPR root object. It defines a named
-runtime provider profile that recipes can reference with `providerRef`.
+The `Provider` object is a supporting ODPR object. It defines a named runtime
+profile that recipes can reference with `providerRef`.
 
 Providers standardize the shape of LLM and execution-provider configuration
 without putting provider details inside workflow recipes. A recipe stays focused
@@ -14,7 +14,7 @@ implementation-specific secret references instead.
 ODPR validation tools SHOULD reject embedded secrets or API keys, including
 fields such as `apiKey`, `token`, `password`, or raw secret-looking values.
 
-## Root structure
+## Provider structure
 
 ```yaml
 schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
@@ -35,7 +35,7 @@ provider:
 | `kind` | string | required | ODPR root object type. Provider files MUST use `Provider`. |
 | `provider` | object | required | Top-level object that defines one named provider profile. |
 
-## Provider fields
+### Provider fields
 
 ```yaml
 provider:
@@ -63,7 +63,7 @@ provider:
 | `description` | string | optional | Human-readable purpose of the provider profile. |
 | `environment` | string | optional | Environment label such as development, CI, staging, or production. |
 
-## Provider references
+### Provider references
 
 A recipe uses `providerRef` to select a Provider profile by `provider.id`:
 
@@ -94,7 +94,7 @@ Executing SDKs, CI/CD systems, MCP servers, agent runtimes, and platforms then
 resolve `endpointRef`, `credentialsRef`, and any implementation-specific
 settings during execution.
 
-## Example profiles
+## Provider examples
 
 ```yaml
 schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
@@ -137,5 +137,3 @@ environments. A recipe that uses `providerRef: internal-secure` asks the
 executor to route model calls through an approved internal gateway. The profile
 names the gateway endpoint and credential reference, but it does not embed the
 actual credential or API key.
-
-

@@ -58,6 +58,88 @@ def test_recipe_scope_rejects_unknown_values(validator):
     assert_invalid(validator, document)
 
 
+def test_graph_trigger_accepts_node_attribute_change_for_any_node_type(validator):
+    document = recipe_with_step(
+        {
+            "id": "explain-impact",
+            "command": "generate",
+            "with": {
+                "kind": "graph",
+                "input": "generated/graph-context.gcf",
+                "output": "generated/graph-impact.md",
+            },
+        }
+    )
+    document["recipe"]["type"] = "agent"
+    document["recipe"]["scope"] = "graph"
+    document["recipe"]["trigger"] = {
+        "source": "odpg",
+        "event": "node.attributeChanged",
+        "subject": {
+            "nodeType": "*",
+            "attribute": {
+                "name": "status",
+                "to": "production",
+            },
+        },
+    }
+    document["recipe"]["graphContext"] = {
+        "graphRef": "graphs/portfolio.odpg.yaml",
+        "start": "trigger.subject",
+        "depth": 2,
+    }
+
+    assert_valid(validator, document)
+
+
+def test_graph_trigger_rejects_wildcard_attribute_names(validator):
+    document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
+    document["recipe"]["trigger"] = {
+        "source": "odpg",
+        "event": "node.attributeChanged",
+        "subject": {
+            "nodeType": "DataProduct",
+            "attribute": {
+                "name": "*",
+                "to": "production",
+            },
+        },
+    }
+
+    assert_invalid(validator, document)
+
+
+def test_graph_trigger_accepts_edge_removal_with_endpoint_patterns(validator):
+    document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
+    document["recipe"]["trigger"] = {
+        "source": "odpg",
+        "event": "edge.removed",
+        "subject": {
+            "edgeType": "dependsOn",
+            "fromNodeType": "*",
+            "toNodeType": "DataProduct",
+        },
+    }
+
+    assert_valid(validator, document)
+
+
+def test_graph_condition_trigger_requires_condition_name(validator):
+    document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
+    document["recipe"]["trigger"] = {
+        "source": "odpg",
+        "event": "graph.conditionMatched",
+        "condition": {
+            "name": "business-objective-enabled",
+        },
+    }
+
+    assert_valid(validator, document)
+
+    del document["recipe"]["trigger"]["condition"]["name"]
+    assert_invalid(validator, document)
+
+
 def test_recipe_catalog_validates_and_stays_metadata_only(validator):
     catalog = {
         "schema": SCHEMA_URI,

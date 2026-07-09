@@ -9,28 +9,34 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 
 | Term | ODPR usage |
 |---|---|
-| Recipe | A portable, declarative workflow contract for repeatable data product work. |
+| Delivery flow | A composite ODPR flow for repeatable delivery work such as portfolio building, validation, localization, publishing, or release review. |
+| Recipe | A supporting portable workflow unit used inside delivery flows and trigger-based flows. |
+| Product Delivery Recipe | A recipe pattern or handoff agreement for delivering or changing one data product. In ODPR v1, the handoff manifest is the `DataProductRecipe` root object. |
 | Data Product Recipe | A reviewable handoff artifact for delivery planning, readiness, validation, implementation guidance, AI-agent guidance, and review around one data product. |
+| Trigger-based flow | A workflow made applicable by a declared graph change. |
 | Workflow | A sequence of steps that creates, validates, reviews, localizes, publishes, or refreshes data product artifacts. |
 | Step | One declared operation in a recipe. |
 | Gate | A required validation, quality, publication, or review condition. |
 | Context | The artifact or compact sidecar format used as prompt, review, or execution context. |
-| Provider | A named ODPR runtime profile that recipes can reference with `providerRef`. |
-| Recipe catalog | Metadata-only discovery list for available recipe files. |
+| Provider | A supporting runtime profile that recipes can reference with `providerRef`. |
+| Recipe catalog | Supporting metadata-only discovery list for available recipe files. |
 | Review | A human or agent review expectation declared by the recipe. |
+| Graph trigger | A small recipe trigger pattern that makes a normal ODPR Recipe applicable when an ODPG graph change matches. |
 
 ## ODPR-specific usage notes
 
 | Term | Description |
 |---|---|
-| `Recipe` | The ODPR root object that declares one repeatable data product workflow. |
-| `Provider` | The ODPR root object that declares one named provider profile. |
-| `RecipeCatalog` | The ODPR root object that lists recipe metadata and paths to full recipe files. |
+| `Recipe` | Supporting ODPR object that declares one reusable workflow unit. |
+| `Provider` | Supporting ODPR object that declares one named provider profile. |
+| `RecipeCatalog` | Supporting ODPR object that lists recipe metadata and paths to full recipe files. |
 | `DataProductRecipe` | The ODPR root object that indexes the reviewable handoff files for one Data Product Recipe. |
 | `recipeRef` | Optional provenance or generation-context reference; not an implementation dependency for developers or AI agents. |
 | `contract-plan` | Optional standardized section ID for a YAML data contract aligned with the Open Data Contract Standard. |
 | `providerRef` | A reference from a recipe to `Provider.provider.id`. |
 | `context.format` | The preferred context format for a recipe, such as `yaml`, `toon`, `gcf`, or `auto`. |
+| `trigger` | Optional Recipe field that declares which ODPG graph change can make the recipe applicable. |
+| `graphContext` | Optional Recipe field that requests minimal ODPG context after a trigger match. |
 | `execution.mode` | Runtime/provider class such as local, hosted, hybrid, or none; not SDK invocation mode. |
 | `runPolicy` | Runtime guidance such as timeout or retry expectations. |
 | `Extension property` | A local or implementation-specific field whose name begins with `x-`. |

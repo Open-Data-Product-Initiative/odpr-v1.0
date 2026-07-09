@@ -1,4 +1,57 @@
-# Data Product Recipe
+# Product Handoff Flows
+
+Product handoff flows create a reviewable handoff for developers and AI agents
+implementing one data product. The `DataProductRecipe` manifest is the
+structured building block for that handoff.
+
+The manifest indexes a reviewable set of files. Mandatory core sections make
+every data product recipe understandable and validatable, including the graph
+context for the product. Optional standardized sections add detail only when
+the product needs them.
+
+
+![Data Product Recipe manifest with mandatory core sections and optional standardized sections.](images/data-product-recipe.svg)
+
+
+
+`DataProductRecipe` is the ODPR root object for the reviewable handoff artifact
+used by developers and AI agents when planning and implementing one data
+product.
+
+The data product recipe manifest describes the handoff artifact. It does not
+define implementation workflow execution, and it does not define the ODPS
+product itself. Developers and AI agents may use their own repositories,
+platforms, CI/CD systems, SDKs, and agent tools to implement the product. The
+source product specification remains an ODPS file referenced by the data product
+recipe.
+
+## Root structure
+
+> Root shape example:
+
+```yaml
+schema: <ODPR schema URI>
+version: "1.0"
+kind: DataProductRecipe
+dataProductRecipe:
+  metadata:
+    id: <data product recipe id>
+    name: <localized data product recipe name>
+    description: <localized data product recipe description>
+  version: <data product recipe artifact version>
+  status: draft
+  sections: []
+  readiness: {}
+  review: {}
+```
+
+The data product recipe root uses the same ODPR document envelope as other ODPR
+objects: `schema`, `version`, and `kind` identify the document, and
+`dataProductRecipe` contains the manifest.
+
+### Manifest
+
+> Example:
 
 ```yaml
 schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
@@ -43,32 +96,6 @@ dataProductRecipe:
     status: pending
 ```
 
-The data product recipe manifest indexes a reviewable set of files. Mandatory
-core sections make every data product recipe understandable and validatable,
-including the graph context for the product. Optional standardized sections add
-detail only when the product needs them.
-
-
-![Data Product Recipe manifest with mandatory core sections and optional standardized sections.](images/data-product-recipe.svg)
-
-
-
-
-
-
-`DataProductRecipe` is the ODPR root object for the reviewable handoff artifact
-used by developers and AI agents when planning and implementing one data
-product.
-
-The data product recipe manifest describes the handoff artifact. It does not
-define implementation workflow execution, and it does not define the ODPS
-product itself. Developers and AI agents may use their own repositories,
-platforms, CI/CD systems, SDKs, and agent tools to implement the product. The
-source product specification remains an ODPS file referenced by the data product
-recipe.
-
-## Manifest boundary
-
 `data-product-recipe.yaml` is mostly structure and metadata. More precisely, it
 is the manifest index for the handoff artifact. It answers these questions:
 
@@ -85,52 +112,34 @@ operating brief. Those details belong in referenced files such as
 `plans/delivery-plan.md`, `product-context/odps.yaml`, `context/odpg.yaml`,
 optional plan sections, and `agent/ai-agent-brief.md`.
 
-## Root structure
-
-> Root shape example:
-
-```yaml
-schema: <ODPR schema URI>
-version: "1.0"
-kind: DataProductRecipe
-dataProductRecipe:
-  metadata:
-    id: <data product recipe id>
-    name: <localized data product recipe name>
-    description: <localized data product recipe description>
-  version: <data product recipe artifact version>
-  status: draft
-  sections: []
-  readiness: {}
-  review: {}
-```
-
-The data product recipe root uses the same ODPR document envelope as other ODPR
-objects: `schema`, `version`, and `kind` identify the document, and
-`dataProductRecipe` contains the manifest.
-
-The manifest is intentionally an index, not the full delivery plan. It points to
-the files that developers, reviewers, SDKs, CI checks, and AI agents should
-inspect:
-
-- `version` identifies the data product recipe artifact version, separate from
-  the ODPR specification version.
-- `recipeRef`, when present, identifies provenance or generation context for
-  the data product recipe. It is not an instruction for developers or AI agents
-  to execute an ODPR workflow recipe.
-- `sections` lists the stable section IDs, paths, and formats. The source ODPS
-  product specification and recipe README are referenced through mandatory
-  section entries instead of duplicate top-level fields.
-- `readiness.score` is a confidence value from `0` to `100`.
-- `review.status` records whether the data product recipe is still pending,
-  approved, or needs changes.
-
 The YAML example shows the minimal valid data product recipe manifest. It
 includes every schema-required field and every mandatory section ID, including
 `relationship-context`, but omits optional metadata and optional sections such
 as `pricing-plan`, `sla-plan`, and `relationship-plan`.
 
-## Minimum folder structure
+### Manifest fields
+
+| Element name | Type | Options | Description |
+|---|---|---|---|
+| `metadata` | object | - | Stable data product recipe identity and name. |
+| `metadata.id` | string | - | Stable data product recipe identifier. |
+| `metadata.name` | object | localized text object | Human-readable data product recipe name. |
+| `metadata.description` | object | localized text object | Short data product recipe description for human readers. |
+| `version` | string | semantic version | Version of this data product recipe artifact. This is separate from the top-level ODPR specification version. |
+| `status` | string | `announcement`, `draft`, `development`, `testing`, `acceptance`, `production`, `sunset`, `retired` | Data product recipe lifecycle status aligned with ODPS status values. |
+| `sections` | array | mandatory section IDs | Data product recipe section index with stable section IDs, paths, and formats. The source ODPS product specification and recipe README are referenced through mandatory section entries instead of duplicate top-level fields. |
+| `readiness.score` | number | `0`-`100` | Readiness confidence; `0` means no readiness confidence and `100` means full readiness confidence. |
+| `readiness.status` | string | `missing`, `partial`, `ready` | Readiness status. |
+| `review.required` | boolean | `true`, `false` | Whether human review is required before implementation, publication, automation, or agent-assisted code work. |
+| `review.status` | string | `pending`, `approved`, `changes-requested` | Review state for the manifest: still pending, approved, or requiring changes. |
+
+#### Optional data product recipe fields
+
+| Element name | Type | Options | Description |
+|---|---|---|---|
+| `recipeRef` | relative path | - | Optional provenance or generation-context reference for the ODPR recipe that created or informed the data product recipe. It is not an instruction for developers or AI agents to execute an ODPR workflow recipe. |
+
+## Package structure
 
 > Minimum folder structure example:
 
@@ -176,7 +185,7 @@ The schema validates the section IDs, paths, and formats declared in
 use identical directory names, but using the minimum structure makes packages
 predictable for humans, SDKs, CI checks, and AI agents.
 
-## Full folder structure
+### Full folder structure
 
 > Full folder structure example:
 
@@ -231,33 +240,12 @@ corresponding optional section IDs, paths, and formats are declared in
 `dataProductRecipe.sections`. Files that are not declared in the manifest are
 supporting material, not standardized Data Product Recipe sections.
 
-## Mandatory data product recipe fields
+## Required handoff contents
 
-| Element name | Type | Options | Description |
-|---|---|---|---|
-| `metadata` | object | - | Stable data product recipe identity and name. |
-| `metadata.id` | string | - | Stable data product recipe identifier. |
-| `metadata.name` | object | localized text object | Human-readable data product recipe name. |
-| `metadata.description` | object | localized text object | Short data product recipe description for human readers. |
-| `version` | string | semantic version | Version of this data product recipe artifact. This is separate from the top-level ODPR specification version. |
-| `status` | string | `announcement`, `draft`, `development`, `testing`, `acceptance`, `production`, `sunset`, `retired` | Data product recipe lifecycle status aligned with ODPS status values. |
-| `sections` | array | mandatory section IDs | Data product recipe section index with stable section IDs, paths, and formats. |
-| `readiness.score` | number | `0`-`100` | Readiness confidence; `0` means no readiness confidence. |
-| `readiness.status` | string | `missing`, `partial`, `ready` | Readiness status. |
-| `review.required` | boolean | `true`, `false` | Whether human review is required before implementation, publication, automation, or agent-assisted code work. |
-| `review.status` | string | `pending`, `approved`, `changes-requested` | Review status. |
-
-## Optional data product recipe fields
-
-| Element name | Type | Options | Description |
-|---|---|---|---|
-| `recipeRef` | relative path | - | Optional provenance or generation-context reference for the ODPR recipe that created or informed the data product recipe. This is not an implementation dependency for developers or AI agents. |
-
-## Mandatory core section IDs
-
-The following core section IDs define the minimum data product recipe that a
+The following core files define the minimum data product recipe that a
 developer, reviewer, SDK, CI check, or AI agent can rely on. A valid
-`DataProductRecipe` manifest MUST include each one in `dataProductRecipe.sections`.
+`DataProductRecipe` manifest MUST reference each one through
+`dataProductRecipe.sections`.
 
 ![Mandatory Data Product Recipe core section files.](images/data-product-recipe-core.svg)
 
@@ -744,7 +732,7 @@ presence of mandatory core section IDs. A repository checker SHOULD validate
 the `recipe-readme` heading order because JSON Schema should not parse
 Markdown bodies.
 
-## Optional standardized section IDs
+### Optional standardized section IDs
 
 Optional standardized section IDs add detail only when the data product recipe
 needs it. They are not required for a valid handoff artifact, but when present
