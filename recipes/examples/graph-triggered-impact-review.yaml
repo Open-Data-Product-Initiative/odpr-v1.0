@@ -25,7 +25,7 @@ recipe:
     depth: 2
   execution:
     mode: hosted
-    providerRef: production-quality
+    runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
   steps:
     - id: explain-impact
       command: generate

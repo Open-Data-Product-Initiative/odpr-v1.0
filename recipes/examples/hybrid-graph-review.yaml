@@ -18,13 +18,13 @@ recipe:
   steps:
     - id: build-graph
       command: odpg.build
-      providerRef: local-graph
+      runtimeRef: runtime-profiles/examples/local-graph.yaml#local-graph
       with:
         input: generated/fragments/
         output: generated/graph.yaml
     - id: generate-review-notes
       command: generate
-      providerRef: production-quality
+      runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
       with:
         kind: objective
         input: generated/graph.yaml

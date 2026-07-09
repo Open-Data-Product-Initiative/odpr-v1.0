@@ -3,7 +3,7 @@
 ODPR is a lightweight, vendor-neutral, machine-readable standard for reusable
 data product delivery work. It has three primary composite flows: delivery
 flows, product handoff flows for one data product, and trigger-based flows
-driven by graph changes. Recipe, Provider, and RecipeCatalog objects are
+driven by graph changes. Recipe, RuntimeProfile, and RecipeCatalog objects are
 supporting building blocks.
 
 Base URL:
@@ -32,7 +32,7 @@ Family-level toolkit:
   provider readiness, planned writes, write-scope checks, or run ids as ODPR
   root objects.
 - Do not put concrete LLM model settings, endpoints, credentials, or
-  temperature values in ODPR recipes. Resolve those through ODPR Provider
+  temperature values in ODPR recipes. Resolve those through ODPR RuntimeProfile
   objects and the executing SDK, CI/CD system, MCP server, agent runtime, or
   platform.
 
@@ -69,11 +69,11 @@ Recipe example files:
 - /recipes/examples/graph-triggered-impact-review.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/graph-triggered-impact-review.yaml)
 - /recipes/examples/data-product-recipe.yaml (https://opendataproducts.org/odpr-v1.0/recipes/examples/data-product-recipe.yaml)
 
-Provider example files:
-- /providers/examples/production-quality.yaml (https://opendataproducts.org/odpr-v1.0/providers/examples/production-quality.yaml)
-- /providers/examples/local-fast.yaml (https://opendataproducts.org/odpr-v1.0/providers/examples/local-fast.yaml)
-- /providers/examples/local-graph.yaml (https://opendataproducts.org/odpr-v1.0/providers/examples/local-graph.yaml)
-- /providers/examples/internal-secure.yaml (https://opendataproducts.org/odpr-v1.0/providers/examples/internal-secure.yaml)
+RuntimeProfile example files:
+- /runtime-profiles/examples/production-quality.yaml (https://opendataproducts.org/odpr-v1.0/runtime-profiles/examples/production-quality.yaml)
+- /runtime-profiles/examples/local-fast.yaml (https://opendataproducts.org/odpr-v1.0/runtime-profiles/examples/local-fast.yaml)
+- /runtime-profiles/examples/local-graph.yaml (https://opendataproducts.org/odpr-v1.0/runtime-profiles/examples/local-graph.yaml)
+- /runtime-profiles/examples/internal-secure.yaml (https://opendataproducts.org/odpr-v1.0/runtime-profiles/examples/internal-secure.yaml)
 
 Agent-oriented source scripts:
 - scripts/build_recipe_catalog.py regenerates source/recipes/catalog.yaml from
@@ -86,7 +86,7 @@ Agent-oriented source scripts:
   `python scripts/generate_recipe_artifacts.py --check` to detect drift.
 - scripts/search_recipes.py searches /recipes/recipes.jsonl by keyword or exact
   recipe id. Use `--json` for machine-readable results.
-- scripts/validate_recipe.py validates ODPR YAML or JSON Recipe, Provider, or
+- scripts/validate_recipe.py validates ODPR YAML or JSON Recipe, RuntimeProfile, or
   RecipeCatalog files against /schema/odpr.yaml and rejects embedded secrets or
   API keys.
   Install dependencies with
@@ -111,9 +111,9 @@ Core ODPR concepts:
 - GraphContext: optional Recipe graph context contract that declares the ODPG
   graph reference, trigger-derived start point, and context depth needed by a
   graph-triggered recipe.
-- Provider: supporting provider profile document that declares the provider family,
-  model, provider class, endpoint reference, credentials reference, and safe
-  runtime defaults for a named `providerRef`.
+- RuntimeProfile: supporting runtime generation configuration document that declares
+  SDK-compatible provider profiles, model defaults, generation paths, portfolio
+  intake policy, and API-key environment variable names.
 - RecipeCatalog: supporting metadata-only discovery document that lists available
   recipes and points to complete Recipe files.
 - Step: one operation in a recipe, such as generate, validate, portfolio.build,
@@ -134,23 +134,23 @@ Recommended agent workflow:
    files is needed.
 5. Load /recipes/examples/*.yaml when generating ODPR content.
 6. Load /schema/odpr.yaml or /schema/odpr.json to validate ODPR Recipe,
-   Provider, RecipeCatalog, and DataProductRecipe files.
-7. Use provider references in recipes as references only; load matching
-   Provider objects by `provider.id` to resolve model and provider defaults.
+   RuntimeProfile, RecipeCatalog, and DataProductRecipe files.
+7. Use runtime references in recipes as references only; load matching
+   RuntimeProfile objects and resolve URI fragments against `runtimeProfile.providers`.
 8. Inspect declared outputs, gates, review policy, environment, and runPolicy
    before running recipe steps.
 9. Use DataProductRecipe documents for Markdown-heavy data product handoff work.
    Optional recipe references are provenance, not implementation dependencies.
 10. Keep recipes declarative. Do not turn ODPR into a shell scripting language or
-   Provider objects into raw secret stores.
+   RuntimeProfile objects into raw secret stores.
 
 Modeling constraints:
 - ODPR defines three primary composite flows: delivery flows, product handoff
-  flows, and trigger-based flows. Recipe, Provider, and RecipeCatalog documents
+  flows, and trigger-based flows. Recipe, RuntimeProfile, and RecipeCatalog documents
   are supporting building blocks. ODPR does not define data products, ODPC
   catalog object models, graphs, vocabularies, SDK internals, CI/CD engines, or
   provider-specific APIs.
-- Recipe documents use `kind: Recipe`. Provider documents use `kind: Provider`.
+- Recipe documents use `kind: Recipe`. RuntimeProfile documents use `kind: RuntimeProfile`.
   Recipe catalog documents use `kind: RecipeCatalog`. Data Product Recipe
   documents use `kind: DataProductRecipe`.
 - Do not use `ProductRecipe`. The ODPR root kind is `DataProductRecipe`.
@@ -160,8 +160,9 @@ Modeling constraints:
   recommended for human readability. Recipe objects also require
   `recipe.version`, which is separate from the top-level ODPR specification
   version.
-- Provider profiles require stable `provider.id` and a provider family in
-  `provider.provider`.
+- RuntimeProfile documents use the SDK-compatible generation config shape:
+  `runtimeProfile.provider` selects the default profile and `runtimeProfile.providers`
+  contains the named provider profile map.
 - Recipe steps should describe SDK or platform operations, not arbitrary shell
   scripts.
 - Execution mode should be one of local, hosted, hybrid, or none. It is not SDK
@@ -175,9 +176,10 @@ Modeling constraints:
   be a controlled node type or `*`; `subject.attribute.name` must be explicit
   and must not be `*`.
 - ODPG may reference ODPR recipes for graph-local discovery, but ODPR remains
-  the source of truth for trigger semantics, steps, provider references, gates,
+  the source of truth for trigger semantics, steps, runtime references, gates,
   and review policy.
-- Provider profiles should use `credentialsRef` instead of raw credentials.
-- Validation should reject embedded secrets or API keys in Recipe, Provider,
+- Provider profiles inside RuntimeProfile documents should use `apiKeyEnv` environment variable names instead
+  of raw credentials.
+- Validation should reject embedded secrets or API keys in Recipe, RuntimeProfile,
   and RecipeCatalog documents.
 - Use extension fields beginning with `x-` for local implementation details.

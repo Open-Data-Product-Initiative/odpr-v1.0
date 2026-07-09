@@ -19,13 +19,13 @@ properties:
     type: string
     enum:
       - Recipe
-      - Provider
+      - RuntimeProfile
       - RecipeCatalog
       - DataProductRecipe
   recipe:
     $ref: "#/$defs/Recipe"
-  provider:
-    $ref: "#/$defs/Provider"
+  runtimeProfile:
+    $ref: "#/$defs/RuntimeProfile"
   recipeCatalog:
     $ref: "#/$defs/RecipeCatalog"
   dataProductRecipe:
@@ -45,10 +45,10 @@ oneOf:
         - required:
             - dataProductRecipe
   - required:
-      - provider
+      - runtimeProfile
     properties:
       kind:
-        const: Provider
+        const: RuntimeProfile
     not:
       anyOf:
         - required:
@@ -367,9 +367,14 @@ $defs:
           - hosted
           - hybrid
           - none
-      providerRef:
-        type: string
-        minLength: 1
+      runtimeRef:
+        $ref: "#/$defs/RuntimeRef"
+  RuntimeRef:
+    type: string
+    minLength: 1
+    format: uri-reference
+    pattern: "^(?=.*(?:/|#|:)).+$"
+    description: URI-reference to an ODPR RuntimeProfile document. A fragment identifies the runtime profile when the target contains or exposes multiple profiles.
   Step:
     type: object
     additionalProperties: false
@@ -385,9 +390,8 @@ $defs:
       command:
         type: string
         minLength: 1
-      providerRef:
-        type: string
-        minLength: 1
+      runtimeRef:
+        $ref: "#/$defs/RuntimeRef"
       model:
         type: string
         minLength: 1
@@ -433,7 +437,7 @@ $defs:
           not:
             anyOf:
               - required:
-                  - providerRef
+                  - runtimeRef
               - required:
                   - model
   WithBase:
@@ -965,47 +969,121 @@ $defs:
       maxRetries:
         type: integer
         minimum: 0
-  Provider:
+  RuntimeProfile:
     type: object
     additionalProperties: false
     patternProperties:
       "^x-": {}
     required:
-      - id
       - provider
+      - providers
     properties:
-      id:
-        type: string
-        minLength: 1
       provider:
         type: string
         minLength: 1
       model:
         type: string
         minLength: 1
-      providerClass:
+      input:
+        type: string
+        minLength: 1
+      output:
+        type: string
+        minLength: 1
+      prompts:
+        type: string
+        minLength: 1
+      baseUrl:
+        type: string
+        minLength: 1
+      version:
+        type: string
+        minLength: 1
+      maxTokens:
+        type: integer
+        minimum: 1
+      modelPath:
+        type: string
+        minLength: 1
+      contextWindow:
+        type: integer
+        minimum: 1
+      gpuLayers:
+        type: integer
+      portfolio:
+        $ref: "#/$defs/RuntimeProfilePortfolioPolicy"
+      providers:
+        type: object
+        minProperties: 1
+        additionalProperties:
+          $ref: "#/$defs/RuntimeProviderProfile"
+  RuntimeProviderProfile:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    properties:
+      type:
         type: string
         enum:
-          - local
-          - hosted
-          - hybrid
-          - none
-      endpointRef:
+          - anthropic
+          - llama-cpp
+          - ollama
+          - openai
+          - openai-chat
+      model:
         type: string
         minLength: 1
-      credentialsRef:
+      baseUrl:
         type: string
         minLength: 1
-      temperature:
-        type: number
-        minimum: 0
-      settings:
-        type: object
-        additionalProperties: true
-      description:
+      apiKeyEnv:
         type: string
-      environment:
+        minLength: 1
+      version:
         type: string
+        minLength: 1
+      maxTokens:
+        type: integer
+        minimum: 1
+      modelPath:
+        type: string
+        minLength: 1
+      contextWindow:
+        type: integer
+        minimum: 1
+      gpuLayers:
+        type: integer
+  RuntimeProfilePortfolioPolicy:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    properties:
+      sourceBudget:
+        $ref: "#/$defs/RuntimeProfilePortfolioSourceBudget"
+      privacy:
+        $ref: "#/$defs/RuntimeProfilePortfolioPrivacy"
+  RuntimeProfilePortfolioSourceBudget:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    properties:
+      maxSourceChars:
+        type: integer
+        minimum: 1
+      maxPromptChars:
+        type: integer
+        minimum: 1
+  RuntimeProfilePortfolioPrivacy:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    properties:
+      obfuscatePersonalData:
+        type: boolean
   RecipeCatalogEntry:
     type: object
     additionalProperties: false
@@ -1051,9 +1129,8 @@ $defs:
           - hosted
           - hybrid
           - none
-      providerRef:
-        type: string
-        minLength: 1
+      runtimeRef:
+        $ref: "#/$defs/RuntimeRef"
       contextFormat:
         type: string
         enum:

@@ -12,7 +12,7 @@ recipe:
   type: dev
   execution:
     mode: local
-    providerRef: local-fast
+    runtimeRef: runtime-profiles/examples/local-fast.yaml#local-fast
   steps:
     - id: generate-signals
       command: generate

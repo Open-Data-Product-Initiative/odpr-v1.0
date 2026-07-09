@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">ODPR purposes and supporting functions</title>
+  <desc id="desc">Conceptual illustration showing ODPR's three primary flow types: delivery flows, product handoff flows, and trigger-based flows, with Recipe, RuntimeProfile, and RecipeCatalog as supporting building blocks.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5f8fa"/>
+      <stop offset="1" stop-color="#fff4f7"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f001f"/>
+      <stop offset="1" stop-color="#35004f"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#35000c" flood-opacity="0.14"/>
+    </filter>
+    <style>
+      .label { font-family: Inter, Arial, sans-serif; fill: #230336; }
+      .title { font-size: 34px; font-weight: 700; }
+      .subtitle { font-size: 18px; fill: #5f4854; }
+      .card-title { font-size: 22px; font-weight: 700; }
+      .small { font-size: 16px; }
+      .tiny { font-size: 14px; }
+      .white { fill: #ffffff; }
+      .muted { fill: #6b4b55; }
+      .purpose-card { fill: #ffffff; stroke: #c97a7e; stroke-width: 1.8; }
+      .support-card { fill: #fff8fa; stroke: #d99aa4; stroke-width: 1.5; }
+      .family-card { fill: #fff8fa; stroke: #e3b8c2; stroke-width: 1.5; }
+      .solid { fill: none; stroke: #8f001f; stroke-width: 3; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" rx="26" fill="url(#bg)"/>
+  <rect x="42" y="42" width="1116" height="636" rx="24" fill="#ffffff" stroke="#ead2d8"/>
+
+  <text x="82" y="96" class="label title">What ODPR Is For</text>
+  <text x="82" y="128" class="label subtitle">Three primary flow types, with recipes, providers, and catalogs as supporting building blocks.</text>
+
+  <rect x="432" y="166" width="336" height="128" rx="24" fill="url(#core)" filter="url(#shadow)"/>
+  <text x="600" y="216" text-anchor="middle" class="label card-title white">ODPR Specification</text>
+  <text x="600" y="250" text-anchor="middle" class="label small white">portable delivery contracts</text>
+  <line x1="492" y1="270" x2="708" y2="270" stroke="#ffffff" stroke-opacity="0.45"/>
+  <text x="600" y="288" text-anchor="middle" class="label tiny white">validated by odpr.yaml or odpr.json</text>
+
+  <rect x="78" y="350" width="300" height="146" rx="18" class="purpose-card"/>
+  <text x="108" y="392" class="label card-title">Delivery flows</text>
+  <text x="108" y="424" class="label small muted">Repeatable delivery work</text>
+  <text x="108" y="454" class="label tiny">portfolio build, validation, release</text>
+  <text x="108" y="478" class="label tiny">steps, gates, execution, review</text>
+
+  <rect x="450" y="350" width="300" height="146" rx="18" class="purpose-card"/>
+  <text x="480" y="392" class="label card-title">Product handoff flows</text>
+  <text x="480" y="424" class="label small muted">Reviewable implementation handoff</text>
+  <text x="480" y="454" class="label tiny">for developers and AI agents</text>
+  <text x="480" y="478" class="label tiny">implementing one data product</text>
+
+  <rect x="822" y="350" width="300" height="146" rx="18" class="purpose-card"/>
+  <text x="852" y="392" class="label card-title">Trigger-based flows</text>
+  <text x="852" y="424" class="label small muted">Actions driven by graph changes</text>
+  <text x="852" y="454" class="label tiny">node and edge change patterns</text>
+  <text x="852" y="478" class="label tiny">with optional graph context</text>
+
+  <text x="600" y="532" text-anchor="middle" class="label small muted">Supporting building blocks</text>
+  <rect x="192" y="550" width="220" height="54" rx="16" class="support-card"/>
+  <text x="302" y="573" text-anchor="middle" class="label small">Recipe</text>
+  <text x="302" y="595" text-anchor="middle" class="label tiny">reusable workflow unit</text>
+
+  <rect x="490" y="550" width="220" height="54" rx="16" class="support-card"/>
+  <text x="600" y="573" text-anchor="middle" class="label small">RuntimeProfile</text>
+  <text x="600" y="595" text-anchor="middle" class="label tiny">named runtime profile</text>
+
+  <rect x="788" y="550" width="220" height="54" rx="16" class="support-card"/>
+  <text x="898" y="573" text-anchor="middle" class="label small">RecipeCatalog</text>
+  <text x="898" y="595" text-anchor="middle" class="label tiny">metadata-only discovery</text>
+
+  <path class="solid" d="M250 616 H950"/>
+  <g>
+    <rect x="234" y="626" width="150" height="30" rx="15" class="family-card"/>
+    <text x="309" y="646" text-anchor="middle" class="label tiny">ODPS product</text>
+    <rect x="428" y="626" width="150" height="30" rx="15" class="family-card"/>
+    <text x="503" y="646" text-anchor="middle" class="label tiny">ODPC catalog</text>
+    <rect x="622" y="626" width="150" height="30" rx="15" class="family-card"/>
+    <text x="697" y="646" text-anchor="middle" class="label tiny">ODPG graph</text>
+    <rect x="816" y="626" width="150" height="30" rx="15" class="family-card"/>
+    <text x="891" y="646" text-anchor="middle" class="label tiny">ODPV terms</text>
+  </g>
+</svg>
