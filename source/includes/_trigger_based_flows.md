@@ -29,10 +29,9 @@ recipe:
   steps:
     - id: explain-impact
       command: generate
-      with:
-        kind: graph
-        input: generated/graph-context.gcf
-        output: generated/graph-impact.md
+      kind: graph
+      input: generated/graph-context.gcf
+      output: generated/graph-impact.md
   review:
     required: true
 ```

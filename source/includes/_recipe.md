@@ -32,10 +32,9 @@ recipe:
   steps:
     - id: generate-signals
       command: generate
-      with:
-        kind: signal
-        input: source_docs/signals/
-        output: generated/fragments/
+      kind: signal
+      input: source_docs/signals/
+      output: generated/fragments/
 ```
 
 | Element | Type | Required | Description |
@@ -61,8 +60,7 @@ recipe:
   steps:
     - id: validate-fragments
       command: validate
-      with:
-        document: generated/fragments/signal.yaml
+      document: generated/fragments/signal.yaml
   outputs:
     - id: generated-fragments
       path: generated/fragments/
@@ -183,11 +181,11 @@ ODPR keeps commands lightweight so recipes stay portable across implementations.
 Implementations SHOULD support the recommended command names where the
 underlying capability exists. Implementations MAY support additional commands.
 
-| Command | Classification | Required `with` | Optional `with` |
+| Command | Classification | Required step fields | Optional step fields |
 |---|---|---|---|
 | `generate` | `llm-backed` | `input`, `kind`, `output` | `config`, `prompts`, `profile`, `includeComponents`, `maxSourceChars`, `ollamaUrl` |
-| `odpc.build` | `deterministic` | `input`, `output` | `html`, `toon`, `gcf`, `id`, `name`, `description`, `recursive`, `validate` |
-| `odpg.build` | `llm-backed` | `input`, `output` | `toon`, `gcf`, `contextGraph`, `id`, `name`, `description`, `recursive`, `validate`, `config`, `prompts`, `ollamaUrl` |
+| `odpc.build` | `deterministic` | `input`, `output` | `html`, `toon`, `gcf`, `name`, `description`, `recursive`, `validate` |
+| `odpg.build` | `llm-backed` | `input`, `output` | `toon`, `gcf`, `contextGraph`, `name`, `description`, `recursive`, `validate`, `config`, `prompts`, `ollamaUrl` |
 | `odpg.agent-context` | `deterministic` | `graph`, `start`, `output` | `depth` |
 | `odpg.render` | `deterministic` | `graph`, `output` | none |
 | `portfolio.build` | `llm-backed` | at least one of `objectives`, `useCases`, `signals`, or `products`; and `output` | `title`, `config`, `prompts`, `ollamaUrl`, `strictValidation` |
@@ -199,12 +197,10 @@ underlying capability exists. Implementations MAY support additional commands.
 | `validate` | `deterministic` | `document` | none |
 | `explain` | `report` | `document` | none |
 
-`with` is the argument object for the selected command. Shared durable paths,
-such as a portfolio workspace used by several steps, belong in recipe-level
-`inputs` or `outputs` instead of being repeated under every step.
-`runtimeRef` and `model` stay beside `command`; they do not belong inside
-`with`.
-`portfolio.localize.with.languages` SHOULD be written as a YAML list of BCP 47
+Command-specific parameters are written directly on the step. Shared durable
+paths, such as a portfolio workspace used by several steps, belong in
+recipe-level `inputs` or `outputs` instead of being repeated under every step.
+`portfolio.localize.languages` SHOULD be written as a YAML list of BCP 47
 language tags.
 
 | Classification | Meaning |
@@ -219,7 +215,7 @@ language tags.
 Use `inputs` and `outputs` when a workflow uses or creates durable artifacts
 that later steps, CI
 jobs, reviewers, or agents should inspect. Outputs are named paths. They do not
-replace the command-specific `with.output` argument; they make expected durable
+replace a command-specific `output` field; they make expected durable
 results visible at the recipe level.
 
 Recipe-level paths should be project-relative. Recipes should not use absolute
@@ -271,10 +267,9 @@ recipe:
       command: portfolio.refresh
     - id: localize-portfolio
       command: portfolio.localize
-      with:
-        languages:
-          - fi
-          - sv
+      languages:
+        - fi
+        - sv
     - id: explain-portfolio
       command: portfolio.explain
   outputs:

@@ -20,10 +20,9 @@ recipe:
   steps:
     - id: generate-signals
       command: generate
-      with:
-        kind: signal
-        input: source_docs/signals/
-        output: generated/fragments/
+      kind: signal
+      input: source_docs/signals/
+      output: generated/fragments/
 ```
 
 ODPR is published in several forms for different users and tools. This

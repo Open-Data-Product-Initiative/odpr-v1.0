@@ -29,8 +29,7 @@ recipe:
   steps:
     - id: generate
       command: generate
-      with:
-        apiKey: sk-test-should-not-be-here
+      apiKey: sk-test-should-not-be-here
 """,
         encoding="utf-8",
     )
@@ -39,7 +38,7 @@ recipe:
 
     assert result.returncode == 1
     assert "embedded secret" in result.stderr
-    assert "recipe.steps[0].with.apiKey" in result.stderr
+    assert "recipe.steps[0].apiKey" in result.stderr
 
 
 def test_validator_allows_api_key_env_reference_in_provider(tmp_path):

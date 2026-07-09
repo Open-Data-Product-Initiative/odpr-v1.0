@@ -242,7 +242,7 @@ def check_examples():
     )
 
     localization_recipe = load_yaml(EXAMPLES_DIR / "portfolio-localization.yaml")["recipe"]
-    assert isinstance(localization_recipe["steps"][0]["with"]["languages"], list)
+    assert isinstance(localization_recipe["steps"][0]["languages"], list)
 
 
 def check_recipes_and_llms():

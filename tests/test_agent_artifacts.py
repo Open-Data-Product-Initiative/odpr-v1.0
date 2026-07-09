@@ -205,7 +205,7 @@ class AgentArtifactsTest(unittest.TestCase):
             SOURCE / "recipes" / "examples" / "portfolio-localization.yaml"
         )
         assert_recipe_document(localization_recipe, "localization")
-        languages = localization_recipe["recipe"]["steps"][0]["with"]["languages"]
+        languages = localization_recipe["recipe"]["steps"][0]["languages"]
         self.assertIsInstance(languages, list)
 
         data_product_recipe = load_yaml(

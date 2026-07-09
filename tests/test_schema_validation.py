@@ -109,7 +109,7 @@ def test_provider_rejects_unknown_profile_fields(validator):
 
 @pytest.mark.parametrize("scope", ["data-product", "catalog", "graph", "portfolio"])
 def test_recipe_scope_accepts_standard_scope_values(validator, scope):
-    document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
     document["recipe"]["type"] = "agent"
     document["recipe"]["scope"] = scope
 
@@ -117,7 +117,7 @@ def test_recipe_scope_accepts_standard_scope_values(validator, scope):
 
 
 def test_recipe_scope_rejects_unknown_values(validator):
-    document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
     document["recipe"]["scope"] = "dashboard"
 
     assert_invalid(validator, document)
@@ -128,11 +128,9 @@ def test_graph_trigger_accepts_node_attribute_change_for_any_node_type(validator
         {
             "id": "explain-impact",
             "command": "generate",
-            "with": {
-                "kind": "graph",
-                "input": "generated/graph-context.gcf",
-                "output": "generated/graph-impact.md",
-            },
+            "kind": "graph",
+            "input": "generated/graph-context.gcf",
+            "output": "generated/graph-impact.md",
         }
     )
     document["recipe"]["type"] = "agent"
@@ -158,7 +156,7 @@ def test_graph_trigger_accepts_node_attribute_change_for_any_node_type(validator
 
 
 def test_graph_trigger_rejects_wildcard_attribute_names(validator):
-    document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
     document["recipe"]["trigger"] = {
         "source": "odpg",
         "event": "node.attributeChanged",
@@ -175,7 +173,7 @@ def test_graph_trigger_rejects_wildcard_attribute_names(validator):
 
 
 def test_graph_trigger_accepts_edge_removal_with_endpoint_patterns(validator):
-    document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
     document["recipe"]["trigger"] = {
         "source": "odpg",
         "event": "edge.removed",
@@ -190,7 +188,7 @@ def test_graph_trigger_accepts_edge_removal_with_endpoint_patterns(validator):
 
 
 def test_graph_condition_trigger_requires_condition_name(validator):
-    document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
     document["recipe"]["trigger"] = {
         "source": "odpg",
         "event": "graph.conditionMatched",
@@ -422,7 +420,7 @@ def test_deterministic_commands_reject_provider_ref_and_model(validator):
             "command": "validate",
             "runtimeRef": "runtime-profiles/examples/production-quality.yaml#production-quality",
             "model": "gpt-4.1",
-            "with": {"document": "generated/fragments/signal.yaml"},
+            "document": "generated/fragments/signal.yaml",
         }
     )
 
@@ -436,11 +434,9 @@ def test_llm_backed_generate_accepts_provider_ref_and_required_parameters(valida
             "command": "generate",
             "runtimeRef": "runtime-profiles/examples/local-fast.yaml#local-fast",
             "model": "gemma",
-            "with": {
-                "input": "source_docs/signals/",
-                "kind": "signal",
-                "output": "generated/fragments/",
-            },
+            "input": "source_docs/signals/",
+            "kind": "signal",
+            "output": "generated/fragments/",
         }
     )
 
@@ -453,11 +449,9 @@ def test_provider_ref_rejects_bare_profile_name(validator):
             "id": "generate",
             "command": "generate",
             "runtimeRef": "local-fast",
-            "with": {
-                "input": "source_docs/signals/",
-                "kind": "signal",
-                "output": "generated/fragments/",
-            },
+            "input": "source_docs/signals/",
+            "kind": "signal",
+            "output": "generated/fragments/",
         }
     )
 
@@ -469,12 +463,12 @@ def test_portfolio_localize_requires_languages_list(validator):
         {
             "id": "localize",
             "command": "portfolio.localize",
-            "with": {"languages": ["fi", "sv"]},
+            "languages": ["fi", "sv"],
         }
     )
     assert_valid(validator, document)
 
-    document["recipe"]["steps"][0]["with"]["languages"] = "fi,sv"
+    document["recipe"]["steps"][0]["languages"] = "fi,sv"
     assert_invalid(validator, document)
 
 
@@ -483,10 +477,8 @@ def test_portfolio_build_accepts_declared_output_without_workspace_argument(vali
         {
             "id": "build-portfolio",
             "command": "portfolio.build",
-            "with": {
-                "signals": ["source_docs/signals/"],
-                "output": "portfolio/index.html",
-            },
+            "signals": ["source_docs/signals/"],
+            "output": "portfolio/index.html",
         }
     )
 
@@ -498,7 +490,7 @@ def test_portfolio_commands_reject_workspace_argument(validator):
         {
             "id": "refresh",
             "command": "portfolio.refresh",
-            "with": {"workspace": "portfolio/"},
+            "workspace": "portfolio/",
         }
     )
 

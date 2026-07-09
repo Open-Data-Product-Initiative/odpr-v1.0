@@ -397,9 +397,84 @@ $defs:
         minLength: 1
       context:
         $ref: "#/$defs/ContextPolicy"
-      with:
-        type: object
-        additionalProperties: true
+      input:
+        $ref: "#/$defs/RelativePath"
+      output:
+        $ref: "#/$defs/RelativePath"
+      document:
+        $ref: "#/$defs/RelativePath"
+      kind:
+        type: string
+      graph:
+        $ref: "#/$defs/RelativePath"
+      start:
+        type: string
+        minLength: 1
+      depth:
+        type: integer
+        minimum: 1
+      languages:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          pattern: "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+      defaultLanguage:
+        type: string
+        pattern: "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+      objectives:
+        type: array
+        items:
+          $ref: "#/$defs/RelativePath"
+      useCases:
+        type: array
+        items:
+          $ref: "#/$defs/RelativePath"
+      signals:
+        type: array
+        items:
+          $ref: "#/$defs/RelativePath"
+      products:
+        type: array
+        items:
+          $ref: "#/$defs/RelativePath"
+      title:
+        $ref: "#/$defs/Text"
+      config:
+        $ref: "#/$defs/RelativePath"
+      prompts:
+        $ref: "#/$defs/RelativePath"
+      profile:
+        type: string
+      includeComponents:
+        type: array
+        items:
+          type: string
+      maxSourceChars:
+        type: integer
+        minimum: 1
+      ollamaUrl:
+        type: string
+      html:
+        $ref: "#/$defs/RelativePath"
+      toon:
+        $ref: "#/$defs/RelativePath"
+      gcf:
+        $ref: "#/$defs/RelativePath"
+      contextGraph:
+        $ref: "#/$defs/RelativePath"
+      name:
+        $ref: "#/$defs/Text"
+      description:
+        $ref: "#/$defs/Text"
+      recursive:
+        type: boolean
+      validate:
+        type: boolean
+      allSources:
+        type: boolean
+      strictValidation:
+        type: boolean
       optional:
         type: boolean
       timeoutSeconds:
@@ -440,316 +515,6 @@ $defs:
                   - runtimeRef
               - required:
                   - model
-  WithBase:
-    type: object
-  GenerateWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        required:
-          - input
-          - kind
-          - output
-        properties:
-          input:
-            $ref: "#/$defs/RelativePath"
-          kind:
-            type: string
-            enum:
-              - product-reference
-              - odps-product
-              - use-case
-              - objective
-              - signal
-              - graph
-          output:
-            $ref: "#/$defs/RelativePath"
-          config:
-            $ref: "#/$defs/RelativePath"
-          prompts:
-            $ref: "#/$defs/RelativePath"
-          profile:
-            type: string
-          includeComponents:
-            type: array
-            items:
-              type: string
-          maxSourceChars:
-            type: integer
-            minimum: 1
-          ollamaUrl:
-            type: string
-  OdpcBuildWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        required:
-          - input
-          - output
-        properties:
-          input:
-            $ref: "#/$defs/RelativePath"
-          output:
-            $ref: "#/$defs/RelativePath"
-          html:
-            $ref: "#/$defs/RelativePath"
-          toon:
-            $ref: "#/$defs/RelativePath"
-          gcf:
-            $ref: "#/$defs/RelativePath"
-          id:
-            type: string
-          name:
-            $ref: "#/$defs/Text"
-          description:
-            $ref: "#/$defs/Text"
-          recursive:
-            type: boolean
-          validate:
-            type: boolean
-  OdpgBuildWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        required:
-          - input
-          - output
-        properties:
-          input:
-            $ref: "#/$defs/RelativePath"
-          output:
-            $ref: "#/$defs/RelativePath"
-          toon:
-            $ref: "#/$defs/RelativePath"
-          gcf:
-            $ref: "#/$defs/RelativePath"
-          contextGraph:
-            $ref: "#/$defs/RelativePath"
-          id:
-            type: string
-          name:
-            $ref: "#/$defs/Text"
-          description:
-            $ref: "#/$defs/Text"
-          recursive:
-            type: boolean
-          validate:
-            type: boolean
-          config:
-            $ref: "#/$defs/RelativePath"
-          prompts:
-            $ref: "#/$defs/RelativePath"
-          ollamaUrl:
-            type: string
-  OdpgRenderWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        required:
-          - graph
-          - output
-        properties:
-          graph:
-            $ref: "#/$defs/RelativePath"
-          output:
-            $ref: "#/$defs/RelativePath"
-  OdpgAgentContextWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        required:
-          - graph
-          - start
-          - output
-        properties:
-          graph:
-            $ref: "#/$defs/RelativePath"
-          start:
-            type: string
-            minLength: 1
-          output:
-            $ref: "#/$defs/RelativePath"
-          depth:
-            type: integer
-            minimum: 1
-  PortfolioBuildWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        properties:
-          objectives:
-            type: array
-            items:
-              $ref: "#/$defs/RelativePath"
-          useCases:
-            type: array
-            items:
-              $ref: "#/$defs/RelativePath"
-          signals:
-            type: array
-            items:
-              $ref: "#/$defs/RelativePath"
-          products:
-            type: array
-            items:
-              $ref: "#/$defs/RelativePath"
-          output:
-            $ref: "#/$defs/RelativePath"
-          title:
-            $ref: "#/$defs/Text"
-          config:
-            $ref: "#/$defs/RelativePath"
-          prompts:
-            $ref: "#/$defs/RelativePath"
-          ollamaUrl:
-            type: string
-          strictValidation:
-            type: boolean
-        required:
-          - output
-        anyOf:
-          - required:
-              - objectives
-          - required:
-              - useCases
-          - required:
-              - signals
-          - required:
-              - products
-  PortfolioRefreshWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        properties:
-          objectives:
-            type: array
-            items:
-              $ref: "#/$defs/RelativePath"
-          useCases:
-            type: array
-            items:
-              $ref: "#/$defs/RelativePath"
-          signals:
-            type: array
-            items:
-              $ref: "#/$defs/RelativePath"
-          products:
-            type: array
-            items:
-              $ref: "#/$defs/RelativePath"
-          title:
-            $ref: "#/$defs/Text"
-          config:
-            $ref: "#/$defs/RelativePath"
-          allSources:
-            type: boolean
-          prompts:
-            $ref: "#/$defs/RelativePath"
-          ollamaUrl:
-            type: string
-          strictValidation:
-            type: boolean
-  WorkspaceOnlyWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        properties:
-          strictValidation:
-            type: boolean
-  PortfolioLocalizeWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        required:
-          - languages
-        properties:
-          languages:
-            type: array
-            minItems: 1
-            items:
-              type: string
-              pattern: "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
-          defaultLanguage:
-            type: string
-            pattern: "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
-          config:
-            $ref: "#/$defs/RelativePath"
-          prompts:
-            $ref: "#/$defs/RelativePath"
-          ollamaUrl:
-            type: string
-          strictValidation:
-            type: boolean
-  PortfolioRenderWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        properties:
-          output:
-            $ref: "#/$defs/RelativePath"
-          strictValidation:
-            type: boolean
-  ValidateWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        required:
-          - document
-        properties:
-          document:
-            $ref: "#/$defs/RelativePath"
-  ExplainWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
-        required:
-          - document
-        properties:
-          document:
-            $ref: "#/$defs/RelativePath"
-  PortfolioExplainWith:
-    allOf:
-      - $ref: "#/$defs/WithBase"
-      - type: object
-        additionalProperties: false
-        patternProperties:
-          "^x-": {}
   GenerateStepRule:
     if:
       properties:
@@ -759,10 +524,19 @@ $defs:
         - command
     then:
       required:
-        - with
+        - input
+        - kind
+        - output
       properties:
-        with:
-          $ref: "#/$defs/GenerateWith"
+        kind:
+          enum:
+            - data-product-delivery-plan
+            - product-reference
+            - odps-product
+            - use-case
+            - objective
+            - signal
+            - graph
   OdpcBuildStepRule:
     if:
       properties:
@@ -772,10 +546,8 @@ $defs:
         - command
     then:
       required:
-        - with
-      properties:
-        with:
-          $ref: "#/$defs/OdpcBuildWith"
+        - input
+        - output
   OdpgBuildStepRule:
     if:
       properties:
@@ -785,10 +557,8 @@ $defs:
         - command
     then:
       required:
-        - with
-      properties:
-        with:
-          $ref: "#/$defs/OdpgBuildWith"
+        - input
+        - output
   OdpgAgentContextStepRule:
     if:
       properties:
@@ -798,10 +568,9 @@ $defs:
         - command
     then:
       required:
-        - with
-      properties:
-        with:
-          $ref: "#/$defs/OdpgAgentContextWith"
+        - graph
+        - start
+        - output
   OdpgRenderStepRule:
     if:
       properties:
@@ -811,10 +580,8 @@ $defs:
         - command
     then:
       required:
-        - with
-      properties:
-        with:
-          $ref: "#/$defs/OdpgRenderWith"
+        - graph
+        - output
   PortfolioBuildStepRule:
     if:
       properties:
@@ -824,10 +591,16 @@ $defs:
         - command
     then:
       required:
-        - with
-      properties:
-        with:
-          $ref: "#/$defs/PortfolioBuildWith"
+        - output
+      anyOf:
+        - required:
+            - objectives
+        - required:
+            - useCases
+        - required:
+            - signals
+        - required:
+            - products
   PortfolioRefreshStepRule:
     if:
       properties:
@@ -836,9 +609,7 @@ $defs:
       required:
         - command
     then:
-      properties:
-        with:
-          $ref: "#/$defs/PortfolioRefreshWith"
+      properties: {}
   PortfolioSyncStepRule:
     if:
       properties:
@@ -847,9 +618,7 @@ $defs:
       required:
         - command
     then:
-      properties:
-        with:
-          $ref: "#/$defs/WorkspaceOnlyWith"
+      properties: {}
   PortfolioLocalizeStepRule:
     if:
       properties:
@@ -859,10 +628,7 @@ $defs:
         - command
     then:
       required:
-        - with
-      properties:
-        with:
-          $ref: "#/$defs/PortfolioLocalizeWith"
+        - languages
   PortfolioRenderStepRule:
     if:
       properties:
@@ -871,9 +637,7 @@ $defs:
       required:
         - command
     then:
-      properties:
-        with:
-          $ref: "#/$defs/PortfolioRenderWith"
+      properties: {}
   PortfolioExplainStepRule:
     if:
       properties:
@@ -882,9 +646,7 @@ $defs:
       required:
         - command
     then:
-      properties:
-        with:
-          $ref: "#/$defs/PortfolioExplainWith"
+      properties: {}
   ValidateStepRule:
     if:
       properties:
@@ -894,10 +656,7 @@ $defs:
         - command
     then:
       required:
-        - with
-      properties:
-        with:
-          $ref: "#/$defs/ValidateWith"
+        - document
   ExplainStepRule:
     if:
       properties:
@@ -907,10 +666,7 @@ $defs:
         - command
     then:
       required:
-        - with
-      properties:
-        with:
-          $ref: "#/$defs/ExplainWith"
+        - document
   Gate:
     type: object
     additionalProperties: false

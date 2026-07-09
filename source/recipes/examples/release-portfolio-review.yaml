@@ -21,10 +21,9 @@ recipe:
       command: portfolio.refresh
     - id: localize-portfolio
       command: portfolio.localize
-      with:
-        languages:
-          - fi
-          - sv
+      languages:
+        - fi
+        - sv
     - id: explain-portfolio
       command: portfolio.explain
   outputs:
