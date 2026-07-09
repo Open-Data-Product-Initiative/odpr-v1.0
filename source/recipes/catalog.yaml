@@ -25,7 +25,6 @@ recipeCatalog:
         en: Local Fragment Draft
       description:
         en: Generate draft ODPC fragments locally for fast iteration.
-      environment: development
       executionMode: local
       providerRef: local-fast
       commands:
@@ -39,13 +38,6 @@ recipeCatalog:
         en: CI Validate Generated Fragments
       description:
         en: Generate and validate draft fragments during CI.
-      tags:
-        - ci
-        - validation
-      environment: ci
-      executionMode: local
-      providerRef: local-fast
-      contextFormat: gcf
       requiresReview: false
       commands:
         - generate
@@ -59,13 +51,8 @@ recipeCatalog:
         en: Release Portfolio Review
       description:
         en: Refresh, localize, and explain a portfolio for release review.
-      tags:
-        - release
-        - portfolio
-      environment: production
       executionMode: hosted
       providerRef: production-quality
-      contextFormat: gcf
       requiresReview: true
       commands:
         - portfolio.refresh
@@ -80,13 +67,8 @@ recipeCatalog:
         en: Portfolio Localization
       description:
         en: Localize a portfolio workspace into configured target languages.
-      tags:
-        - localization
-        - portfolio
-      environment: production
       executionMode: hosted
       providerRef: production-quality
-      contextFormat: gcf
       requiresReview: true
       commands:
         - portfolio.localize
@@ -99,12 +81,7 @@ recipeCatalog:
         en: Hybrid Graph Review
       description:
         en: Infer graph context locally and review the portfolio with a hosted model.
-      tags:
-        - hybrid
-        - graph
-      environment: staging
       executionMode: hybrid
-      contextFormat: gcf
       requiresReview: true
       commands:
         - odpg.build
@@ -120,12 +97,6 @@ recipeCatalog:
       scope: data-product
       description:
         en: Generate a reviewable Data Product Recipe for one data product.
-      tags:
-        - data-product
-        - delivery
-        - agent
-      environment: development
-      executionMode: none
       requiresReview: true
       commands:
         - explain
@@ -141,14 +112,8 @@ recipeCatalog:
       scope: graph
       description:
         en: Review graph impact when a node status changes to production.
-      tags:
-        - graph
-        - trigger
-        - review
       executionMode: hosted
       providerRef: production-quality
-      contextFormat: gcf
       requiresReview: true
       commands:
-        - odpg.agent-context
         - generate

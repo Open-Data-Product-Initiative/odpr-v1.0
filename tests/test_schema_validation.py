@@ -387,7 +387,7 @@ def test_portfolio_localize_requires_languages_list(validator):
         {
             "id": "localize",
             "command": "portfolio.localize",
-            "with": {"workspace": "portfolio/", "languages": ["fi", "sv"]},
+            "with": {"languages": ["fi", "sv"]},
         }
     )
     assert_valid(validator, document)
@@ -396,7 +396,7 @@ def test_portfolio_localize_requires_languages_list(validator):
     assert_invalid(validator, document)
 
 
-def test_portfolio_build_accepts_output_and_workspace_together(validator):
+def test_portfolio_build_accepts_declared_output_without_workspace_argument(validator):
     document = recipe_with_step(
         {
             "id": "build-portfolio",
@@ -404,9 +404,20 @@ def test_portfolio_build_accepts_output_and_workspace_together(validator):
             "with": {
                 "signals": ["source_docs/signals/"],
                 "output": "portfolio/index.html",
-                "workspace": "portfolio/",
             },
         }
     )
 
     assert_valid(validator, document)
+
+
+def test_portfolio_commands_reject_workspace_argument(validator):
+    document = recipe_with_step(
+        {
+            "id": "refresh",
+            "command": "portfolio.refresh",
+            "with": {"workspace": "portfolio/"},
+        }
+    )
+
+    assert_invalid(validator, document)

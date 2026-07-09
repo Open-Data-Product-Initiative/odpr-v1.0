@@ -134,15 +134,6 @@ $defs:
         minLength: 1
       path:
         $ref: "#/$defs/RelativePath"
-      kind:
-        type: string
-        enum:
-          - yaml
-          - html
-          - toon
-          - gcf
-          - json
-          - directory
       description:
         $ref: "#/$defs/Text"
   RelativePath:
@@ -618,8 +609,6 @@ $defs:
               $ref: "#/$defs/RelativePath"
           output:
             $ref: "#/$defs/RelativePath"
-          workspace:
-            $ref: "#/$defs/RelativePath"
           title:
             $ref: "#/$defs/Text"
           config:
@@ -630,6 +619,8 @@ $defs:
             type: string
           strictValidation:
             type: boolean
+        required:
+          - output
         anyOf:
           - required:
               - objectives
@@ -639,11 +630,6 @@ $defs:
               - signals
           - required:
               - products
-        anyOf:
-          - required:
-              - output
-          - required:
-              - workspace
   PortfolioRefreshWith:
     allOf:
       - $ref: "#/$defs/WithBase"
@@ -651,11 +637,7 @@ $defs:
         additionalProperties: false
         patternProperties:
           "^x-": {}
-        required:
-          - workspace
         properties:
-          workspace:
-            $ref: "#/$defs/RelativePath"
           objectives:
             type: array
             items:
@@ -691,11 +673,7 @@ $defs:
         additionalProperties: false
         patternProperties:
           "^x-": {}
-        required:
-          - workspace
         properties:
-          workspace:
-            $ref: "#/$defs/RelativePath"
           strictValidation:
             type: boolean
   PortfolioLocalizeWith:
@@ -706,11 +684,8 @@ $defs:
         patternProperties:
           "^x-": {}
         required:
-          - workspace
           - languages
         properties:
-          workspace:
-            $ref: "#/$defs/RelativePath"
           languages:
             type: array
             minItems: 1
@@ -735,11 +710,7 @@ $defs:
         additionalProperties: false
         patternProperties:
           "^x-": {}
-        required:
-          - workspace
         properties:
-          workspace:
-            $ref: "#/$defs/RelativePath"
           output:
             $ref: "#/$defs/RelativePath"
           strictValidation:
@@ -775,11 +746,6 @@ $defs:
         additionalProperties: false
         patternProperties:
           "^x-": {}
-        required:
-          - workspace
-        properties:
-          workspace:
-            $ref: "#/$defs/RelativePath"
   GenerateStepRule:
     if:
       properties:
@@ -866,8 +832,6 @@ $defs:
       required:
         - command
     then:
-      required:
-        - with
       properties:
         with:
           $ref: "#/$defs/PortfolioRefreshWith"
@@ -879,8 +843,6 @@ $defs:
       required:
         - command
     then:
-      required:
-        - with
       properties:
         with:
           $ref: "#/$defs/WorkspaceOnlyWith"
@@ -905,8 +867,6 @@ $defs:
       required:
         - command
     then:
-      required:
-        - with
       properties:
         with:
           $ref: "#/$defs/PortfolioRenderWith"
@@ -918,8 +878,6 @@ $defs:
       required:
         - command
     then:
-      required:
-        - with
       properties:
         with:
           $ref: "#/$defs/PortfolioExplainWith"

@@ -17,9 +17,9 @@ recipe:
   execution:
     mode: hosted
     providerRef: production-quality
-  steps: []
-  outputs: []
-  gates: []
+  steps:
+    - id: refresh-portfolio
+      command: portfolio.refresh
   review:
     required: true
 ```
@@ -78,15 +78,14 @@ recipe:
   execution:
     mode: hosted
     providerRef: production-quality
+  inputs:
+    - id: portfolio-workspace
+      path: portfolio/
   steps:
     - id: refresh-portfolio
       command: portfolio.refresh
-      with:
-        workspace: portfolio/
     - id: explain-portfolio
       command: portfolio.explain
-      with:
-        workspace: portfolio/
   outputs:
     - id: release-explanation
       path: portfolio/explanation.md

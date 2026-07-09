@@ -8,10 +8,6 @@ recipe:
       en: Graph Triggered Impact Review
     description:
       en: Review graph impact when a node status changes to production.
-    tags:
-      - graph
-      - trigger
-      - review
   version: "1.0.0"
   type: agent
   scope: graph
@@ -30,18 +26,7 @@ recipe:
   execution:
     mode: hosted
     providerRef: production-quality
-  context:
-    format: gcf
-    fallback:
-      - yaml
   steps:
-    - id: collect-graph-context
-      command: odpg.agent-context
-      with:
-        graph: graphs/portfolio.odpg.yaml
-        start: trigger.subject
-        depth: 2
-        output: generated/graph-context.gcf
     - id: explain-impact
       command: generate
       with:
@@ -49,11 +34,7 @@ recipe:
         input: generated/graph-context.gcf
         output: generated/graph-impact.md
   outputs:
-    - id: graph-context
-      path: generated/graph-context.gcf
-      kind: gcf
     - id: graph-impact
       path: generated/graph-impact.md
   review:
     required: true
-    mode: human

@@ -26,8 +26,13 @@ recipe:
     graphRef: graphs/portfolio.odpg.yaml
     start: trigger.subject
     depth: 2
-  steps: []
-  outputs: []
+  steps:
+    - id: explain-impact
+      command: generate
+      with:
+        kind: graph
+        input: generated/graph-context.gcf
+        output: generated/graph-impact.md
   review:
     required: true
 ```

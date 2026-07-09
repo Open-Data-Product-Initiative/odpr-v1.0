@@ -216,8 +216,8 @@ def check_examples():
     assert_provider_document(load_yaml(PROVIDER_EXAMPLES_DIR / "internal-secure.yaml"), "internal-secure")
 
     ci_recipe = load_yaml(EXAMPLES_DIR / "ci-validate-generated-fragments.yaml")["recipe"]
-    assert ci_recipe["execution"]["mode"] == "local"
-    assert ci_recipe["context"]["format"] == "gcf"
+    assert "execution" not in ci_recipe
+    assert "context" not in ci_recipe
     assert ci_recipe["gates"][0]["type"] == "validation"
 
     release_recipe = load_yaml(EXAMPLES_DIR / "release-portfolio-review.yaml")["recipe"]

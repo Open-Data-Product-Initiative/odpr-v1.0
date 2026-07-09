@@ -190,8 +190,8 @@ class AgentArtifactsTest(unittest.TestCase):
         assert_recipe_document(release_recipe, "release")
         assert_recipe_document(hybrid_recipe, "hybrid")
 
-        self.assertEqual(ci_recipe["recipe"]["execution"]["mode"], "local")
-        self.assertEqual(ci_recipe["recipe"]["context"]["format"], "gcf")
+        self.assertNotIn("execution", ci_recipe["recipe"])
+        self.assertNotIn("context", ci_recipe["recipe"])
         self.assertEqual(release_recipe["recipe"]["execution"]["mode"], "hosted")
         self.assertTrue(release_recipe["recipe"]["review"]["required"])
         self.assertEqual(hybrid_recipe["recipe"]["execution"]["mode"], "hybrid")

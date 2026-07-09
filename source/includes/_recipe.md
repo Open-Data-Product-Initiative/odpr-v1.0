@@ -58,15 +58,6 @@ recipe:
   version: "1.0.0"
   type: ci
   scope: catalog
-  environment: ci
-  execution:
-    mode: local
-    providerRef: local-fast
-  context:
-    format: gcf
-    fallback:
-      - toon
-      - yaml
   steps:
     - id: validate-fragments
       command: validate
@@ -75,14 +66,6 @@ recipe:
   outputs:
     - id: generated-fragments
       path: generated/fragments/
-  gates:
-    - id: fragments-valid
-      type: validation
-      required: true
-  review:
-    required: false
-  runPolicy:
-    timeoutSeconds: 300
 ```
 
 | Element | Type | Required | Description |
@@ -200,17 +183,20 @@ underlying capability exists. Implementations MAY support additional commands.
 | `odpg.build` | `llm-backed` | `input`, `output` | `toon`, `gcf`, `contextGraph`, `id`, `name`, `description`, `recursive`, `validate`, `config`, `prompts`, `ollamaUrl` |
 | `odpg.agent-context` | `deterministic` | `graph`, `start`, `output` | `depth` |
 | `odpg.render` | `deterministic` | `graph`, `output` | none |
-| `portfolio.build` | `llm-backed` | at least one of `objectives`, `useCases`, `signals`, or `products`; and `output`, `workspace`, or both | `title`, `config`, `prompts`, `ollamaUrl`, `strictValidation` |
-| `portfolio.refresh` | `llm-backed` | `workspace` | `objectives`, `useCases`, `signals`, `products`, `title`, `config`, `allSources`, `prompts`, `ollamaUrl`, `strictValidation` |
-| `portfolio.sync` | `deterministic` | `workspace` | `strictValidation` |
-| `portfolio.localize` | `llm-backed` | `workspace`, `languages` | `defaultLanguage`, `config`, `prompts`, `ollamaUrl`, `strictValidation` |
-| `portfolio.render` | `deterministic` | `workspace` | `output`, `strictValidation` |
-| `portfolio.explain` | `report` | `workspace` | none |
+| `portfolio.build` | `llm-backed` | at least one of `objectives`, `useCases`, `signals`, or `products`; and `output` | `title`, `config`, `prompts`, `ollamaUrl`, `strictValidation` |
+| `portfolio.refresh` | `llm-backed` | none | `objectives`, `useCases`, `signals`, `products`, `title`, `config`, `allSources`, `prompts`, `ollamaUrl`, `strictValidation` |
+| `portfolio.sync` | `deterministic` | none | `strictValidation` |
+| `portfolio.localize` | `llm-backed` | `languages` | `defaultLanguage`, `config`, `prompts`, `ollamaUrl`, `strictValidation` |
+| `portfolio.render` | `deterministic` | none | `output`, `strictValidation` |
+| `portfolio.explain` | `report` | none | none |
 | `validate` | `deterministic` | `document` | none |
 | `explain` | `report` | `document` | none |
 
-`with` is the argument object for the selected command. `providerRef` and
-`model` stay beside `command`; they do not belong inside `with`.
+`with` is the argument object for the selected command. Shared durable paths,
+such as a portfolio workspace used by several steps, belong in recipe-level
+`inputs` or `outputs` instead of being repeated under every step.
+`providerRef` and `model` stay beside `command`; they do not belong inside
+`with`.
 `portfolio.localize.with.languages` SHOULD be written as a YAML list of BCP 47
 language tags.
 
@@ -270,30 +256,20 @@ recipe:
   execution:
     mode: hosted
     providerRef: production-quality
-  environment: production
-  context:
-    format: gcf
-    fallback:
-      - toon
-      - yaml
-  runPolicy:
-    timeoutSeconds: 900
+  inputs:
+    - id: portfolio-workspace
+      path: portfolio/
   steps:
     - id: refresh-portfolio
       command: portfolio.refresh
-      with:
-        workspace: portfolio/
     - id: localize-portfolio
       command: portfolio.localize
       with:
-        workspace: portfolio/
         languages:
           - fi
           - sv
     - id: explain-portfolio
       command: portfolio.explain
-      with:
-        workspace: portfolio/
   outputs:
     - id: localized-portfolio-fi
       path: portfolio/index.fi.html
@@ -307,8 +283,6 @@ recipe:
       required: true
   review:
     required: true
-    mode: human
-    instructions: Review localized pages and generated reports before publishing.
 ```
 
 This release recipe describes a portfolio review workflow. When an executor
@@ -321,10 +295,9 @@ runs it, the expected flow is:
    `production-quality`. The matching ODPR `Provider` object describes the
    runtime profile, while raw credentials and live endpoint resolution stay in
    the executing SDK or platform.
-4. Prepare compact context in GCF format, with TOON and YAML as fallback
-   formats.
-5. Run `portfolio.refresh` for the `portfolio/` workspace.
-6. Run `portfolio.localize` for the same workspace and produce Finnish and
+4. Treat `portfolio/` as the shared portfolio workspace input.
+5. Run `portfolio.refresh`.
+6. Run `portfolio.localize` and produce Finnish and
    Swedish localized outputs.
 7. Run `portfolio.explain` so reviewers get generated explanation material for
    the refreshed portfolio.

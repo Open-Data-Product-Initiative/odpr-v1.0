@@ -36,13 +36,8 @@ recipeCatalog:
         en: Release Portfolio Review
       description:
         en: Refresh, localize, explain, and review a portfolio before release.
-      tags:
-        - portfolio
-        - release
-      environment: production
       executionMode: hosted
       providerRef: production-quality
-      contextFormat: gcf
       requiresReview: true
       commands:
         - portfolio.refresh

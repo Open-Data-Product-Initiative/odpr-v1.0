@@ -234,17 +234,6 @@
         "path": {
           "$ref": "#/$defs/RelativePath"
         },
-        "kind": {
-          "type": "string",
-          "enum": [
-            "yaml",
-            "html",
-            "toon",
-            "gcf",
-            "json",
-            "directory"
-          ]
-        },
         "description": {
           "$ref": "#/$defs/Text"
         }
@@ -1011,9 +1000,6 @@
             "output": {
               "$ref": "#/$defs/RelativePath"
             },
-            "workspace": {
-              "$ref": "#/$defs/RelativePath"
-            },
             "title": {
               "$ref": "#/$defs/Text"
             },
@@ -1030,15 +1016,28 @@
               "type": "boolean"
             }
           },
+          "required": [
+            "output"
+          ],
           "anyOf": [
             {
               "required": [
-                "output"
+                "objectives"
               ]
             },
             {
               "required": [
-                "workspace"
+                "useCases"
+              ]
+            },
+            {
+              "required": [
+                "signals"
+              ]
+            },
+            {
+              "required": [
+                "products"
               ]
             }
           ]
@@ -1056,13 +1055,7 @@
           "patternProperties": {
             "^x-": {}
           },
-          "required": [
-            "workspace"
-          ],
           "properties": {
-            "workspace": {
-              "$ref": "#/$defs/RelativePath"
-            },
             "objectives": {
               "type": "array",
               "items": {
@@ -1120,13 +1113,7 @@
           "patternProperties": {
             "^x-": {}
           },
-          "required": [
-            "workspace"
-          ],
           "properties": {
-            "workspace": {
-              "$ref": "#/$defs/RelativePath"
-            },
             "strictValidation": {
               "type": "boolean"
             }
@@ -1146,13 +1133,9 @@
             "^x-": {}
           },
           "required": [
-            "workspace",
             "languages"
           ],
           "properties": {
-            "workspace": {
-              "$ref": "#/$defs/RelativePath"
-            },
             "languages": {
               "type": "array",
               "minItems": 1,
@@ -1192,13 +1175,7 @@
           "patternProperties": {
             "^x-": {}
           },
-          "required": [
-            "workspace"
-          ],
           "properties": {
-            "workspace": {
-              "$ref": "#/$defs/RelativePath"
-            },
             "output": {
               "$ref": "#/$defs/RelativePath"
             },
@@ -1263,14 +1240,6 @@
           "additionalProperties": false,
           "patternProperties": {
             "^x-": {}
-          },
-          "required": [
-            "workspace"
-          ],
-          "properties": {
-            "workspace": {
-              "$ref": "#/$defs/RelativePath"
-            }
           }
         }
       ]
@@ -1419,9 +1388,6 @@
         ]
       },
       "then": {
-        "required": [
-          "with"
-        ],
         "properties": {
           "with": {
             "$ref": "#/$defs/PortfolioRefreshWith"
@@ -1441,9 +1407,6 @@
         ]
       },
       "then": {
-        "required": [
-          "with"
-        ],
         "properties": {
           "with": {
             "$ref": "#/$defs/WorkspaceOnlyWith"
@@ -1485,9 +1448,6 @@
         ]
       },
       "then": {
-        "required": [
-          "with"
-        ],
         "properties": {
           "with": {
             "$ref": "#/$defs/PortfolioRenderWith"
@@ -1507,9 +1467,6 @@
         ]
       },
       "then": {
-        "required": [
-          "with"
-        ],
         "properties": {
           "with": {
             "$ref": "#/$defs/PortfolioExplainWith"

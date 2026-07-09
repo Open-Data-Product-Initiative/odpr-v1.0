@@ -8,20 +8,8 @@ recipe:
       en: CI Validate Generated Fragments
     description:
       en: Generate and validate draft fragments during CI.
-    tags:
-      - ci
-      - validation
   version: "1.0.0"
   type: ci
-  environment: ci
-  execution:
-    mode: local
-    providerRef: local-fast
-  context:
-    format: gcf
-    fallback:
-      - toon
-      - yaml
   steps:
     - id: generate-signals
       command: generate

@@ -8,16 +8,9 @@ recipe:
       en: Data Product Recipe Delivery
     description:
       en: Generate a reviewable Data Product Recipe for one data product.
-    tags:
-      - data-product
-      - delivery
-      - agent
   version: "1.0.0"
   type: agent
   scope: data-product
-  environment: development
-  execution:
-    mode: none
   steps:
     - id: collect-product-context
       command: explain
@@ -36,13 +29,9 @@ recipe:
   outputs:
     - id: data-product-recipe
       path: data-product-plan/
-      kind: directory
-      description:
-        en: Reviewable Data Product Recipe files for data product delivery planning.
   gates:
     - id: delivery-plan-reviewed
       type: review
       required: true
   review:
     required: true
-    mode: human
