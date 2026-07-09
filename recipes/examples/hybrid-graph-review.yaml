@@ -19,16 +19,14 @@ recipe:
     - id: build-graph
       command: odpg.build
       runtimeRef: runtime-profiles/examples/local-graph.yaml#local-graph
-      with:
-        input: generated/fragments/
-        output: generated/graph.yaml
+      input: generated/fragments/
+      output: generated/graph.yaml
     - id: generate-review-notes
       command: generate
       runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
-      with:
-        kind: objective
-        input: generated/graph.yaml
-        output: generated/review-notes/
+      kind: objective
+      input: generated/graph.yaml
+      output: generated/review-notes/
     - id: explain-portfolio
       command: portfolio.explain
   outputs:

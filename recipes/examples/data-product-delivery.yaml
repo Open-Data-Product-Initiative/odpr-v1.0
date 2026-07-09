@@ -14,18 +14,15 @@ recipe:
   steps:
     - id: collect-product-context
       command: explain
-      with:
-        document: product-context/odps.yaml
+      document: product-context/odps.yaml
     - id: generate-delivery-plan
       command: generate
-      with:
-        kind: data-product-delivery-plan
-        input: product-context/
-        output: data-product-plan/
+      kind: data-product-delivery-plan
+      input: product-context/
+      output: data-product-plan/
     - id: validate-delivery-plan
       command: validate
-      with:
-        document: data-product-plan/README.md
+      document: data-product-plan/README.md
   outputs:
     - id: data-product-recipe
       path: data-product-plan/

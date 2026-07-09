@@ -2181,10 +2181,9 @@ build commands, local test commands, and repository-specific tool rules.</p>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-impact</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">kind</span><span class="pi">:</span> <span class="s">graph</span>
-        <span class="na">input</span><span class="pi">:</span> <span class="s">generated/graph-context.gcf</span>
-        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/graph-impact.md</span>
+      <span class="na">kind</span><span class="pi">:</span> <span class="s">graph</span>
+      <span class="na">input</span><span class="pi">:</span> <span class="s">generated/graph-context.gcf</span>
+      <span class="na">output</span><span class="pi">:</span> <span class="s">generated/graph-impact.md</span>
   <span class="na">review</span><span class="pi">:</span>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
 </code></pre></div>
@@ -2600,10 +2599,9 @@ and automation systems how a data product workflow should run.</p>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generate-signals</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
-        <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
-        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
+      <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
+      <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
+      <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
 </code></pre></div>
 <table><thead>
 <tr>
@@ -2651,8 +2649,7 @@ and automation systems how a data product workflow should run.</p>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">validate-fragments</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">validate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">document</span><span class="pi">:</span> <span class="s">generated/fragments/signal.yaml</span>
+      <span class="na">document</span><span class="pi">:</span> <span class="s">generated/fragments/signal.yaml</span>
   <span class="na">outputs</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generated-fragments</span>
       <span class="na">path</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
@@ -2918,8 +2915,8 @@ underlying capability exists. Implementations MAY support additional commands.</
 <tr>
 <th>Command</th>
 <th>Classification</th>
-<th>Required <code>with</code></th>
-<th>Optional <code>with</code></th>
+<th>Required step fields</th>
+<th>Optional step fields</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -2932,13 +2929,13 @@ underlying capability exists. Implementations MAY support additional commands.</
 <td><code>odpc.build</code></td>
 <td><code>deterministic</code></td>
 <td><code>input</code>, <code>output</code></td>
-<td><code>html</code>, <code>toon</code>, <code>gcf</code>, <code>id</code>, <code>name</code>, <code>description</code>, <code>recursive</code>, <code>validate</code></td>
+<td><code>html</code>, <code>toon</code>, <code>gcf</code>, <code>name</code>, <code>description</code>, <code>recursive</code>, <code>validate</code></td>
 </tr>
 <tr>
 <td><code>odpg.build</code></td>
 <td><code>llm-backed</code></td>
 <td><code>input</code>, <code>output</code></td>
-<td><code>toon</code>, <code>gcf</code>, <code>contextGraph</code>, <code>id</code>, <code>name</code>, <code>description</code>, <code>recursive</code>, <code>validate</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code></td>
+<td><code>toon</code>, <code>gcf</code>, <code>contextGraph</code>, <code>name</code>, <code>description</code>, <code>recursive</code>, <code>validate</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code></td>
 </tr>
 <tr>
 <td><code>odpg.agent-context</code></td>
@@ -3002,12 +2999,10 @@ underlying capability exists. Implementations MAY support additional commands.</
 </tr>
 </tbody></table>
 
-<p><code>with</code> is the argument object for the selected command. Shared durable paths,
-such as a portfolio workspace used by several steps, belong in recipe-level
-<code>inputs</code> or <code>outputs</code> instead of being repeated under every step.
-<code>runtimeRef</code> and <code>model</code> stay beside <code>command</code>; they do not belong inside
-<code>with</code>.
-<code>portfolio.localize.with.languages</code> SHOULD be written as a YAML list of BCP 47
+<p>Command-specific parameters are written directly on the step. Shared durable
+paths, such as a portfolio workspace used by several steps, belong in
+recipe-level <code>inputs</code> or <code>outputs</code> instead of being repeated under every step.
+<code>portfolio.localize.languages</code> SHOULD be written as a YAML list of BCP 47
 language tags.</p>
 
 <table><thead>
@@ -3037,7 +3032,7 @@ language tags.</p>
 <p>Use <code>inputs</code> and <code>outputs</code> when a workflow uses or creates durable artifacts
 that later steps, CI
 jobs, reviewers, or agents should inspect. Outputs are named paths. They do not
-replace the command-specific <code>with.output</code> argument; they make expected durable
+replace a command-specific <code>output</code> field; they make expected durable
 results visible at the recipe level.</p>
 
 <p>Recipe-level paths should be project-relative. Recipes should not use absolute
@@ -3081,10 +3076,9 @@ can use local naming conventions while keeping common labels readable.</p>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.refresh</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localize-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.localize</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">languages</span><span class="pi">:</span>
-          <span class="pi">-</span> <span class="s">fi</span>
-          <span class="pi">-</span> <span class="s">sv</span>
+      <span class="na">languages</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">fi</span>
+        <span class="pi">-</span> <span class="s">sv</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.explain</span>
   <span class="na">outputs</span><span class="pi">:</span>
@@ -3789,10 +3783,9 @@ when a recipe references a provider profile with a URI-reference such as
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generate-signals</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
-        <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
-        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
+      <span class="na">kind</span><span class="pi">:</span> <span class="s">signal</span>
+      <span class="na">input</span><span class="pi">:</span> <span class="s">source_docs/signals/</span>
+      <span class="na">output</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
 </code></pre></div>
 <p>ODPR is published in several forms for different users and tools. This
 specification provides the human-readable documentation, while the schema,
@@ -4111,8 +4104,7 @@ of the standard. To propose useful extensions, raise an issue in GitHub:</p>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">validate-fragments</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">validate</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">document</span><span class="pi">:</span> <span class="s">generated/fragments/signal.yaml</span>
+      <span class="na">document</span><span class="pi">:</span> <span class="s">generated/fragments/signal.yaml</span>
       <span class="na">x-ci-job-name</span><span class="pi">:</span> <span class="s">validate-generated-fragments</span>
 </code></pre></div>
 <table><thead>

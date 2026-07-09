@@ -19,11 +19,10 @@ recipe:
   steps:
     - id: localize-portfolio
       command: portfolio.localize
-      with:
-        languages:
-          - fi
-          - sv
-        defaultLanguage: en
+      languages:
+        - fi
+        - sv
+      defaultLanguage: en
   outputs:
     - id: localized-portfolio-fi
       path: portfolio/index.fi.html

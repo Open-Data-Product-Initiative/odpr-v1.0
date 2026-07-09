@@ -23,8 +23,8 @@ Family-level toolkit:
   servers, or platform implementations.
 - Use ODPR-specific schemas, examples, recipes.jsonl, and helper scripts
   together with the ODP Agent SDK when the task focuses on recipe documents.
-- When explaining or running a recipe, inspect command names, step `with`
-  arguments, declared outputs, gates, review policy, environment, and runPolicy.
+- When explaining or running a recipe, inspect command names, step parameters,
+  declared outputs, gates, review policy, environment, and runPolicy.
 - When explaining graph-triggered recipes, inspect `recipe.trigger` and
   `recipe.graphContext`. Treat triggers as graph change patterns, not graph
   queries or bindings to one graph node id.
