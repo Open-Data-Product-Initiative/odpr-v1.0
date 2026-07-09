@@ -10,7 +10,6 @@ recipe:
       en: Generate draft ODPC fragments locally for fast iteration.
   version: "1.0.0"
   type: dev
-  environment: development
   execution:
     mode: local
     providerRef: local-fast

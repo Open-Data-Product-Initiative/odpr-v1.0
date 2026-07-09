@@ -8,25 +8,17 @@ recipe:
       en: Hybrid Graph Review
     description:
       en: Infer graph context locally and review the portfolio with a hosted model.
-    tags:
-      - hybrid
-      - graph
   version: "1.0.0"
   type: hybrid
-  environment: staging
   execution:
     mode: hybrid
-  context:
-    format: gcf
-    fallback:
-      - toon
-      - yaml
+  inputs:
+    - id: portfolio-workspace
+      path: portfolio/
   steps:
     - id: build-graph
       command: odpg.build
       providerRef: local-graph
-      context:
-        format: gcf
       with:
         input: generated/fragments/
         output: generated/graph.yaml
@@ -39,8 +31,6 @@ recipe:
         output: generated/review-notes/
     - id: explain-portfolio
       command: portfolio.explain
-      with:
-        workspace: portfolio/
   outputs:
     - id: graph-context
       path: generated/graph.yaml
@@ -48,4 +38,3 @@ recipe:
       path: generated/review-notes/
   review:
     required: true
-    mode: both

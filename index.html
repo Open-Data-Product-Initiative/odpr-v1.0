@@ -658,9 +658,9 @@ building blocks: Recipe, Provider, and RecipeCatalog.</p>
   <span class="na">execution</span><span class="pi">:</span>
     <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
     <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
-  <span class="na">steps</span><span class="pi">:</span> <span class="pi">[]</span>
-  <span class="na">outputs</span><span class="pi">:</span> <span class="pi">[]</span>
-  <span class="na">gates</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">refresh-portfolio</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.refresh</span>
   <span class="na">review</span><span class="pi">:</span>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
 </code></pre></div>
@@ -799,15 +799,14 @@ or outputs of the delivery work.</p>
   <span class="na">execution</span><span class="pi">:</span>
     <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
     <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
+  <span class="na">inputs</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">portfolio-workspace</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/</span>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">refresh-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.refresh</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.explain</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
   <span class="na">outputs</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">release-explanation</span>
       <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/explanation.md</span>
@@ -2179,8 +2178,13 @@ build commands, local test commands, and repository-specific tool rules.</p>
     <span class="na">graphRef</span><span class="pi">:</span> <span class="s">graphs/portfolio.odpg.yaml</span>
     <span class="na">start</span><span class="pi">:</span> <span class="s">trigger.subject</span>
     <span class="na">depth</span><span class="pi">:</span> <span class="m">2</span>
-  <span class="na">steps</span><span class="pi">:</span> <span class="pi">[]</span>
-  <span class="na">outputs</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-impact</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">kind</span><span class="pi">:</span> <span class="s">graph</span>
+        <span class="na">input</span><span class="pi">:</span> <span class="s">generated/graph-context.gcf</span>
+        <span class="na">output</span><span class="pi">:</span> <span class="s">generated/graph-impact.md</span>
   <span class="na">review</span><span class="pi">:</span>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
 </code></pre></div>
@@ -2644,15 +2648,6 @@ and automation systems how a data product workflow should run.</p>
   <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
   <span class="na">type</span><span class="pi">:</span> <span class="s">ci</span>
   <span class="na">scope</span><span class="pi">:</span> <span class="s">catalog</span>
-  <span class="na">environment</span><span class="pi">:</span> <span class="s">ci</span>
-  <span class="na">execution</span><span class="pi">:</span>
-    <span class="na">mode</span><span class="pi">:</span> <span class="s">local</span>
-    <span class="na">providerRef</span><span class="pi">:</span> <span class="s">local-fast</span>
-  <span class="na">context</span><span class="pi">:</span>
-    <span class="na">format</span><span class="pi">:</span> <span class="s">gcf</span>
-    <span class="na">fallback</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">toon</span>
-      <span class="pi">-</span> <span class="s">yaml</span>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">validate-fragments</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">validate</span>
@@ -2661,14 +2656,6 @@ and automation systems how a data product workflow should run.</p>
   <span class="na">outputs</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">generated-fragments</span>
       <span class="na">path</span><span class="pi">:</span> <span class="s">generated/fragments/</span>
-  <span class="na">gates</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">fragments-valid</span>
-      <span class="na">type</span><span class="pi">:</span> <span class="s">validation</span>
-      <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
-  <span class="na">review</span><span class="pi">:</span>
-    <span class="na">required</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="na">runPolicy</span><span class="pi">:</span>
-    <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="m">300</span>
 </code></pre></div>
 <table><thead>
 <tr>
@@ -2961,37 +2948,37 @@ underlying capability exists. Implementations MAY support additional commands.</
 <tr>
 <td><code>portfolio.build</code></td>
 <td><code>llm-backed</code></td>
-<td>at least one of <code>objectives</code>, <code>useCases</code>, <code>signals</code>, or <code>products</code>; and <code>output</code>, <code>workspace</code>, or both</td>
+<td>at least one of <code>objectives</code>, <code>useCases</code>, <code>signals</code>, or <code>products</code>; and <code>output</code></td>
 <td><code>title</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
 </tr>
 <tr>
 <td><code>portfolio.refresh</code></td>
 <td><code>llm-backed</code></td>
-<td><code>workspace</code></td>
+<td>none</td>
 <td><code>objectives</code>, <code>useCases</code>, <code>signals</code>, <code>products</code>, <code>title</code>, <code>config</code>, <code>allSources</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
 </tr>
 <tr>
 <td><code>portfolio.sync</code></td>
 <td><code>deterministic</code></td>
-<td><code>workspace</code></td>
+<td>none</td>
 <td><code>strictValidation</code></td>
 </tr>
 <tr>
 <td><code>portfolio.localize</code></td>
 <td><code>llm-backed</code></td>
-<td><code>workspace</code>, <code>languages</code></td>
+<td><code>languages</code></td>
 <td><code>defaultLanguage</code>, <code>config</code>, <code>prompts</code>, <code>ollamaUrl</code>, <code>strictValidation</code></td>
 </tr>
 <tr>
 <td><code>portfolio.render</code></td>
 <td><code>deterministic</code></td>
-<td><code>workspace</code></td>
+<td>none</td>
 <td><code>output</code>, <code>strictValidation</code></td>
 </tr>
 <tr>
 <td><code>portfolio.explain</code></td>
 <td><code>report</code></td>
-<td><code>workspace</code></td>
+<td>none</td>
 <td>none</td>
 </tr>
 <tr>
@@ -3008,8 +2995,11 @@ underlying capability exists. Implementations MAY support additional commands.</
 </tr>
 </tbody></table>
 
-<p><code>with</code> is the argument object for the selected command. <code>providerRef</code> and
-<code>model</code> stay beside <code>command</code>; they do not belong inside <code>with</code>.
+<p><code>with</code> is the argument object for the selected command. Shared durable paths,
+such as a portfolio workspace used by several steps, belong in recipe-level
+<code>inputs</code> or <code>outputs</code> instead of being repeated under every step.
+<code>providerRef</code> and <code>model</code> stay beside <code>command</code>; they do not belong inside
+<code>with</code>.
 <code>portfolio.localize.with.languages</code> SHOULD be written as a YAML list of BCP 47
 language tags.</p>
 
@@ -3076,30 +3066,20 @@ can use local naming conventions while keeping common labels readable.</p>
   <span class="na">execution</span><span class="pi">:</span>
     <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
     <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
-  <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span>
-  <span class="na">context</span><span class="pi">:</span>
-    <span class="na">format</span><span class="pi">:</span> <span class="s">gcf</span>
-    <span class="na">fallback</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">toon</span>
-      <span class="pi">-</span> <span class="s">yaml</span>
-  <span class="na">runPolicy</span><span class="pi">:</span>
-    <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="m">900</span>
+  <span class="na">inputs</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">portfolio-workspace</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/</span>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">refresh-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.refresh</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localize-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.localize</span>
       <span class="na">with</span><span class="pi">:</span>
-        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
         <span class="na">languages</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="s">fi</span>
           <span class="pi">-</span> <span class="s">sv</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.explain</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">workspace</span><span class="pi">:</span> <span class="s">portfolio/</span>
   <span class="na">outputs</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">localized-portfolio-fi</span>
       <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/index.fi.html</span>
@@ -3113,8 +3093,6 @@ can use local naming conventions while keeping common labels readable.</p>
       <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
   <span class="na">review</span><span class="pi">:</span>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">mode</span><span class="pi">:</span> <span class="s">human</span>
-    <span class="na">instructions</span><span class="pi">:</span> <span class="s">Review localized pages and generated reports before publishing.</span>
 </code></pre></div>
 <p>This release recipe describes a portfolio review workflow. When an executor
 runs it, the expected flow is:</p>
@@ -3127,10 +3105,9 @@ publication or release-review process rather than local drafting.</li>
 <code>production-quality</code>. The matching ODPR <code>Provider</code> object describes the
 runtime profile, while raw credentials and live endpoint resolution stay in
 the executing SDK or platform.</li>
-<li>Prepare compact context in GCF format, with TOON and YAML as fallback
-formats.</li>
-<li>Run <code>portfolio.refresh</code> for the <code>portfolio/</code> workspace.</li>
-<li>Run <code>portfolio.localize</code> for the same workspace and produce Finnish and
+<li>Treat <code>portfolio/</code> as the shared portfolio workspace input.</li>
+<li>Run <code>portfolio.refresh</code>.</li>
+<li>Run <code>portfolio.localize</code> and produce Finnish and
 Swedish localized outputs.</li>
 <li>Run <code>portfolio.explain</code> so reviewers get generated explanation material for
 the refreshed portfolio.</li>
@@ -3365,13 +3342,8 @@ recipe file is loaded and validated.</p>
         <span class="na">en</span><span class="pi">:</span> <span class="s">Release Portfolio Review</span>
       <span class="na">description</span><span class="pi">:</span>
         <span class="na">en</span><span class="pi">:</span> <span class="s">Refresh, localize, explain, and review a portfolio before release.</span>
-      <span class="na">tags</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">portfolio</span>
-        <span class="pi">-</span> <span class="s">release</span>
-      <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span>
       <span class="na">executionMode</span><span class="pi">:</span> <span class="s">hosted</span>
       <span class="na">providerRef</span><span class="pi">:</span> <span class="s">production-quality</span>
-      <span class="na">contextFormat</span><span class="pi">:</span> <span class="s">gcf</span>
       <span class="na">requiresReview</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">commands</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">portfolio.refresh</span>

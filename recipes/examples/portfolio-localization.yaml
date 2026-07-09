@@ -8,25 +8,18 @@ recipe:
       en: Portfolio Localization
     description:
       en: Localize a portfolio workspace into configured target languages.
-    tags:
-      - localization
-      - portfolio
   version: "1.0.0"
   type: localization
-  environment: production
   execution:
     mode: hosted
     providerRef: production-quality
-  context:
-    format: gcf
-    fallback:
-      - toon
-      - yaml
+  inputs:
+    - id: portfolio-workspace
+      path: portfolio/
   steps:
     - id: localize-portfolio
       command: portfolio.localize
       with:
-        workspace: portfolio/
         languages:
           - fi
           - sv
@@ -34,16 +27,11 @@ recipe:
   outputs:
     - id: localized-portfolio-fi
       path: portfolio/index.fi.html
-      kind: html
     - id: localized-portfolio-sv
       path: portfolio/index.sv.html
-      kind: html
   gates:
     - id: localized-pages-reviewed
       type: review
       required: true
   review:
     required: true
-    reviewer: release-owner
-    instructions:
-      en: Review localized pages before publication.
