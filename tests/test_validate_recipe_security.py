@@ -42,17 +42,19 @@ recipe:
     assert "recipe.steps[0].with.apiKey" in result.stderr
 
 
-def test_validator_allows_credentials_ref_in_provider(tmp_path):
+def test_validator_allows_api_key_env_reference_in_provider(tmp_path):
     provider = tmp_path / "provider-ref.yaml"
     provider.write_text(
         """schema: https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml
 version: "1.0"
-kind: Provider
-provider:
-  id: production-quality
-  provider: openai
-  model: gpt-4.1
-  credentialsRef: env:OPENAI_API_KEY
+kind: RuntimeProfile
+runtimeProfile:
+  provider: production-quality
+  providers:
+    production-quality:
+      type: openai
+      model: gpt-4.1
+      apiKeyEnv: OPENAI_API_KEY
 """,
         encoding="utf-8",
     )

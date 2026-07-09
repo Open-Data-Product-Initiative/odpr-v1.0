@@ -147,28 +147,35 @@ hybrid, or none.
 | `gcf` | Use GCF compact graph/catalog context when available. |
 | `auto` | Let the executing tool choose the preferred available context. |
 
-### Provider references
+### RuntimeProfile references
 
-`providerRef` identifies a standardized ODPR `Provider` profile by
-`provider.id`. The recipe does not embed provider internals; it only names the
+`runtimeRef` identifies an ODPR `RuntimeProfile` with a URI-reference. The
+target points to a RuntimeProfile YAML document or runtime profile source. A
+fragment selects the profile when the target contains or exposes more than one
+profile, for example
+`runtime-profiles/examples/production-quality.yaml#production-quality`.
+
+The recipe does not embed runtime internals; it only references the runtime
 profile that should be used.
 
-A recipe can declare a default provider in `execution.providerRef`. Individual
-steps can override it with `step.providerRef` when one workflow mixes local and
+A recipe can declare a default runtime profile in `execution.runtimeRef`. Individual
+steps can override it with `step.runtimeRef` when one workflow mixes local and
 hosted execution.
 
-The referenced `Provider` object defines the provider family, model, provider
-class, endpoint reference, credentials reference, and safe runtime defaults.
-Raw secrets MUST NOT be stored in recipes or provider documents.
+The referenced `RuntimeProfile` object defines SDK-compatible provider profiles,
+model defaults, provider base URLs, API-key environment variable names, and safe
+runtime generation defaults. Raw secrets MUST NOT be stored in recipes or
+RuntimeProfile documents.
 
-`execution.providerRef` is the default provider profile for LLM-backed steps.
-Step-level `providerRef` overrides `execution.providerRef`. Step-level `model`
+`execution.runtimeRef` is the default provider profile for LLM-backed steps.
+Step-level `runtimeRef` overrides `execution.runtimeRef`. Step-level `model`
 overrides the provider model for that step. Deterministic and report commands
-MUST NOT use `providerRef` or `model`.
+MUST NOT use `runtimeRef` or `model`.
 
 ODPR validation tools SHOULD reject embedded secrets or API keys in recipes.
-Use `providerRef` in recipes and `credentialsRef` in Provider documents instead
-of fields such as `apiKey`, `token`, `password`, or inline secret values.
+Use `runtimeRef` in recipes and `apiKeyEnv` in RuntimeProfile provider profile entries
+instead of fields such as `apiKey`, `token`, `password`, or inline secret
+values.
 
 ### Recommended commands
 
@@ -195,7 +202,7 @@ underlying capability exists. Implementations MAY support additional commands.
 `with` is the argument object for the selected command. Shared durable paths,
 such as a portfolio workspace used by several steps, belong in recipe-level
 `inputs` or `outputs` instead of being repeated under every step.
-`providerRef` and `model` stay beside `command`; they do not belong inside
+`runtimeRef` and `model` stay beside `command`; they do not belong inside
 `with`.
 `portfolio.localize.with.languages` SHOULD be written as a YAML list of BCP 47
 language tags.
@@ -255,7 +262,7 @@ recipe:
   type: release
   execution:
     mode: hosted
-    providerRef: production-quality
+    runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
   inputs:
     - id: portfolio-workspace
       path: portfolio/
@@ -291,8 +298,9 @@ runs it, the expected flow is:
 1. Validate the recipe against the ODPR schema and confirm it is a `Recipe`.
 2. Treat the workflow as a `release` recipe, which means it is intended for a
    publication or release-review process rather than local drafting.
-3. Use hosted execution through the configured provider reference
-   `production-quality`. The matching ODPR `Provider` object describes the
+3. Use hosted execution through the configured runtime reference
+   `runtime-profiles/examples/production-quality.yaml#production-quality`. The
+   matching ODPR `RuntimeProfile` object describes the
    runtime profile, while raw credentials and live endpoint resolution stay in
    the executing SDK or platform.
 4. Treat `portfolio/` as the shared portfolio workspace input.

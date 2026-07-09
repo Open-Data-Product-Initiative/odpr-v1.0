@@ -16,7 +16,7 @@ recipe:
   scope: portfolio
   execution:
     mode: hosted
-    providerRef: production-quality
+    runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
   steps:
     - id: refresh-portfolio
       command: portfolio.refresh
@@ -63,7 +63,7 @@ or outputs of the delivery work.
 | `recipe.type` | string | `development`, `ci`, `release`, `agent`, `custom` | Delivery flow intent. Use `development` for draft generation or working artifacts, `ci` for automated validation, `release` for portfolio preparation or publication review, `agent` for agent-assisted delivery work, and `custom` only when the standard intents do not fit. |
 | `recipe.scope` | string | `data-product`, `portfolio`, `graph`, `catalog`, `fragment`, `custom` | Artifact area affected by the delivery flow. |
 | `recipe.execution.mode` | string | `local`, `hosted`, `hybrid`, `none` | Runtime expectation for the delivery flow. |
-| `recipe.execution.providerRef` | string | provider reference | Named provider profile used by model-backed steps. |
+| `recipe.execution.runtimeRef` | string | runtime reference | URI-reference to a RuntimeProfile document. A fragment selects the provider profile when needed. |
 | `recipe.steps` | array | ordered step objects | Ordered delivery operations that run. |
 | `recipe.outputs` | array | output objects | Durable files, folders, reports, rendered pages, or review notes expected after the run. |
 | `recipe.gates` | array | gate objects | Validation, quality, publication, or release conditions. |
@@ -77,7 +77,7 @@ recipe:
   scope: portfolio
   execution:
     mode: hosted
-    providerRef: production-quality
+    runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
   inputs:
     - id: portfolio-workspace
       path: portfolio/
@@ -111,7 +111,7 @@ Every delivery flow SHOULD make these parts visible:
 | Work intent | The delivery activity being performed, such as draft generation, validation, portfolio refresh, localization, release review, or publishing preparation. |
 | Scope | The artifact area affected by the work, such as one product workspace, generated fragments, graph context, catalog input, or portfolio output. |
 | Operations | The ordered delivery operations that run, including the command names and the minimal inputs needed by each operation. |
-| Runtime expectation | Whether the flow expects local, hosted, hybrid, or model-free execution, and which provider reference is used when model-backed work is required. |
+| Runtime expectation | Whether the flow expects local, hosted, hybrid, or model-free execution, and which runtime reference is used when model-backed work is required. |
 | Durable outputs | The files, folders, rendered pages, reports, or review notes that should exist after the run. |
 | Gates and review | The validation checks, quality checks, human review, or release ownership expectations that determine whether the result can be accepted. |
 

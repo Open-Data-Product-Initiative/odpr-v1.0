@@ -12,7 +12,7 @@ recipe:
   type: localization
   execution:
     mode: hosted
-    providerRef: production-quality
+    runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
   inputs:
     - id: portfolio-workspace
       path: portfolio/

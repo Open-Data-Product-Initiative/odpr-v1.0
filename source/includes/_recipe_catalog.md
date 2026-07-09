@@ -37,7 +37,7 @@ recipeCatalog:
       description:
         en: Refresh, localize, explain, and review a portfolio before release.
       executionMode: hosted
-      providerRef: production-quality
+      runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
       requiresReview: true
       commands:
         - portfolio.refresh
@@ -85,7 +85,7 @@ recipeCatalog:
 | `tags` | array | optional | Discovery tags. |
 | `environment` | string | optional | Intended environment label. |
 | `executionMode` | string | optional | Expected runtime/provider class: `local`, `hosted`, `hybrid`, or `none`. |
-| `providerRef` | string | optional | Default provider profile reference for LLM-backed steps. |
+| `runtimeRef` | string | optional | Default RuntimeProfile document/profile reference copied from the referenced recipe. |
 | `contextFormat` | string | optional | Preferred context format: `yaml`, `toon`, `gcf`, or `auto`. |
 | `requiresReview` | boolean | optional | Whether the referenced recipe declares required review. |
 | `commands` | array | optional | Command names used by the referenced recipe. |

@@ -18,7 +18,7 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | Step | One declared operation in a recipe. |
 | Gate | A required validation, quality, publication, or review condition. |
 | Context | The artifact or compact sidecar format used as prompt, review, or execution context. |
-| Provider | A supporting runtime profile that recipes can reference with `providerRef`. |
+| RuntimeProfile | A supporting runtime generation configuration document that recipes can reference with `runtimeRef`. |
 | Recipe catalog | Supporting metadata-only discovery list for available recipe files. |
 | Review | A human or agent review expectation declared by the recipe. |
 | Graph trigger | A small recipe trigger pattern that makes a normal ODPR Recipe applicable when an ODPG graph change matches. |
@@ -28,12 +28,12 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | Term | Description |
 |---|---|
 | `Recipe` | Supporting ODPR object that declares one reusable workflow unit. |
-| `Provider` | Supporting ODPR object that declares one named provider profile. |
+| `RuntimeProfile` | Supporting ODPR object that declares SDK-compatible provider profile maps and generation defaults. |
 | `RecipeCatalog` | Supporting ODPR object that lists recipe metadata and paths to full recipe files. |
 | `DataProductRecipe` | The ODPR root object that indexes the reviewable handoff files for one Data Product Recipe. |
 | `recipeRef` | Optional provenance or generation-context reference; not an implementation dependency for developers or AI agents. |
 | `contract-plan` | Optional standardized section ID for a YAML data contract aligned with the Open Data Contract Standard. |
-| `providerRef` | A reference from a recipe to `Provider.provider.id`. |
+| `runtimeRef` | A URI-reference from a recipe to a RuntimeProfile document or provider profile fragment under `runtimeProfile.providers`. |
 | `context.format` | The preferred context format for a recipe, such as `yaml`, `toon`, `gcf`, or `auto`. |
 | `trigger` | Optional Recipe field that declares which ODPG graph change can make the recipe applicable. |
 | `graphContext` | Optional Recipe field that requests minimal ODPG context after a trigger match. |

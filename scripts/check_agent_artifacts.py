@@ -7,7 +7,7 @@ import yaml
 from odpr_paths import (
     EXAMPLES_DIR,
     LLMS_TXT,
-    PROVIDER_EXAMPLES_DIR,
+    RUNTIME_PROFILE_EXAMPLES_DIR,
     RECIPES_DIR,
     RECIPES_JSONL,
     SCHEMA_JSON,
@@ -27,14 +27,14 @@ EXPECTED_EXAMPLES = [
     "data-product-recipe.yaml",
 ]
 
-EXPECTED_PROVIDER_EXAMPLES = [
+EXPECTED_RUNTIME_PROFILE_EXAMPLES = [
     "production-quality.yaml",
     "local-fast.yaml",
     "local-graph.yaml",
     "internal-secure.yaml",
 ]
 
-EXPECTED_RECORD_IDS = {"Recipe", "Provider", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "GraphTrigger", "Gate"}
+EXPECTED_RECORD_IDS = {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "GraphTrigger", "Gate"}
 
 
 def load_yaml(path):
@@ -80,10 +80,13 @@ def assert_recipe_document(document, expected_type):
 def assert_provider_document(document, expected_id):
     assert document["schema"] == "https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml"
     assert document["version"] == "1.0"
-    assert document["kind"] == "Provider"
-    provider = document["provider"]
-    assert provider["id"] == expected_id
-    assert isinstance(provider["provider"], str) and provider["provider"].strip()
+    assert document["kind"] == "RuntimeProfile"
+    provider = document["runtimeProfile"]
+    assert provider["provider"] == expected_id
+    assert expected_id in provider["providers"]
+    profile = provider["providers"][expected_id]
+    assert isinstance(profile["type"], str) and profile["type"].strip()
+    assert isinstance(profile["model"], str) and profile["model"].strip()
 
 
 def assert_recipe_catalog_document(document):
@@ -131,12 +134,12 @@ def check_schema():
 
     assert schema["required"] == ["schema", "version", "kind"], "YAML schema root requirements changed"
     assert json_schema["required"] == schema["required"], "JSON schema root requirements must match YAML schema"
-    assert list(schema["properties"]) == ["schema", "version", "kind", "recipe", "provider", "recipeCatalog", "dataProductRecipe"], "YAML schema root property order changed"
-    assert list(json_schema["properties"]) == ["schema", "version", "kind", "recipe", "provider", "recipeCatalog", "dataProductRecipe"], "JSON schema root property order changed"
-    assert schema["properties"]["kind"]["enum"] == ["Recipe", "Provider", "RecipeCatalog", "DataProductRecipe"], "YAML schema root kind must support Recipe, Provider, RecipeCatalog, and DataProductRecipe"
-    assert json_schema["properties"]["kind"]["enum"] == ["Recipe", "Provider", "RecipeCatalog", "DataProductRecipe"], "JSON schema root kind must support Recipe, Provider, RecipeCatalog, and DataProductRecipe"
+    assert list(schema["properties"]) == ["schema", "version", "kind", "recipe", "runtimeProfile", "recipeCatalog", "dataProductRecipe"], "YAML schema root property order changed"
+    assert list(json_schema["properties"]) == ["schema", "version", "kind", "recipe", "runtimeProfile", "recipeCatalog", "dataProductRecipe"], "JSON schema root property order changed"
+    assert schema["properties"]["kind"]["enum"] == ["Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe"], "YAML schema root kind must support Recipe, RuntimeProfile, RecipeCatalog, and DataProductRecipe"
+    assert json_schema["properties"]["kind"]["enum"] == ["Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe"], "JSON schema root kind must support Recipe, RuntimeProfile, RecipeCatalog, and DataProductRecipe"
     assert "recipe" in schema["properties"], "YAML schema must define recipe property"
-    assert "provider" in schema["properties"], "YAML schema must define provider property"
+    assert "runtimeProfile" in schema["properties"], "YAML schema must define runtimeProfile property"
     assert "recipeCatalog" in schema["properties"], "YAML schema must define recipeCatalog property"
     for runtime_kind in ["RecipeRunPlan", "RecipeRunManifest", "RecipeInspection"]:
         assert runtime_kind not in schema["properties"]["kind"]["enum"], f"{runtime_kind} must remain outside ODPR v1 roots"
@@ -163,11 +166,14 @@ def check_schema():
     ], "GraphTrigger event enum changed unexpectedly"
     assert "*" in schema["$defs"]["GraphNodeType"]["enum"], "GraphNodeType must allow wildcard node type"
 
-    provider = schema["$defs"][schema["properties"]["provider"]["$ref"].split("/")[-1]]
-    assert provider["required"] == ["id", "provider"], "Provider required fields changed unexpectedly"
-    assert "model" in provider["properties"], "Provider must define model"
-    assert "credentialsRef" in provider["properties"], "Provider must define credentialsRef"
-    assert "temperature" in provider["properties"], "Provider must define temperature"
+    provider = schema["$defs"][schema["properties"]["runtimeProfile"]["$ref"].split("/")[-1]]
+    assert provider["required"] == ["provider", "providers"], "RuntimeProfile required fields changed unexpectedly"
+    assert "model" in provider["properties"], "RuntimeProfile must define model"
+    assert "portfolio" in provider["properties"], "RuntimeProfile must define portfolio policy"
+    assert "providers" in provider["properties"], "RuntimeProfile must define providers map"
+    provider_profile = schema["$defs"]["RuntimeProviderProfile"]
+    assert "apiKeyEnv" in provider_profile["properties"], "RuntimeProviderProfile must define apiKeyEnv"
+    assert "maxTokens" in provider_profile["properties"], "RuntimeProviderProfile must define maxTokens"
 
     catalog = schema["$defs"][schema["properties"]["recipeCatalog"]["$ref"].split("/")[-1]]
     assert catalog["required"] == ["metadata", "version", "recipes"], "RecipeCatalog required fields changed unexpectedly"
@@ -205,15 +211,15 @@ def check_examples():
     assert_data_product_recipe_document(load_yaml(EXAMPLES_DIR / "data-product-recipe.yaml"))
     assert_recipe_catalog_document(load_yaml(RECIPES_DIR / "catalog.yaml"))
 
-    for filename in EXPECTED_PROVIDER_EXAMPLES:
-        path = PROVIDER_EXAMPLES_DIR / filename
+    for filename in EXPECTED_RUNTIME_PROFILE_EXAMPLES:
+        path = RUNTIME_PROFILE_EXAMPLES_DIR / filename
         assert path.is_file(), f"Missing provider example: {path.relative_to(SOURCE)}"
         load_yaml(path)
 
-    assert_provider_document(load_yaml(PROVIDER_EXAMPLES_DIR / "production-quality.yaml"), "production-quality")
-    assert_provider_document(load_yaml(PROVIDER_EXAMPLES_DIR / "local-fast.yaml"), "local-fast")
-    assert_provider_document(load_yaml(PROVIDER_EXAMPLES_DIR / "local-graph.yaml"), "local-graph")
-    assert_provider_document(load_yaml(PROVIDER_EXAMPLES_DIR / "internal-secure.yaml"), "internal-secure")
+    assert_provider_document(load_yaml(RUNTIME_PROFILE_EXAMPLES_DIR / "production-quality.yaml"), "production-quality")
+    assert_provider_document(load_yaml(RUNTIME_PROFILE_EXAMPLES_DIR / "local-fast.yaml"), "local-fast")
+    assert_provider_document(load_yaml(RUNTIME_PROFILE_EXAMPLES_DIR / "local-graph.yaml"), "local-graph")
+    assert_provider_document(load_yaml(RUNTIME_PROFILE_EXAMPLES_DIR / "internal-secure.yaml"), "internal-secure")
 
     ci_recipe = load_yaml(EXAMPLES_DIR / "ci-validate-generated-fragments.yaml")["recipe"]
     assert "execution" not in ci_recipe
@@ -226,8 +232,14 @@ def check_examples():
 
     hybrid_recipe = load_yaml(EXAMPLES_DIR / "hybrid-graph-review.yaml")["recipe"]
     assert hybrid_recipe["execution"]["mode"] == "hybrid"
-    assert hybrid_recipe["steps"][0]["providerRef"] == "local-graph"
-    assert hybrid_recipe["steps"][1]["providerRef"] == "production-quality"
+    assert (
+        hybrid_recipe["steps"][0]["runtimeRef"]
+        == "runtime-profiles/examples/local-graph.yaml#local-graph"
+    )
+    assert (
+        hybrid_recipe["steps"][1]["runtimeRef"]
+        == "runtime-profiles/examples/production-quality.yaml#production-quality"
+    )
 
     localization_recipe = load_yaml(EXAMPLES_DIR / "portfolio-localization.yaml")["recipe"]
     assert isinstance(localization_recipe["steps"][0]["with"]["languages"], list)
@@ -253,7 +265,7 @@ def check_recipes_and_llms():
         "/recipes/examples/graph-triggered-impact-review.yaml",
         "/recipes/examples/data-product-recipe.yaml",
         "/recipes/catalog.yaml",
-        "/providers/examples/production-quality.yaml",
+        "/runtime-profiles/examples/production-quality.yaml",
         "/schema/odpr.yaml",
         "/schema/odpr.json",
         "scripts/build_recipe_catalog.py",

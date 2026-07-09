@@ -42,6 +42,71 @@ def recipe_with_step(step):
     }
 
 
+def provider_document(provider):
+    return {
+        "schema": SCHEMA_URI,
+        "version": "1.0",
+        "kind": "RuntimeProfile",
+        "runtimeProfile": provider,
+    }
+
+
+def test_provider_accepts_sdk_generation_config_shape(validator):
+    document = provider_document(
+        {
+            "provider": "openai",
+            "model": "gpt-4.1-mini",
+            "input": "open_data_products/generation/source_docs/",
+            "output": "open_data_products/generation/fragments/",
+            "prompts": "prompts/",
+            "portfolio": {
+                "sourceBudget": {
+                    "maxSourceChars": 2000,
+                    "maxPromptChars": 32000,
+                },
+                "privacy": {
+                    "obfuscatePersonalData": True,
+                },
+            },
+            "providers": {
+                "openai": {
+                    "type": "openai",
+                    "model": "gpt-4.1-mini",
+                    "baseUrl": "https://api.openai.com/v1",
+                    "apiKeyEnv": "OPENAI_API_KEY",
+                    "maxTokens": 8192,
+                },
+                "llamacpp-embedded": {
+                    "type": "llama-cpp",
+                    "model": "local-gguf",
+                    "modelPath": "models/qwen2.5-7b-instruct-q4_k_m.gguf",
+                    "contextWindow": 8192,
+                    "gpuLayers": -1,
+                },
+            },
+        }
+    )
+
+    assert_valid(validator, document)
+
+
+def test_provider_rejects_unknown_profile_fields(validator):
+    document = provider_document(
+        {
+            "provider": "openai",
+            "providers": {
+                "openai": {
+                    "type": "openai",
+                    "model": "gpt-4.1-mini",
+                    "secretValue": "not-allowed",
+                }
+            },
+        }
+    )
+
+    assert_invalid(validator, document)
+
+
 @pytest.mark.parametrize("scope", ["data-product", "catalog", "graph", "portfolio"])
 def test_recipe_scope_accepts_standard_scope_values(validator, scope):
     document = recipe_with_step({"id": "explain", "command": "explain", "with": {"document": "README.md"}})
@@ -355,7 +420,7 @@ def test_deterministic_commands_reject_provider_ref_and_model(validator):
         {
             "id": "validate",
             "command": "validate",
-            "providerRef": "production-quality",
+            "runtimeRef": "runtime-profiles/examples/production-quality.yaml#production-quality",
             "model": "gpt-4.1",
             "with": {"document": "generated/fragments/signal.yaml"},
         }
@@ -369,7 +434,7 @@ def test_llm_backed_generate_accepts_provider_ref_and_required_parameters(valida
         {
             "id": "generate",
             "command": "generate",
-            "providerRef": "local-fast",
+            "runtimeRef": "runtime-profiles/examples/local-fast.yaml#local-fast",
             "model": "gemma",
             "with": {
                 "input": "source_docs/signals/",
@@ -380,6 +445,23 @@ def test_llm_backed_generate_accepts_provider_ref_and_required_parameters(valida
     )
 
     assert_valid(validator, document)
+
+
+def test_provider_ref_rejects_bare_profile_name(validator):
+    document = recipe_with_step(
+        {
+            "id": "generate",
+            "command": "generate",
+            "runtimeRef": "local-fast",
+            "with": {
+                "input": "source_docs/signals/",
+                "kind": "signal",
+                "output": "generated/fragments/",
+            },
+        }
+    )
+
+    assert_invalid(validator, document)
 
 
 def test_portfolio_localize_requires_languages_list(validator):

@@ -638,8 +638,8 @@ Do not put model-provider settings, credentials, hidden prompts, or broad
 repository-wide agent rules here. Do not use this section to bypass unresolved
 questions or human approval gates. Do not paste an implementation repository's
 entire AGENTS.md into the data product recipe; reference repository instructions
-only when implementation work will happen in that repository. Provider
-configuration belongs to ODPR Provider objects or runtime configuration, and
+only when implementation work will happen in that repository. RuntimeProfile
+configuration belongs to ODPR RuntimeProfile objects or runtime configuration, and
 repository guidance belongs in the repository's agent instruction files.
 
 Path: `agent/ai-agent-brief.md`

@@ -53,7 +53,7 @@ def format_path(parts):
 
 def is_secret_key(key):
     normalized = re.sub(r"[^a-z0-9]", "", str(key).lower())
-    if normalized.endswith("ref"):
+    if normalized.endswith("ref") or normalized.endswith("env"):
         return False
     return any(marker in normalized for marker in SECRET_KEY_MARKERS)
 
@@ -85,7 +85,7 @@ def find_embedded_secrets(value, path=None):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description="Validate an ODPR Recipe, Provider, RecipeCatalog, or DataProductRecipe file against the ODPR schema.",
+        description="Validate an ODPR Recipe, RuntimeProfile, RecipeCatalog, or DataProductRecipe file against the ODPR schema.",
     )
     parser.add_argument("recipe", help="Path to an ODPR YAML or JSON file")
     args = parser.parse_args(argv)

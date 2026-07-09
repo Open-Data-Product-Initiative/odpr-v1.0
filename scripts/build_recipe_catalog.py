@@ -100,7 +100,7 @@ def extract_entry(path):
         ("tags", metadata.get("tags")),
         ("environment", recipe.get("environment")),
         ("executionMode", execution.get("mode") if isinstance(execution, dict) else None),
-        ("providerRef", execution.get("providerRef") if isinstance(execution, dict) else None),
+        ("runtimeRef", execution.get("runtimeRef") if isinstance(execution, dict) else None),
         ("contextFormat", context.get("format") if isinstance(context, dict) else None),
         ("requiresReview", review.get("required") if isinstance(review, dict) else None),
         (

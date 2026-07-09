@@ -77,7 +77,7 @@ class AgentScriptsTest(unittest.TestCase):
         self.assertEqual(ci_entry["path"], "recipes/examples/ci-validate-generated-fragments.yaml")
         self.assertEqual(ci_entry["groupRef"], "examples")
         self.assertNotIn("executionMode", ci_entry)
-        self.assertNotIn("providerRef", ci_entry)
+        self.assertNotIn("runtimeRef", ci_entry)
         self.assertNotIn("contextFormat", ci_entry)
         self.assertFalse(ci_entry["requiresReview"])
         self.assertEqual(ci_entry["commands"], ["generate", "validate"])

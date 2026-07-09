@@ -61,7 +61,7 @@
   <rect x="808" y="270" width="216" height="82" rx="16" class="card"/>
   <text x="834" y="301" class="label card-title">Runtime</text>
   <text x="834" y="326" class="code">execution</text>
-  <text x="834" y="346" class="label small">mode, providerRef</text>
+  <text x="834" y="346" class="label small">mode, runtimeRef</text>
 
   <rect x="264" y="390" width="256" height="82" rx="16" class="card"/>
   <text x="290" y="421" class="label card-title">Durable outputs</text>

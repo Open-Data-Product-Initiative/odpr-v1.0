@@ -3,8 +3,8 @@
 ODPR is designed to be usable by AI agents, SDKs, CI/CD systems, and automation
 tools. From an agent perspective, ODPR provides three composite flow contracts:
 delivery flows, product handoff flows, and trigger-based flows driven by graph
-changes. Recipes, provider profiles, and recipe catalogs support those flows as
-building blocks.
+changes. Recipes, RuntimeProfile generation configs, and recipe catalogs support
+those flows as building blocks.
 
 ODPS defines one data product. ODPC defines catalogs and reusable portfolio
 objects. ODPG defines relationships between data product artifacts. ODPV
@@ -13,7 +13,7 @@ manifests, and trigger-based flows around those artifacts.
 
 <!-- AI_AGENT_USAGE_PATTERNS:
 Use ODPR for delivery flows, product handoff flows, and trigger-based flows; do not use it for defining the data product, catalog, graph, or vocabulary model itself.
-Use providerRef as an execution reference only; provider configuration belongs to the SDK, CI system, or platform executing the recipe.
+Use runtimeRef as a URI-reference to a RuntimeProfile document or profile under runtimeProfile.providers; provider execution and credential resolution belong to the SDK, CI system, or platform executing the recipe.
 Use RecipeCatalog only for metadata-only discovery; load and validate the referenced Recipe before execution.
 Use DataProductRecipe as a handoff manifest for one data product; do not treat it as a workflow execution script.
 Prefer declarative steps and gates over arbitrary shell scripts.
@@ -66,8 +66,9 @@ Agents using ODPR should keep boundaries clear:
 * Do not embed secrets or API keys in recipes.
 * Do not put dry-run responses, run manifests, provider readiness results,
   planned writes, write-scope checks, run ids, or logs in ODPR documents.
-* Do not assume `providerRef` is globally meaningful; it must be resolved by the
-  executing SDK, CI system, or platform.
+* Do not use bare provider names as `runtimeRef`; use a URI-reference to a
+  RuntimeProfile document or profile and let the executing SDK, CI system, or platform
+  resolve it.
 * Do not silently skip required gates or human review requirements.
 
 ## Example prompts ODPR enables

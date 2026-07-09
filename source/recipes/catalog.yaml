@@ -26,7 +26,7 @@ recipeCatalog:
       description:
         en: Generate draft ODPC fragments locally for fast iteration.
       executionMode: local
-      providerRef: local-fast
+      runtimeRef: runtime-profiles/examples/local-fast.yaml#local-fast
       commands:
         - generate
     - path: recipes/examples/ci-validate-generated-fragments.yaml
@@ -52,7 +52,7 @@ recipeCatalog:
       description:
         en: Refresh, localize, and explain a portfolio for release review.
       executionMode: hosted
-      providerRef: production-quality
+      runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
       requiresReview: true
       commands:
         - portfolio.refresh
@@ -68,7 +68,7 @@ recipeCatalog:
       description:
         en: Localize a portfolio workspace into configured target languages.
       executionMode: hosted
-      providerRef: production-quality
+      runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
       requiresReview: true
       commands:
         - portfolio.localize
@@ -113,7 +113,7 @@ recipeCatalog:
       description:
         en: Review graph impact when a node status changes to production.
       executionMode: hosted
-      providerRef: production-quality
+      runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
       requiresReview: true
       commands:
         - generate

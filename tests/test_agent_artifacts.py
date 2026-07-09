@@ -36,10 +36,12 @@ def assert_recipe_document(document, expected_type):
 def assert_provider_document(document, expected_id):
     assert document["schema"] == "https://opendataproducts.org/odpr-v1.0/schema/odpr.yaml"
     assert document["version"] == "1.0"
-    assert document["kind"] == "Provider"
-    provider = document["provider"]
-    assert provider["id"] == expected_id
-    assert provider["provider"]
+    assert document["kind"] == "RuntimeProfile"
+    provider = document["runtimeProfile"]
+    assert provider["provider"] == expected_id
+    assert expected_id in provider["providers"]
+    assert provider["providers"][expected_id]["type"]
+    assert provider["providers"][expected_id]["model"]
 
 
 def assert_recipe_catalog_document(document):
@@ -94,18 +96,18 @@ class AgentArtifactsTest(unittest.TestCase):
         json_schema = json.loads((SOURCE / "schema" / "odpr.json").read_text(encoding="utf-8"))
 
         self.assertEqual(schema["required"], ["schema", "version", "kind"])
-        self.assertEqual(list(schema["properties"]), ["schema", "version", "kind", "recipe", "provider", "recipeCatalog", "dataProductRecipe"])
-        self.assertEqual(schema["properties"]["kind"]["enum"], ["Recipe", "Provider", "RecipeCatalog", "DataProductRecipe"])
+        self.assertEqual(list(schema["properties"]), ["schema", "version", "kind", "recipe", "runtimeProfile", "recipeCatalog", "dataProductRecipe"])
+        self.assertEqual(schema["properties"]["kind"]["enum"], ["Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe"])
         self.assertIn("recipe", schema["properties"])
-        self.assertIn("provider", schema["properties"])
+        self.assertIn("runtimeProfile", schema["properties"])
         self.assertIn("recipeCatalog", schema["properties"])
         self.assertIn("dataProductRecipe", schema["properties"])
         self.assertNotIn("RecipeRunPlan", schema["properties"]["kind"]["enum"])
         self.assertNotIn("RecipeRunManifest", schema["properties"]["kind"]["enum"])
         self.assertNotIn("RecipeInspection", schema["properties"]["kind"]["enum"])
         self.assertEqual(json_schema["required"], schema["required"])
-        self.assertEqual(list(json_schema["properties"]), ["schema", "version", "kind", "recipe", "provider", "recipeCatalog", "dataProductRecipe"])
-        self.assertEqual(json_schema["properties"]["kind"]["enum"], ["Recipe", "Provider", "RecipeCatalog", "DataProductRecipe"])
+        self.assertEqual(list(json_schema["properties"]), ["schema", "version", "kind", "recipe", "runtimeProfile", "recipeCatalog", "dataProductRecipe"])
+        self.assertEqual(json_schema["properties"]["kind"]["enum"], ["Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe"])
 
         recipe_ref = schema["properties"]["recipe"]["$ref"].split("/")[-1]
         recipe = schema["$defs"][recipe_ref]
@@ -137,12 +139,15 @@ class AgentArtifactsTest(unittest.TestCase):
         attribute = schema["$defs"]["GraphTriggerAttribute"]
         self.assertNotIn("*", attribute["properties"]["name"].get("enum", []))
 
-        provider_ref = schema["properties"]["provider"]["$ref"].split("/")[-1]
+        provider_ref = schema["properties"]["runtimeProfile"]["$ref"].split("/")[-1]
         provider = schema["$defs"][provider_ref]
-        self.assertEqual(provider["required"], ["id", "provider"])
+        self.assertEqual(provider["required"], ["provider", "providers"])
         self.assertIn("model", provider["properties"])
-        self.assertIn("credentialsRef", provider["properties"])
-        self.assertIn("temperature", provider["properties"])
+        self.assertIn("portfolio", provider["properties"])
+        self.assertIn("providers", provider["properties"])
+        provider_profile = schema["$defs"]["RuntimeProviderProfile"]
+        self.assertIn("apiKeyEnv", provider_profile["properties"])
+        self.assertIn("maxTokens", provider_profile["properties"])
 
         catalog_ref = schema["properties"]["recipeCatalog"]["$ref"].split("/")[-1]
         catalog = schema["$defs"][catalog_ref]
@@ -248,22 +253,22 @@ class AgentArtifactsTest(unittest.TestCase):
         ]
 
         for filename in expected:
-            self.assertTrue((SOURCE / "providers" / "examples" / filename).is_file())
+            self.assertTrue((SOURCE / "runtime-profiles" / "examples" / filename).is_file())
 
         assert_provider_document(
-            load_yaml(SOURCE / "providers" / "examples" / "production-quality.yaml"),
+            load_yaml(SOURCE / "runtime-profiles" / "examples" / "production-quality.yaml"),
             "production-quality",
         )
         assert_provider_document(
-            load_yaml(SOURCE / "providers" / "examples" / "local-fast.yaml"),
+            load_yaml(SOURCE / "runtime-profiles" / "examples" / "local-fast.yaml"),
             "local-fast",
         )
         assert_provider_document(
-            load_yaml(SOURCE / "providers" / "examples" / "local-graph.yaml"),
+            load_yaml(SOURCE / "runtime-profiles" / "examples" / "local-graph.yaml"),
             "local-graph",
         )
         assert_provider_document(
-            load_yaml(SOURCE / "providers" / "examples" / "internal-secure.yaml"),
+            load_yaml(SOURCE / "runtime-profiles" / "examples" / "internal-secure.yaml"),
             "internal-secure",
         )
 
@@ -278,7 +283,7 @@ class AgentArtifactsTest(unittest.TestCase):
         ]
 
         ids = {record["id"] for record in records}
-        self.assertEqual(ids, {"Recipe", "Provider", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "GraphTrigger", "Gate"})
+        self.assertEqual(ids, {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "GraphTrigger", "Gate"})
 
         for record in records:
             self.assertTrue(record["definition"])
@@ -289,7 +294,7 @@ class AgentArtifactsTest(unittest.TestCase):
         llms = (SOURCE / "llms.txt").read_text(encoding="utf-8")
         self.assertIn("/recipes/recipes.jsonl", llms)
         self.assertIn("/schema/odpr.yaml", llms)
-        self.assertIn("/providers/examples/production-quality.yaml", llms)
+        self.assertIn("/runtime-profiles/examples/production-quality.yaml", llms)
         self.assertIn("/recipes/examples/data-product-recipe.yaml", llms)
         self.assertIn("scripts/build_recipe_catalog.py", llms)
 

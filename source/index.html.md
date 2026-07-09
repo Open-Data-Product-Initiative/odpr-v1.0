@@ -14,7 +14,7 @@ includes:
 - data_product_recipe
 - trigger_based_flows
 - recipe
-- provider
+- runtime_profile
 - recipe_catalog
 - recipe_library
 - toolkit
@@ -29,7 +29,7 @@ code_clipboard: true
 
 meta:
   - name: description
-    content: Open Data Product Recipe Specification (ODPR) version 1.0 defines delivery flows, product handoff flows, and trigger-based flows, with recipes, provider profiles, and recipe catalogs as supporting building blocks.
+    content: Open Data Product Recipe Specification (ODPR) version 1.0 defines delivery flows, product handoff flows, and trigger-based flows, with recipes, runtime profiles, and recipe catalogs as supporting building blocks.
   - name: spec-version
     content: "1.0"
   - name: llms
@@ -78,11 +78,11 @@ product handoff flows for developers and AI agents implementing one data
 product. It defines trigger-based flows, where graph changes can make declared
 work applicable.
 
-**Recipes, provider profiles, and recipe catalogs are supporting building blocks.**
-Recipes describe the reusable workflow unit. Providers let recipes reference
-approved LLM or model runtime profiles without embedding credentials, endpoints,
-or model settings in the recipe. Catalogs help teams and agents discover
-available recipes.
+**Recipes, runtime profiles, and recipe catalogs are supporting building blocks.**
+Recipes describe the reusable workflow unit. Runtime profiles let recipes
+reference approved LLM or model runtime configuration without embedding
+credentials, endpoints, or model settings in the recipe. Catalogs help teams
+and agents discover available recipes.
 
 ![ODPR purposes and supporting functions.](images/odpr-scope.svg)
 
@@ -91,7 +91,7 @@ available recipes.
 * define delivery flows for repeatable data product work
 * define product handoff flows for one data product
 * define trigger-based flows driven by graph changes
-* support those flows with recipes, provider profiles, recipe catalogs, context
+* support those flows with recipes, runtime profiles, recipe catalogs, context
   policy, gates, and review expectations
 
 **Note!** In "Open Data Product" the focus is on the latter words and the
@@ -116,7 +116,7 @@ boundaries. A recipe building block describes:
 * which checks or gates apply
 * which context format is preferred
 * which execution mode is expected
-* which provider reference is expected
+* which runtime reference is expected
 * whether human review is required
 
 ### Primary flow types
@@ -132,13 +132,13 @@ agents implementing one data product.
 **3. Trigger-based flows** declare when graph changes can make work applicable. They
 use triggers and graph context, while ODPG remains the graph source of truth.
 
-Recipes, provider profiles, and recipe catalogs support these flows. They are
+Recipes, runtime profiles, and recipe catalogs support these flows. They are
 part of ODPR v1 because flows need reusable workflow units, runtime references,
 and discovery, but they are not the main reason the specification exists.
 
 ### Supporting functions
 
-`Recipe`, `Provider`, and `RecipeCatalog` are support building blocks for the
+`Recipe`, `RuntimeProfile`, and `RecipeCatalog` are support building blocks for the
 three flow types. Their detailed YAML structures are described after the flow
 sections.
 
@@ -162,4 +162,4 @@ defines delivery workflow and handoff contracts around those artifacts.
 
 Read the three flow sections first: Delivery Flows, Product Handoff Flows, and
 Trigger-Based Flows. Then use the support sections for the reusable YAML
-building blocks: Recipe, Provider, and RecipeCatalog.
+building blocks: Recipe, RuntimeProfile, and RecipeCatalog.
