@@ -14,12 +14,30 @@ recipe:
   version: "1.0.0"
   type: release
   scope: portfolio
+  intent: |
+    Prepare the portfolio for release review and produce review-ready outputs.
+  instructions: |
+    Refresh the portfolio, explain the result in business language, and keep
+    generated conclusions tied to declared inputs and outputs.
   execution:
     mode: hosted
     runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
   steps:
     - id: refresh-portfolio
       command: portfolio.refresh
+      intent: |
+        Refresh the portfolio from the configured workspace.
+    - id: explain-portfolio
+      command: portfolio.explain
+      intent: |
+        Produce release-review explanation material for a human reviewer.
+      instructions: |
+        Explain what changed, what evidence supports the release, and what
+        still needs human review before publication.
+      iterationLimit: 3
+      exitWhen: |
+        Stop when the explanation is ready for review or another pass does not
+        add materially useful evidence from the declared inputs.
   review:
     required: true
 ```
@@ -40,6 +58,8 @@ A delivery flow SHOULD answer five practical questions before any tool runs:
 - What delivery work is being performed?
 - Which artifact area is affected?
 - Which ordered operations run?
+- Why does each agent-assisted operation exist?
+- How should the agent or tool work inside those operations?
 - Which durable outputs should exist afterwards?
 - Which gates or review expectations apply?
 
@@ -62,9 +82,17 @@ or outputs of the delivery work.
 | `recipe.version` | string | semantic version | Version of this delivery flow artifact. This is separate from the top-level ODPR specification version. |
 | `recipe.type` | string | `development`, `ci`, `release`, `agent`, `custom` | Delivery flow intent. Use `development` for draft generation or working artifacts, `ci` for automated validation, `release` for portfolio preparation or publication review, `agent` for agent-assisted delivery work, and `custom` only when the standard intents do not fit. |
 | `recipe.scope` | string | `data-product`, `portfolio`, `graph`, `catalog`, `fragment`, `custom` | Artifact area affected by the delivery flow. |
+| `recipe.intent` | string | multiline text | Human-authored reason for the delivery flow and result the flow should support. |
+| `recipe.instructions` | string | multiline text | Human-authored guidance for how an agent or tool should perform or interpret the delivery flow. |
+| `recipe.groundingTo` | array | strings | Graph node types, artifact types, or context categories that should ground agent-assisted delivery work. |
+| `recipe.contextFormat` | object | context format policy | Preferred serialization format for prompt, review, or handoff context. |
 | `recipe.execution.mode` | string | `local`, `hosted`, `hybrid`, `none` | Runtime expectation for the delivery flow. |
 | `recipe.execution.runtimeRef` | string | runtime reference | URI-reference to a RuntimeProfile document. A fragment selects the provider profile when needed. |
 | `recipe.steps` | array | ordered step objects | Ordered delivery operations that run. |
+| `step.intent` | string | multiline text | Human-authored reason for the step and result the step should support. |
+| `step.instructions` | string | multiline text | Human-authored guidance for agent-assisted work inside the step. |
+| `step.iterationLimit` | integer | positive integer | Maximum number of agent or LLM work passes allowed inside the step. |
+| `step.exitWhen` | string | multiline text | Human-authored stopping condition for bounded agent or LLM work inside the step. |
 | `recipe.outputs` | array | output objects | Durable files, folders, reports, rendered pages, or review notes expected after the run. |
 | `recipe.gates` | array | gate objects | Validation, quality, publication, or release conditions. |
 | `recipe.review.required` | boolean | `true`, `false` | Whether human review is required before accepting the delivery flow result. |
@@ -75,6 +103,11 @@ or outputs of the delivery work.
 recipe:
   type: release
   scope: portfolio
+  intent: |
+    Prepare the portfolio for release review and produce review-ready outputs.
+  instructions: |
+    Keep generated review material tied to declared inputs, outputs, gates, and
+    review expectations.
   execution:
     mode: hosted
     runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
@@ -84,8 +117,19 @@ recipe:
   steps:
     - id: refresh-portfolio
       command: portfolio.refresh
+      intent: |
+        Refresh the portfolio from the configured workspace.
     - id: explain-portfolio
       command: portfolio.explain
+      intent: |
+        Produce release-review explanation material for a human reviewer.
+      instructions: |
+        Explain what changed, what evidence supports the release, and what
+        still needs human review before publication.
+      iterationLimit: 3
+      exitWhen: |
+        Stop when the explanation is ready for review or another pass does not
+        add materially useful evidence from the declared inputs.
   outputs:
     - id: release-explanation
       path: portfolio/explanation.md
@@ -111,6 +155,8 @@ Every delivery flow SHOULD make these parts visible:
 | Work intent | The delivery activity being performed, such as draft generation, validation, portfolio refresh, localization, release review, or publishing preparation. |
 | Scope | The artifact area affected by the work, such as one product workspace, generated fragments, graph context, catalog input, or portfolio output. |
 | Operations | The ordered delivery operations that run, including the command names and the minimal inputs needed by each operation. |
+| Agent guidance | Human-authored `intent` and `instructions` that explain why agent-assisted work exists, what result is expected, and how the agent or tool should work. |
+| Grounding and bounded iteration | Optional `groundingTo`, `iterationLimit`, and `exitWhen` fields that keep agent-assisted work tied to declared context and stop bounded in-step refinement. |
 | Runtime expectation | Whether the flow expects local, hosted, hybrid, or model-free execution, and which runtime reference is used when model-backed work is required. |
 | Durable outputs | The files, folders, rendered pages, reports, or review notes that should exist after the run. |
 | Gates and review | The validation checks, quality checks, human review, or release ownership expectations that determine whether the result can be accepted. |

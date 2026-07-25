@@ -87,6 +87,23 @@ recipe:
 | `environment` | string | optional | Environment label such as development, CI, staging, or production. |
 | `runPolicy` | object | optional | Runtime limits such as timeout or retry guidance. |
 
+### Step fields
+
+Recipe steps are ordered operations. Each step has a stable `id`, a `command`,
+and command-specific parameters written directly on the step.
+
+| Element | Type | Required | Description |
+|---|---|---|---|
+| `id` | string | required | Stable step identifier inside the recipe. |
+| `command` | string | required | Operation the executor should run, such as `generate`, `validate`, `odpg.agent-context`, or `explain`. |
+| `intent` | string | optional | Human-authored reason for the step and the result the step should support. |
+| `instructions` | string | optional | Human-authored guidance for how an agent or tool should work through the step. |
+| `iterationLimit` | integer | optional | Maximum number of agent or LLM work passes allowed inside the step. |
+| `exitWhen` | string | optional | Human-authored stopping condition for bounded agent or LLM work inside the step. |
+| `runtimeRef` | URI reference | optional | Step-level runtime profile override for LLM-backed steps. |
+| `model` | string | optional | Step-level model override for LLM-backed steps. |
+| `contextFormat` | object | optional | Step-level context serialization policy. |
+
 ### Recipe types
 
 | Type | Purpose |

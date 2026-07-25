@@ -92,7 +92,9 @@ and agents discover available recipes.
 * define product handoff flows for one data product
 * define trigger-based flows driven by graph changes
 * support those flows with recipes, runtime profiles, recipe catalogs, context
-  policy, gates, and review expectations
+  format policy, gates, and review expectations
+* define human-authored recipe and step intent, instructions, grounding, and
+  bounded in-step iteration for agent-assisted work
 
 **Note!** In "Open Data Product" the focus is on the latter words and the
 prefix "open" refers to the openness of the standard. Any connotations to open
@@ -113,6 +115,10 @@ boundaries. A recipe building block describes:
 * which inputs it uses
 * which outputs it creates
 * which steps run
+* why the recipe or step exists
+* how an agent or tool should work through agent-assisted steps
+* what context categories should ground the work
+* when bounded in-step agent or LLM refinement should stop
 * which checks or gates apply
 * which context format is preferred
 * which execution mode is expected
