@@ -75,7 +75,10 @@ recipe:
 | `steps` | array | required | Ordered workflow operations. |
 | `inputs` | array | optional | Named workflow inputs. |
 | `outputs` | array | optional | Named workflow outputs. |
-| `context` | object | optional | Context format policy such as YAML, TOON, GCF, or automatic fallback. |
+| `intent` | string | optional | Human-authored reason for the recipe and the result the workflow should support. |
+| `instructions` | string | optional | Human-authored guidance for how an agent or tool should work through the recipe. |
+| `groundingTo` | array | optional | Graph node types, artifact types, or context categories that should ground agent-assisted work. |
+| `contextFormat` | object | optional | Context serialization policy such as YAML, TOON, GCF, or automatic fallback. |
 | `execution` | object | optional | Workflow intent such as local, hosted, hybrid, or model-free runtime/provider class. |
 | `trigger` | object | optional | Graph change pattern that can make a graph-triggered recipe applicable. |
 | `graphContext` | object | optional | Minimal ODPG graph context needed after a graph trigger matches. |
@@ -138,12 +141,52 @@ hybrid, or none.
 
 ### Context formats
 
+`contextFormat` declares how retrieved or generated context should be serialized
+for prompt, review, or handoff use. It does not define which graph context is
+retrieved, why a step exists, or which evidence should ground an answer.
+
 | Format | Meaning |
 |---|---|
 | `yaml` | Use canonical YAML context. |
 | `toon` | Use TOON compact context when available. |
 | `gcf` | Use GCF compact graph/catalog context when available. |
 | `auto` | Let the executing tool choose the preferred available context. |
+
+Use `contextFormat.primary` for the preferred format and
+`contextFormat.fallback` for acceptable alternatives.
+
+### Intent, instructions, and grounding
+
+`intent` is a human-authored statement of why a recipe or step exists and what
+kind of result is expected. It should capture the purpose and desired outcome,
+not only a short label.
+
+`instructions` tells an agent or tool how the recipe designer expects the work
+to be performed or interpreted. It can be prompt-quality prose for LLM-backed or
+agent-assisted work, but it remains part of the portable recipe contract rather
+than a provider-specific prompt template.
+
+`groundingTo` is a recipe-level list of graph node types, artifact types, or
+context categories that should ground agent-assisted work. For graph-scoped
+recipes, it commonly lists the node types that may be used from retrieved graph
+context. If omitted, the full retrieved context may be used.
+
+Step-level `intent` and `instructions` refine the recipe-level intent and
+instructions for that operation. They do not replace command parameters,
+inputs, outputs, gates, review policy, or runtime policy.
+
+Agent-assisted or LLM-backed steps MAY declare bounded in-step iteration with
+`iterationLimit` and `exitWhen`.
+
+`iterationLimit` is the maximum number of agent or LLM work passes allowed
+inside that step. It is not the same as `runPolicy.maxRetries`: retries handle a
+failed step execution, while `iterationLimit` bounds refinement or evidence
+inspection inside one step.
+
+`exitWhen` is a human-authored stopping condition. The runtime may stop earlier
+when the condition is satisfied, but it MUST NOT exceed `iterationLimit` when
+one is declared. ODPR v1 does not define loop traces, internal planning records,
+or a general agent loop language.
 
 ### RuntimeProfile references
 

@@ -116,11 +116,17 @@ class AgentArtifactsTest(unittest.TestCase):
         scope_ref = recipe["properties"]["scope"]["$ref"].split("/")[-1]
         self.assertEqual(schema["$defs"][scope_ref]["enum"], ["data-product", "catalog", "graph", "portfolio"])
         self.assertIn("execution", recipe["properties"])
-        self.assertIn("context", recipe["properties"])
+        self.assertIn("intent", recipe["properties"])
+        self.assertIn("instructions", recipe["properties"])
+        self.assertIn("groundingTo", recipe["properties"])
+        self.assertIn("contextFormat", recipe["properties"])
         self.assertIn("trigger", recipe["properties"])
         self.assertIn("graphContext", recipe["properties"])
         self.assertIn("gates", recipe["properties"])
         self.assertIn("review", recipe["properties"])
+        step = schema["$defs"]["Step"]
+        self.assertIn("iterationLimit", step["properties"])
+        self.assertIn("exitWhen", step["properties"])
         trigger = schema["$defs"]["GraphTrigger"]
         self.assertEqual(
             trigger["properties"]["event"]["enum"],
@@ -196,7 +202,7 @@ class AgentArtifactsTest(unittest.TestCase):
         assert_recipe_document(hybrid_recipe, "hybrid")
 
         self.assertNotIn("execution", ci_recipe["recipe"])
-        self.assertNotIn("context", ci_recipe["recipe"])
+        self.assertNotIn("contextFormat", ci_recipe["recipe"])
         self.assertEqual(release_recipe["recipe"]["execution"]["mode"], "hosted")
         self.assertTrue(release_recipe["recipe"]["review"]["required"])
         self.assertEqual(hybrid_recipe["recipe"]["execution"]["mode"], "hybrid")
@@ -235,6 +241,13 @@ class AgentArtifactsTest(unittest.TestCase):
             graph_triggered_recipe["recipe"]["graphContext"]["start"],
             "trigger.subject",
         )
+        self.assertEqual(graph_triggered_recipe["recipe"]["contextFormat"]["primary"], "gcf")
+        self.assertIn("data-product", graph_triggered_recipe["recipe"]["groundingTo"])
+        self.assertTrue(graph_triggered_recipe["recipe"]["intent"].strip())
+        self.assertTrue(graph_triggered_recipe["recipe"]["instructions"].strip())
+        graph_step = graph_triggered_recipe["recipe"]["steps"][0]
+        self.assertEqual(graph_step["iterationLimit"], 3)
+        self.assertTrue(graph_step["exitWhen"].strip())
 
     def test_examples_cover_recipe_catalog(self):
         document = load_yaml(SOURCE / "recipes" / "catalog.yaml")
@@ -283,7 +296,7 @@ class AgentArtifactsTest(unittest.TestCase):
         ]
 
         ids = {record["id"] for record in records}
-        self.assertEqual(ids, {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "GraphTrigger", "Gate"})
+        self.assertEqual(ids, {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextFormatPolicy", "GraphTrigger", "Gate"})
 
         for record in records:
             self.assertTrue(record["definition"])

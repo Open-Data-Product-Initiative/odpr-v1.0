@@ -81,7 +81,7 @@ def extract_entry(path):
 
     metadata = recipe.get("metadata", {})
     execution = recipe.get("execution", {})
-    context = recipe.get("context", {})
+    context_format = recipe.get("contextFormat", {})
     review = recipe.get("review", {})
     steps = recipe.get("steps", [])
 
@@ -101,7 +101,10 @@ def extract_entry(path):
         ("environment", recipe.get("environment")),
         ("executionMode", execution.get("mode") if isinstance(execution, dict) else None),
         ("runtimeRef", execution.get("runtimeRef") if isinstance(execution, dict) else None),
-        ("contextFormat", context.get("format") if isinstance(context, dict) else None),
+        (
+            "contextFormat",
+            context_format.get("primary") if isinstance(context_format, dict) else None,
+        ),
         ("requiresReview", review.get("required") if isinstance(review, dict) else None),
         (
             "commands",

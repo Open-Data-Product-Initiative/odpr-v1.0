@@ -151,8 +151,46 @@ def test_graph_trigger_accepts_node_attribute_change_for_any_node_type(validator
         "start": "trigger.subject",
         "depth": 2,
     }
+    document["recipe"]["intent"] = "Explain why the changed graph node matters."
+    document["recipe"]["instructions"] = "Use retrieved graph context only."
+    document["recipe"]["groundingTo"] = ["data-product", "use-case", "objective", "owner"]
+    document["recipe"]["contextFormat"] = {"primary": "gcf", "fallback": ["yaml", "toon"]}
+    document["recipe"]["steps"][0]["intent"] = "Explain visible graph impact."
+    document["recipe"]["steps"][0]["instructions"] = "Separate visible facts from missing context."
+    document["recipe"]["steps"][0]["iterationLimit"] = 3
+    document["recipe"]["steps"][0]["exitWhen"] = (
+        "Stop when the generated result is ready for review or no new grounding is found."
+    )
 
     assert_valid(validator, document)
+
+
+def test_recipe_rejects_legacy_context_format_field(validator):
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
+    document["recipe"]["context"] = {"format": "gcf", "fallback": ["yaml"]}
+
+    assert_invalid(validator, document)
+
+
+def test_context_format_requires_primary_format(validator):
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
+    document["recipe"]["contextFormat"] = {"fallback": ["yaml"]}
+
+    assert_invalid(validator, document)
+
+
+def test_step_iteration_limit_must_be_positive(validator):
+    document = recipe_with_step(
+        {
+            "id": "explain",
+            "command": "explain",
+            "document": "README.md",
+            "iterationLimit": 0,
+            "exitWhen": "Stop when the generated result is ready for review.",
+        }
+    )
+
+    assert_invalid(validator, document)
 
 
 def test_graph_trigger_rejects_wildcard_attribute_names(validator):

@@ -17,7 +17,10 @@ Use runtimeRef as a URI-reference to a RuntimeProfile document or profile under 
 Use RecipeCatalog only for metadata-only discovery; load and validate the referenced Recipe before execution.
 Use DataProductRecipe as a handoff manifest for one data product; do not treat it as a workflow execution script.
 Prefer declarative steps and gates over arbitrary shell scripts.
-Use context.format to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
+Use contextFormat.primary to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
+Use recipe and step intent to understand why the work exists and what result the human recipe designer expects.
+Use instructions for how the agent or tool should work, and groundingTo for the graph node types, artifact types, or context categories that should ground agent-assisted work.
+Use step iterationLimit and exitWhen to bound in-step agent or LLM refinement when they are declared.
 Use recipe.trigger and recipe.graphContext for graph-triggered recipes; treat triggers as graph change patterns, not graph queries or bindings to one graph node id.
 -->
 

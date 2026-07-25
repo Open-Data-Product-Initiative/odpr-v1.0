@@ -34,7 +34,7 @@ EXPECTED_RUNTIME_PROFILE_EXAMPLES = [
     "internal-secure.yaml",
 ]
 
-EXPECTED_RECORD_IDS = {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextPolicy", "GraphTrigger", "Gate"}
+EXPECTED_RECORD_IDS = {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextFormatPolicy", "GraphTrigger", "Gate"}
 
 
 def load_yaml(path):
@@ -149,7 +149,10 @@ def check_schema():
     assert "version" in recipe["properties"], "Recipe must define recipe version"
     assert recipe["properties"]["scope"]["$ref"] == "#/$defs/RecipeScope", "Recipe must define optional scope"
     assert "execution" in recipe["properties"], "Recipe must define execution policy"
-    assert "context" in recipe["properties"], "Recipe must define context policy"
+    assert "intent" in recipe["properties"], "Recipe must define optional intent"
+    assert "instructions" in recipe["properties"], "Recipe must define optional instructions"
+    assert "groundingTo" in recipe["properties"], "Recipe must define optional grounding"
+    assert "contextFormat" in recipe["properties"], "Recipe must define context format policy"
     assert "trigger" in recipe["properties"], "Recipe must define optional graph trigger"
     assert "graphContext" in recipe["properties"], "Recipe must define optional graph context"
     assert "gates" in recipe["properties"], "Recipe must define gates"
@@ -208,6 +211,13 @@ def check_examples():
     assert graph_triggered_recipe["recipe"]["trigger"]["subject"]["nodeType"] == "*"
     assert graph_triggered_recipe["recipe"]["trigger"]["subject"]["attribute"]["name"] == "status"
     assert graph_triggered_recipe["recipe"]["graphContext"]["start"] == "trigger.subject"
+    assert graph_triggered_recipe["recipe"]["contextFormat"]["primary"] == "gcf"
+    assert "data-product" in graph_triggered_recipe["recipe"]["groundingTo"]
+    assert graph_triggered_recipe["recipe"]["intent"].strip()
+    assert graph_triggered_recipe["recipe"]["instructions"].strip()
+    graph_step = graph_triggered_recipe["recipe"]["steps"][0]
+    assert graph_step["iterationLimit"] == 3
+    assert graph_step["exitWhen"].strip()
     assert_data_product_recipe_document(load_yaml(EXAMPLES_DIR / "data-product-recipe.yaml"))
     assert_recipe_catalog_document(load_yaml(RECIPES_DIR / "catalog.yaml"))
 
@@ -223,7 +233,7 @@ def check_examples():
 
     ci_recipe = load_yaml(EXAMPLES_DIR / "ci-validate-generated-fragments.yaml")["recipe"]
     assert "execution" not in ci_recipe
-    assert "context" not in ci_recipe
+    assert "contextFormat" not in ci_recipe
     assert ci_recipe["gates"][0]["type"] == "validation"
 
     release_recipe = load_yaml(EXAMPLES_DIR / "release-portfolio-review.yaml")["recipe"]

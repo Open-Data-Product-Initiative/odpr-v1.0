@@ -14,6 +14,17 @@ recipe:
   version: "1.0.0"
   type: agent
   scope: graph
+  intent: |
+    Explain why the matched graph condition matters and what business result
+    the review should support.
+  instructions: |
+    Use retrieved graph context only. Separate visible graph facts from missing
+    context, and do not treat the traversal as business approval.
+  groundingTo:
+    - data-product
+    - use-case
+    - objective
+    - owner
   trigger:
     source: odpg
     event: node.attributeChanged
@@ -26,12 +37,26 @@ recipe:
     graphRef: graphs/portfolio.odpg.yaml
     start: trigger.subject
     depth: 2
+  contextFormat:
+    primary: gcf
+    fallback:
+      - yaml
+      - toon
   steps:
     - id: explain-impact
       command: generate
       kind: graph
       input: generated/graph-context.gcf
       output: generated/graph-impact.md
+      intent: |
+        Explain the visible impact of the changed graph node.
+      instructions: |
+        Use the connected graph neighborhood to identify affected context,
+        likely review concerns, and the next human decision.
+      iterationLimit: 3
+      exitWhen: |
+        Stop when the generated result is ready for review or when another pass
+        over the retrieved graph context does not add materially new grounding.
   review:
     required: true
 ```
@@ -73,6 +98,9 @@ declares the boundary where a graph change should make action applicable.
 | `recipe.version` | string | semantic version | Version of this trigger-based flow artifact. This is separate from the top-level ODPR specification version. |
 | `recipe.type` | string | `development`, `ci`, `release`, `agent`, `custom` | Flow intent. Trigger-based flows commonly use `agent` or `release`. |
 | `recipe.scope` | string | `data-product`, `portfolio`, `graph`, `catalog`, `fragment`, `custom` | Artifact or graph area affected by the trigger-based flow. |
+| `recipe.intent` | string | multiline text | Human-authored reason for the flow and result the review should support. |
+| `recipe.instructions` | string | multiline text | Human-authored guidance for how an agent or tool should perform or interpret the flow. |
+| `recipe.groundingTo` | array | strings | Graph node types, artifact types, or context categories that should ground agent-assisted work. |
 | `recipe.trigger` | object | graph trigger object | Graph change boundary that can make the flow applicable. |
 | `recipe.trigger.source` | string | `odpg` | Graph source observed by the runtime. |
 | `recipe.trigger.event` | string | `node.added`, `node.removed`, `node.attributeChanged`, `edge.added`, `edge.removed`, `edge.attributeChanged`, `graph.conditionMatched` | Graph change category that can activate the flow. |
@@ -83,8 +111,11 @@ declares the boundary where a graph change should make action applicable.
 | `recipe.graphContext` | object | graph context request | Minimal ODPG context needed after a trigger matches. |
 | `recipe.graphContext.graphRef` | string | graph file or graph reference | ODPG graph source used to materialize context. |
 | `recipe.graphContext.start` | string | `trigger.subject`, graph reference | Starting point for context collection. |
-| `recipe.graphContext.depth` | integer | positive integer | Graph neighborhood depth requested after the trigger match. |
+| `recipe.graphContext.depth` | integer | positive integer | Default graph neighborhood depth requested after the trigger match. A graph-context step may override this with `step.depth`. |
+| `recipe.contextFormat` | object | context format policy | Preferred serialization format for retrieved graph context, with optional fallback formats. |
 | `recipe.steps` | array | ordered step objects | Ordered delivery, impact review, explanation, validation, or review operations that run after the trigger matches. |
+| `step.iterationLimit` | integer | positive integer | Maximum number of agent or LLM work passes allowed inside the step. |
+| `step.exitWhen` | string | multiline text | Human-authored stopping condition for bounded agent or LLM work inside the step. |
 | `recipe.outputs` | array | output objects | Durable graph context, impact notes, reports, rendered artifacts, or review notes expected after the run. |
 | `recipe.review.required` | boolean | `true`, `false` | Whether human review is required before accepting the trigger-based flow result. |
 
@@ -103,6 +134,8 @@ A trigger-based flow SHOULD make these field groups visible:
 | `trigger.event` | Graph change category, such as node added, edge removed, or attribute changed. |
 | `trigger.subject` | Node or edge boundary that must match, including node type, edge type, endpoint pattern, and explicit attribute condition when needed. |
 | `graphContext` | Minimal graph neighborhood or context artifact needed by the follow-up steps. |
+| `intent`, `instructions`, `groundingTo` | Human-authored purpose, working guidance, and grounding boundary for agent-assisted interpretation. |
+| `contextFormat` | Serialization policy for retrieved or generated context. |
 | `steps` | Ordered delivery, impact review, explanation, validation, or review operations that should run after the trigger matches. |
 | `outputs`, `gates`, `review` | Durable results and acceptance expectations for the triggered run. |
 

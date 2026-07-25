@@ -33,7 +33,7 @@ class AgentScriptsTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         records = json.loads(result.stdout)
         ids = {record["id"] for record in records}
-        self.assertIn("ContextPolicy", ids)
+        self.assertIn("ContextFormatPolicy", ids)
 
     def test_search_recipes_can_show_one_record(self):
         result = run_script("scripts/search_recipes.py", "--id", "Recipe")

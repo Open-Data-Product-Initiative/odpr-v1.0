@@ -34,7 +34,12 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | `recipeRef` | Optional provenance or generation-context reference; not an implementation dependency for developers or AI agents. |
 | `contract-plan` | Optional standardized section ID for a YAML data contract aligned with the Open Data Contract Standard. |
 | `runtimeRef` | A URI-reference from a recipe to a RuntimeProfile document or provider profile fragment under `runtimeProfile.providers`. |
-| `context.format` | The preferred context format for a recipe, such as `yaml`, `toon`, `gcf`, or `auto`. |
+| `contextFormat.primary` | The preferred context serialization format for a recipe or step, such as `yaml`, `toon`, `gcf`, or `auto`. |
+| `intent` | Human-authored reason and expected result for a recipe or step. |
+| `instructions` | Human-authored working guidance for an agent or tool executing a recipe or step. |
+| `iterationLimit` | Step-level maximum number of agent or LLM work passes allowed inside one step. |
+| `exitWhen` | Human-authored stopping condition for bounded agent or LLM work inside one step. |
+| `groundingTo` | Recipe-level list of graph node types, artifact types, or context categories that should ground agent-assisted work. |
 | `trigger` | Optional Recipe field that declares which ODPG graph change can make the recipe applicable. |
 | `graphContext` | Optional Recipe field that requests minimal ODPG context after a trigger match. |
 | `execution.mode` | Runtime/provider class such as local, hosted, hybrid, or none; not SDK invocation mode. |

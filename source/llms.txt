@@ -24,10 +24,16 @@ Family-level toolkit:
 - Use ODPR-specific schemas, examples, recipes.jsonl, and helper scripts
   together with the ODP Agent SDK when the task focuses on recipe documents.
 - When explaining or running a recipe, inspect command names, step parameters,
-  declared outputs, gates, review policy, environment, and runPolicy.
+  intent, instructions, groundingTo, declared outputs, gates, review policy,
+  environment, and runPolicy.
+- When a step declares `iterationLimit` and `exitWhen`, treat them as bounded
+  in-step agent or LLM refinement controls. `iterationLimit` is not retry
+  policy; it is the maximum number of work passes inside the step.
 - When explaining graph-triggered recipes, inspect `recipe.trigger` and
   `recipe.graphContext`. Treat triggers as graph change patterns, not graph
-  queries or bindings to one graph node id.
+  queries or bindings to one graph node id. Treat `recipe.graphContext.depth`
+  as the default graph traversal depth; a graph-context step may override it
+  with `step.depth`.
 - Do not model SDK invocation mode, dry-run responses, run manifests, logs,
   provider readiness, planned writes, write-scope checks, or run ids as ODPR
   root objects.
@@ -119,7 +125,15 @@ Core ODPR concepts:
 - Step: one operation in a recipe, such as generate, validate, portfolio.build,
   portfolio.localize, portfolio.explain, or odpg.build.
 - Execution: runtime policy for local, hosted, hybrid, or model-free execution.
-- Context: preferred context format policy such as yaml, toon, gcf, or auto.
+- Intent: human-authored reason for a recipe or step and the result it should
+  support.
+- Instructions: human-authored guidance for how an agent or tool should work.
+- IterationLimit and ExitWhen: optional step-level controls that bound
+  agent-assisted or LLM-backed work inside one step.
+- GroundingTo: recipe-level graph node types, artifact types, or context
+  categories that should ground agent-assisted work.
+- ContextFormat: preferred context serialization policy such as yaml, toon,
+  gcf, or auto.
 - Gate: validation, review, or quality check that must pass before a workflow is
   accepted.
 - Review: human or agent review expectations for the recipe output.
