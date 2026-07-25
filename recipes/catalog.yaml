@@ -114,6 +114,7 @@ recipeCatalog:
         en: Review graph impact when a node status changes to production.
       executionMode: hosted
       runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
+      contextFormat: gcf
       requiresReview: true
       commands:
         - generate

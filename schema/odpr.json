@@ -552,17 +552,17 @@
         }
       }
     },
-    "ContextPolicy": {
+    "ContextFormatPolicy": {
       "type": "object",
       "additionalProperties": false,
       "patternProperties": {
         "^x-": {}
       },
       "required": [
-        "format"
+        "primary"
       ],
       "properties": {
-        "format": {
+        "primary": {
           "type": "string",
           "enum": [
             "yaml",
@@ -632,6 +632,22 @@
           "type": "string",
           "minLength": 1
         },
+        "intent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instructions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iterationLimit": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "exitWhen": {
+          "type": "string",
+          "minLength": 1
+        },
         "runtimeRef": {
           "$ref": "#/$defs/RuntimeRef"
         },
@@ -639,8 +655,8 @@
           "type": "string",
           "minLength": 1
         },
-        "context": {
-          "$ref": "#/$defs/ContextPolicy"
+        "contextFormat": {
+          "$ref": "#/$defs/ContextFormatPolicy"
         },
         "input": {
           "$ref": "#/$defs/RelativePath"
@@ -1807,8 +1823,24 @@
             "$ref": "#/$defs/NamedPath"
           }
         },
-        "context": {
-          "$ref": "#/$defs/ContextPolicy"
+        "intent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instructions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "groundingTo": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "contextFormat": {
+          "$ref": "#/$defs/ContextFormatPolicy"
         },
         "trigger": {
           "$ref": "#/$defs/GraphTrigger"

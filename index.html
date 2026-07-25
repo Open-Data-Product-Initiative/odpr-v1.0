@@ -2166,6 +2166,17 @@ build commands, local test commands, and repository-specific tool rules.</p>
   <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
   <span class="na">type</span><span class="pi">:</span> <span class="s">agent</span>
   <span class="na">scope</span><span class="pi">:</span> <span class="s">graph</span>
+  <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">Explain why the matched graph condition matters and what business result</span>
+    <span class="s">the review should support.</span>
+  <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">Use retrieved graph context only. Separate visible graph facts from missing</span>
+    <span class="s">context, and do not treat the traversal as business approval.</span>
+  <span class="na">groundingTo</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">data-product</span>
+    <span class="pi">-</span> <span class="s">use-case</span>
+    <span class="pi">-</span> <span class="s">objective</span>
+    <span class="pi">-</span> <span class="s">owner</span>
   <span class="na">trigger</span><span class="pi">:</span>
     <span class="na">source</span><span class="pi">:</span> <span class="s">odpg</span>
     <span class="na">event</span><span class="pi">:</span> <span class="s">node.attributeChanged</span>
@@ -2178,12 +2189,26 @@ build commands, local test commands, and repository-specific tool rules.</p>
     <span class="na">graphRef</span><span class="pi">:</span> <span class="s">graphs/portfolio.odpg.yaml</span>
     <span class="na">start</span><span class="pi">:</span> <span class="s">trigger.subject</span>
     <span class="na">depth</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="na">contextFormat</span><span class="pi">:</span>
+    <span class="na">primary</span><span class="pi">:</span> <span class="s">gcf</span>
+    <span class="na">fallback</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">yaml</span>
+      <span class="pi">-</span> <span class="s">toon</span>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-impact</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">generate</span>
       <span class="na">kind</span><span class="pi">:</span> <span class="s">graph</span>
       <span class="na">input</span><span class="pi">:</span> <span class="s">generated/graph-context.gcf</span>
       <span class="na">output</span><span class="pi">:</span> <span class="s">generated/graph-impact.md</span>
+      <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Explain the visible impact of the changed graph node.</span>
+      <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Use the connected graph neighborhood to identify affected context,</span>
+        <span class="s">likely review concerns, and the next human decision.</span>
+      <span class="na">iterationLimit</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">exitWhen</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Stop when the generated result is ready for review or when another pass</span>
+        <span class="s">over the retrieved graph context does not add materially new grounding.</span>
   <span class="na">review</span><span class="pi">:</span>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
 </code></pre></div>
@@ -2279,6 +2304,24 @@ declares the boundary where a graph change should make action applicable.</p>
 <td>Artifact or graph area affected by the trigger-based flow.</td>
 </tr>
 <tr>
+<td><code>recipe.intent</code></td>
+<td>string</td>
+<td>multiline text</td>
+<td>Human-authored reason for the flow and result the review should support.</td>
+</tr>
+<tr>
+<td><code>recipe.instructions</code></td>
+<td>string</td>
+<td>multiline text</td>
+<td>Human-authored guidance for how an agent or tool should perform or interpret the flow.</td>
+</tr>
+<tr>
+<td><code>recipe.groundingTo</code></td>
+<td>array</td>
+<td>strings</td>
+<td>Graph node types, artifact types, or context categories that should ground agent-assisted work.</td>
+</tr>
+<tr>
 <td><code>recipe.trigger</code></td>
 <td>object</td>
 <td>graph trigger object</td>
@@ -2342,13 +2385,31 @@ declares the boundary where a graph change should make action applicable.</p>
 <td><code>recipe.graphContext.depth</code></td>
 <td>integer</td>
 <td>positive integer</td>
-<td>Graph neighborhood depth requested after the trigger match.</td>
+<td>Default graph neighborhood depth requested after the trigger match. A graph-context step may override this with <code>step.depth</code>.</td>
+</tr>
+<tr>
+<td><code>recipe.contextFormat</code></td>
+<td>object</td>
+<td>context format policy</td>
+<td>Preferred serialization format for retrieved graph context, with optional fallback formats.</td>
 </tr>
 <tr>
 <td><code>recipe.steps</code></td>
 <td>array</td>
 <td>ordered step objects</td>
 <td>Ordered delivery, impact review, explanation, validation, or review operations that run after the trigger matches.</td>
+</tr>
+<tr>
+<td><code>step.iterationLimit</code></td>
+<td>integer</td>
+<td>positive integer</td>
+<td>Maximum number of agent or LLM work passes allowed inside the step.</td>
+</tr>
+<tr>
+<td><code>step.exitWhen</code></td>
+<td>string</td>
+<td>multiline text</td>
+<td>Human-authored stopping condition for bounded agent or LLM work inside the step.</td>
 </tr>
 <tr>
 <td><code>recipe.outputs</code></td>
@@ -2392,6 +2453,14 @@ the graph context and operations needed after the match.</p>
 <tr>
 <td><code>graphContext</code></td>
 <td>Minimal graph neighborhood or context artifact needed by the follow-up steps.</td>
+</tr>
+<tr>
+<td><code>intent</code>, <code>instructions</code>, <code>groundingTo</code></td>
+<td>Human-authored purpose, working guidance, and grounding boundary for agent-assisted interpretation.</td>
+</tr>
+<tr>
+<td><code>contextFormat</code></td>
+<td>Serialization policy for retrieved or generated context.</td>
 </tr>
 <tr>
 <td><code>steps</code></td>
@@ -2705,10 +2774,28 @@ and automation systems how a data product workflow should run.</p>
 <td>Named workflow outputs.</td>
 </tr>
 <tr>
-<td><code>context</code></td>
+<td><code>intent</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Human-authored reason for the recipe and the result the workflow should support.</td>
+</tr>
+<tr>
+<td><code>instructions</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Human-authored guidance for how an agent or tool should work through the recipe.</td>
+</tr>
+<tr>
+<td><code>groundingTo</code></td>
+<td>array</td>
+<td>optional</td>
+<td>Graph node types, artifact types, or context categories that should ground agent-assisted work.</td>
+</tr>
+<tr>
+<td><code>contextFormat</code></td>
 <td>object</td>
 <td>optional</td>
-<td>Context format policy such as YAML, TOON, GCF, or automatic fallback.</td>
+<td>Context serialization policy such as YAML, TOON, GCF, or automatic fallback.</td>
 </tr>
 <tr>
 <td><code>execution</code></td>
@@ -2855,6 +2942,10 @@ hybrid, or none.</p>
 </tr>
 </tbody></table>
 <h3 id='context-formats'>Context formats</h3>
+<p><code>contextFormat</code> declares how retrieved or generated context should be serialized
+for prompt, review, or handoff use. It does not define which graph context is
+retrieved, why a step exists, or which evidence should ground an answer.</p>
+
 <table><thead>
 <tr>
 <th>Format</th>
@@ -2878,6 +2969,40 @@ hybrid, or none.</p>
 <td>Let the executing tool choose the preferred available context.</td>
 </tr>
 </tbody></table>
+
+<p>Use <code>contextFormat.primary</code> for the preferred format and
+<code>contextFormat.fallback</code> for acceptable alternatives.</p>
+<h3 id='intent-instructions-and-grounding'>Intent, instructions, and grounding</h3>
+<p><code>intent</code> is a human-authored statement of why a recipe or step exists and what
+kind of result is expected. It should capture the purpose and desired outcome,
+not only a short label.</p>
+
+<p><code>instructions</code> tells an agent or tool how the recipe designer expects the work
+to be performed or interpreted. It can be prompt-quality prose for LLM-backed or
+agent-assisted work, but it remains part of the portable recipe contract rather
+than a provider-specific prompt template.</p>
+
+<p><code>groundingTo</code> is a recipe-level list of graph node types, artifact types, or
+context categories that should ground agent-assisted work. For graph-scoped
+recipes, it commonly lists the node types that may be used from retrieved graph
+context. If omitted, the full retrieved context may be used.</p>
+
+<p>Step-level <code>intent</code> and <code>instructions</code> refine the recipe-level intent and
+instructions for that operation. They do not replace command parameters,
+inputs, outputs, gates, review policy, or runtime policy.</p>
+
+<p>Agent-assisted or LLM-backed steps MAY declare bounded in-step iteration with
+<code>iterationLimit</code> and <code>exitWhen</code>.</p>
+
+<p><code>iterationLimit</code> is the maximum number of agent or LLM work passes allowed
+inside that step. It is not the same as <code>runPolicy.maxRetries</code>: retries handle a
+failed step execution, while <code>iterationLimit</code> bounds refinement or evidence
+inspection inside one step.</p>
+
+<p><code>exitWhen</code> is a human-authored stopping condition. The runtime may stop earlier
+when the condition is satisfied, but it MUST NOT exceed <code>iterationLimit</code> when
+one is declared. ODPR v1 does not define loop traces, internal planning records,
+or a general agent loop language.</p>
 <h3 id='runtimeprofile-references'>RuntimeProfile references</h3>
 <p><code>runtimeRef</code> identifies an ODPR <code>RuntimeProfile</code> with a URI-reference. The
 target points to a RuntimeProfile YAML document or runtime profile source. A
@@ -3977,7 +4102,10 @@ Use runtimeRef as a URI-reference to a RuntimeProfile document or profile under 
 Use RecipeCatalog only for metadata-only discovery; load and validate the referenced Recipe before execution.
 Use DataProductRecipe as a handoff manifest for one data product; do not treat it as a workflow execution script.
 Prefer declarative steps and gates over arbitrary shell scripts.
-Use context.format to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
+Use contextFormat.primary to decide whether YAML, TOON, GCF, or automatic fallback should be used as prompt or review context.
+Use recipe and step intent to understand why the work exists and what result the human recipe designer expects.
+Use instructions for how the agent or tool should work, and groundingTo for the graph node types, artifact types, or context categories that should ground agent-assisted work.
+Use step iterationLimit and exitWhen to bound in-step agent or LLM refinement when they are declared.
 Use recipe.trigger and recipe.graphContext for graph-triggered recipes; treat triggers as graph change patterns, not graph queries or bindings to one graph node id.
 -->
 <h2 id='agent-capabilities-enabled-by-odpr'>Agent capabilities enabled by ODPR</h2>
@@ -4231,8 +4359,28 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.</p>
 <td>A URI-reference from a recipe to a RuntimeProfile document or provider profile fragment under <code>runtimeProfile.providers</code>.</td>
 </tr>
 <tr>
-<td><code>context.format</code></td>
-<td>The preferred context format for a recipe, such as <code>yaml</code>, <code>toon</code>, <code>gcf</code>, or <code>auto</code>.</td>
+<td><code>contextFormat.primary</code></td>
+<td>The preferred context serialization format for a recipe or step, such as <code>yaml</code>, <code>toon</code>, <code>gcf</code>, or <code>auto</code>.</td>
+</tr>
+<tr>
+<td><code>intent</code></td>
+<td>Human-authored reason and expected result for a recipe or step.</td>
+</tr>
+<tr>
+<td><code>instructions</code></td>
+<td>Human-authored working guidance for an agent or tool executing a recipe or step.</td>
+</tr>
+<tr>
+<td><code>iterationLimit</code></td>
+<td>Step-level maximum number of agent or LLM work passes allowed inside one step.</td>
+</tr>
+<tr>
+<td><code>exitWhen</code></td>
+<td>Human-authored stopping condition for bounded agent or LLM work inside one step.</td>
+</tr>
+<tr>
+<td><code>groundingTo</code></td>
+<td>Recipe-level list of graph node types, artifact types, or context categories that should ground agent-assisted work.</td>
 </tr>
 <tr>
 <td><code>trigger</code></td>

@@ -11,6 +11,17 @@ recipe:
   version: "1.0.0"
   type: agent
   scope: graph
+  intent: |
+    Explain why the changed graph node matters and what business review result
+    the impact analysis should support.
+  instructions: |
+    Use retrieved graph context only. Separate visible graph facts from missing
+    context, and do not treat the impact review as business approval.
+  groundingTo:
+    - data-product
+    - use-case
+    - objective
+    - owner
   trigger:
     source: odpg
     event: node.attributeChanged
@@ -23,6 +34,11 @@ recipe:
     graphRef: graphs/portfolio.odpg.yaml
     start: trigger.subject
     depth: 2
+  contextFormat:
+    primary: gcf
+    fallback:
+      - yaml
+      - toon
   execution:
     mode: hosted
     runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
@@ -32,6 +48,15 @@ recipe:
       kind: graph
       input: generated/graph-context.gcf
       output: generated/graph-impact.md
+      intent: |
+        Explain the visible impact of the changed graph node.
+      instructions: |
+        Use the connected graph neighborhood to identify affected context,
+        likely review concerns, and the next human decision.
+      iterationLimit: 3
+      exitWhen: |
+        Stop when the generated result is ready for review or when another pass
+        over the retrieved graph context does not add materially new grounding.
   outputs:
     - id: graph-impact
       path: generated/graph-impact.md
