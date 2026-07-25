@@ -574,7 +574,9 @@ and agents discover available recipes.</p>
 <li>define product handoff flows for one data product</li>
 <li>define trigger-based flows driven by graph changes</li>
 <li>support those flows with recipes, runtime profiles, recipe catalogs, context
-policy, gates, and review expectations</li>
+format policy, gates, and review expectations</li>
+<li>define human-authored recipe and step intent, instructions, grounding, and
+bounded in-step iteration for agent-assisted work</li>
 </ul>
 
 <p><strong>Note!</strong> In &quot;Open Data Product&quot; the focus is on the latter words and the
@@ -595,6 +597,10 @@ boundaries. A recipe building block describes:</p>
 <li>which inputs it uses</li>
 <li>which outputs it creates</li>
 <li>which steps run</li>
+<li>why the recipe or step exists</li>
+<li>how an agent or tool should work through agent-assisted steps</li>
+<li>what context categories should ground the work</li>
+<li>when bounded in-step agent or LLM refinement should stop</li>
 <li>which checks or gates apply</li>
 <li>which context format is preferred</li>
 <li>which execution mode is expected</li>
@@ -655,12 +661,30 @@ building blocks: Recipe, RuntimeProfile, and RecipeCatalog.</p>
   <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0.0"</span>
   <span class="na">type</span><span class="pi">:</span> <span class="s">release</span>
   <span class="na">scope</span><span class="pi">:</span> <span class="s">portfolio</span>
+  <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">Prepare the portfolio for release review and produce review-ready outputs.</span>
+  <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">Refresh the portfolio, explain the result in business language, and keep</span>
+    <span class="s">generated conclusions tied to declared inputs and outputs.</span>
   <span class="na">execution</span><span class="pi">:</span>
     <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
     <span class="na">runtimeRef</span><span class="pi">:</span> <span class="s">runtime-profiles/examples/production-quality.yaml#production-quality</span>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">refresh-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.refresh</span>
+      <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Refresh the portfolio from the configured workspace.</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-portfolio</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.explain</span>
+      <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Produce release-review explanation material for a human reviewer.</span>
+      <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Explain what changed, what evidence supports the release, and what</span>
+        <span class="s">still needs human review before publication.</span>
+      <span class="na">iterationLimit</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">exitWhen</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Stop when the explanation is ready for review or another pass does not</span>
+        <span class="s">add materially useful evidence from the declared inputs.</span>
   <span class="na">review</span><span class="pi">:</span>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
 </code></pre></div>
@@ -679,6 +703,8 @@ content, explain results, and require review before release.</p>
 <li>What delivery work is being performed?</li>
 <li>Which artifact area is affected?</li>
 <li>Which ordered operations run?</li>
+<li>Why does each agent-assisted operation exist?</li>
+<li>How should the agent or tool work inside those operations?</li>
 <li>Which durable outputs should exist afterwards?</li>
 <li>Which gates or review expectations apply?</li>
 </ul>
@@ -757,6 +783,30 @@ or outputs of the delivery work.</p>
 <td>Artifact area affected by the delivery flow.</td>
 </tr>
 <tr>
+<td><code>recipe.intent</code></td>
+<td>string</td>
+<td>multiline text</td>
+<td>Human-authored reason for the delivery flow and result the flow should support.</td>
+</tr>
+<tr>
+<td><code>recipe.instructions</code></td>
+<td>string</td>
+<td>multiline text</td>
+<td>Human-authored guidance for how an agent or tool should perform or interpret the delivery flow.</td>
+</tr>
+<tr>
+<td><code>recipe.groundingTo</code></td>
+<td>array</td>
+<td>strings</td>
+<td>Graph node types, artifact types, or context categories that should ground agent-assisted delivery work.</td>
+</tr>
+<tr>
+<td><code>recipe.contextFormat</code></td>
+<td>object</td>
+<td>context format policy</td>
+<td>Preferred serialization format for prompt, review, or handoff context.</td>
+</tr>
+<tr>
 <td><code>recipe.execution.mode</code></td>
 <td>string</td>
 <td><code>local</code>, <code>hosted</code>, <code>hybrid</code>, <code>none</code></td>
@@ -773,6 +823,30 @@ or outputs of the delivery work.</p>
 <td>array</td>
 <td>ordered step objects</td>
 <td>Ordered delivery operations that run.</td>
+</tr>
+<tr>
+<td><code>step.intent</code></td>
+<td>string</td>
+<td>multiline text</td>
+<td>Human-authored reason for the step and result the step should support.</td>
+</tr>
+<tr>
+<td><code>step.instructions</code></td>
+<td>string</td>
+<td>multiline text</td>
+<td>Human-authored guidance for agent-assisted work inside the step.</td>
+</tr>
+<tr>
+<td><code>step.iterationLimit</code></td>
+<td>integer</td>
+<td>positive integer</td>
+<td>Maximum number of agent or LLM work passes allowed inside the step.</td>
+</tr>
+<tr>
+<td><code>step.exitWhen</code></td>
+<td>string</td>
+<td>multiline text</td>
+<td>Human-authored stopping condition for bounded agent or LLM work inside the step.</td>
 </tr>
 <tr>
 <td><code>recipe.outputs</code></td>
@@ -796,6 +870,11 @@ or outputs of the delivery work.</p>
 <h2 id='delivery-flow-model'>Delivery flow model</h2><div class="highlight"><pre class="highlight yaml tab-yaml"><code><span class="na">recipe</span><span class="pi">:</span>
   <span class="na">type</span><span class="pi">:</span> <span class="s">release</span>
   <span class="na">scope</span><span class="pi">:</span> <span class="s">portfolio</span>
+  <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">Prepare the portfolio for release review and produce review-ready outputs.</span>
+  <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">Keep generated review material tied to declared inputs, outputs, gates, and</span>
+    <span class="s">review expectations.</span>
   <span class="na">execution</span><span class="pi">:</span>
     <span class="na">mode</span><span class="pi">:</span> <span class="s">hosted</span>
     <span class="na">runtimeRef</span><span class="pi">:</span> <span class="s">runtime-profiles/examples/production-quality.yaml#production-quality</span>
@@ -805,8 +884,19 @@ or outputs of the delivery work.</p>
   <span class="na">steps</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">refresh-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.refresh</span>
+      <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Refresh the portfolio from the configured workspace.</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">explain-portfolio</span>
       <span class="na">command</span><span class="pi">:</span> <span class="s">portfolio.explain</span>
+      <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Produce release-review explanation material for a human reviewer.</span>
+      <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Explain what changed, what evidence supports the release, and what</span>
+        <span class="s">still needs human review before publication.</span>
+      <span class="na">iterationLimit</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">exitWhen</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Stop when the explanation is ready for review or another pass does not</span>
+        <span class="s">add materially useful evidence from the declared inputs.</span>
   <span class="na">outputs</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">release-explanation</span>
       <span class="na">path</span><span class="pi">:</span> <span class="s">portfolio/explanation.md</span>
@@ -843,6 +933,14 @@ SDK executor, MCP server, or AI agent can inspect before the run starts.</p>
 <tr>
 <td>Operations</td>
 <td>The ordered delivery operations that run, including the command names and the minimal inputs needed by each operation.</td>
+</tr>
+<tr>
+<td>Agent guidance</td>
+<td>Human-authored <code>intent</code> and <code>instructions</code> that explain why agent-assisted work exists, what result is expected, and how the agent or tool should work.</td>
+</tr>
+<tr>
+<td>Grounding and bounded iteration</td>
+<td>Optional <code>groundingTo</code>, <code>iterationLimit</code>, and <code>exitWhen</code> fields that keep agent-assisted work tied to declared context and stop bounded in-step refinement.</td>
 </tr>
 <tr>
 <td>Runtime expectation</td>
@@ -2838,6 +2936,73 @@ and automation systems how a data product workflow should run.</p>
 <td>object</td>
 <td>optional</td>
 <td>Runtime limits such as timeout or retry guidance.</td>
+</tr>
+</tbody></table>
+<h3 id='step-fields'>Step fields</h3>
+<p>Recipe steps are ordered operations. Each step has a stable <code>id</code>, a <code>command</code>,
+and command-specific parameters written directly on the step.</p>
+
+<table><thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>required</td>
+<td>Stable step identifier inside the recipe.</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>string</td>
+<td>required</td>
+<td>Operation the executor should run, such as <code>generate</code>, <code>validate</code>, <code>odpg.agent-context</code>, or <code>explain</code>.</td>
+</tr>
+<tr>
+<td><code>intent</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Human-authored reason for the step and the result the step should support.</td>
+</tr>
+<tr>
+<td><code>instructions</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Human-authored guidance for how an agent or tool should work through the step.</td>
+</tr>
+<tr>
+<td><code>iterationLimit</code></td>
+<td>integer</td>
+<td>optional</td>
+<td>Maximum number of agent or LLM work passes allowed inside the step.</td>
+</tr>
+<tr>
+<td><code>exitWhen</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Human-authored stopping condition for bounded agent or LLM work inside the step.</td>
+</tr>
+<tr>
+<td><code>runtimeRef</code></td>
+<td>URI reference</td>
+<td>optional</td>
+<td>Step-level runtime profile override for LLM-backed steps.</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Step-level model override for LLM-backed steps.</td>
+</tr>
+<tr>
+<td><code>contextFormat</code></td>
+<td>object</td>
+<td>optional</td>
+<td>Step-level context serialization policy.</td>
 </tr>
 </tbody></table>
 <h3 id='recipe-types'>Recipe types</h3>
