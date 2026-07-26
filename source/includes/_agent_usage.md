@@ -22,7 +22,7 @@ Use recipe and step intent to understand why the work exists and what result the
 Use step discoveryType as the standardized discovery purpose for agent discovery steps. Agent discovery steps use discoveryType instead of command.
 Use instructions for how the agent or tool should work, and groundingTo for the controlled graph node and edge types that should ground agent-assisted work.
 Use step iterationLimit and exitWhen to bound in-step agent or LLM refinement when they are declared.
-Use recipe.trigger and recipe.graphContext for graph-triggered recipes; treat triggers as graph change patterns, not graph queries or bindings to one graph node id.
+Use recipe.trigger and recipe.graphContext for graph-aware recipes. Human-initiated discovery may use graphContext.startNodeId; graph-triggered recipes use the matched trigger subject.
 -->
 
 ## Agent capabilities enabled by ODPR

@@ -34,8 +34,7 @@ recipe:
       - enables
       - dependsOn
   graphContext:
-    graphRef: graphs/banking-portfolio.odpg.yaml
-    start: condition:high-value-customer-inactivity
+    startNodeId: nd_7f3a9c2e4b8d
     depth: 2
   contextFormat:
     primary: gcf
@@ -43,23 +42,33 @@ recipe:
       - yaml
       - toon
   steps:
-    - id: find-affected-use-cases
+    - id: step-1
       discoveryType: find-affected-use-cases
-      graph: graphs/banking-portfolio.odpg.yaml
-      start: condition:high-value-customer-inactivity
-      depth: 3
-      output: generated/discovery/high-value-customer-inactivity.gcf
+      output: generated/discovery/affected-use-cases.md
       intent: |
-        Establish the graph context for the matched inactivity condition.
+        Find use cases affected by the matched inactivity condition.
       instructions: |
-        Retrieve the connected neighborhood around the condition and preserve
-        visible context that explains why the condition matters.
-    - id: produce-findings-and-recommendations
+        Starting from the graph node identified by `graphContext.startNodeId`,
+        inspect the bounded graph context that fits `groundingTo` and
+        `graphContext.depth`. Preserve visible evidence that explains why the
+        condition matters.
+    - id: step-2
+      discoveryType: identify-gaps-and-risks
+      output: generated/discovery/gaps-and-risks.md
+      intent: |
+        Identify missing graph evidence, unresolved ownership, and dependency
+        risks that affect the review.
+      instructions: |
+        Review the evidence found by previous discovery steps and the bounded
+        graph context. Identify gaps, risks, and missing context that a human
+        reviewer must resolve before accepting the findings.
+    - id: step-3
       discoveryType: produce-findings-and-recommendations
       output: generated/discovery/high-value-customer-inactivity-answer.md
       intent: |
-        Produce grounded findings and recommended human actions by synthesizing
-        the evidence collected by previous discovery steps in this recipe.
+        Produce the final grounded summary and recommended human actions by
+        synthesizing the evidence collected by previous discovery steps in this
+        recipe.
       instructions: |
         Review the outputs and evidence produced by earlier discovery steps in
         this recipe. Explain affected use cases, evidence products, owner
@@ -73,15 +82,14 @@ recipe:
         materially new grounding.
   review:
     required: true
-    mode: both
 ```
 
 Agent discovery flows declare how an AI agent investigates bounded data product,
 catalog, graph, or portfolio context to produce grounded answers, findings,
 impact explanations, or review recommendations.
 
-The workflow path remains deterministic: the recipe declares the graph context,
-inputs, ordered steps, outputs, gates, and review expectations. The agent gets
+The workflow path remains deterministic: the recipe declares the graph context
+boundary, ordered steps, outputs, gates, and review expectations. The agent gets
 controlled freedom inside agent-assisted steps through human-authored `intent`,
 `instructions`, `groundingTo`, `iterationLimit`, and `exitWhen`.
 
@@ -123,9 +131,10 @@ portable investigation contract, not an agent runtime.
 | `recipe.intent` | string | multiline text | Human-authored reason for the discovery and the result the investigation should support. |
 | `recipe.instructions` | string | multiline text | Human-authored guidance for how the agent or tool should investigate and interpret the context. |
 | `recipe.groundingTo` | object | node and edge type boundary | Controlled graph node and edge types that should ground the agent's answer. |
-| `recipe.graphContext` | object | graph context request | Bounded ODPG context used by graph-scoped discovery flows. |
+| `recipe.graphContext` | object | graph context request | Bounded graph context request for graph-scoped discovery flows. For human-initiated discovery, `startNodeId` is the opaque id of the starting graph node selected before the run, and `depth` limits neighborhood expansion. |
 | `recipe.contextFormat` | object | context format policy | Preferred serialization format for retrieved context. |
 | `recipe.steps` | array | ordered step objects | Ordered retrieval, inspection, explanation, validation, or review tasks. |
+| `step.id` | string | stable local identifier | Stable identifier for this step instance inside the recipe. It does not need to duplicate `discoveryType`. |
 | `step.discoveryType` | enum string | `find-affected-use-cases`<br>`explain-use-case-impact`<br>`find-affected-data-products`<br>`explain-data-product-impact`<br>`find-affected-objectives`<br>`explain-objective-impact`<br>`identify-gaps-and-risks`<br>`produce-findings-and-recommendations` | Standardized discovery purpose fulfilled by the step. It tells tools and reviewers what kind of answer the step is trying to produce. |
 | `step.intent` | string | multiline text | Human-authored reason for the step and the result the step should support. |
 | `step.instructions` | string | multiline text | Human-authored guidance for how the agent or tool should work inside the step. |
@@ -148,7 +157,7 @@ Every agent discovery flow SHOULD make these parts visible:
 |---|---|
 | Discovery intent | The question, condition, or concern being investigated and the expected answer or review result. |
 | Grounding boundary | The graph node types and edge types that may ground the answer. |
-| Retrieval path | Deterministic steps that collect or materialize bounded context. |
+| Retrieval path | Deterministic steps that inspect or materialize bounded context from the declared starting node and graph limits. |
 | Agent instructions | Human-authored instructions for interpreting context and producing findings. |
 | Bounded iteration | Step-level `iterationLimit` and `exitWhen` controls that stop in-step agent or LLM refinement. |
 | Durable result | The answer, finding, impact explanation, or review recommendation produced from the collected discovery evidence. |

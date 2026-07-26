@@ -186,6 +186,11 @@ def check_schema():
     assert "contextFormat" in recipe["properties"], "Recipe must define context format policy"
     assert "trigger" in recipe["properties"], "Recipe must define optional graph trigger"
     assert "graphContext" in recipe["properties"], "Recipe must define optional graph context"
+    graph_context = schema["$defs"]["GraphContext"]
+    assert graph_context["required"] == ["depth"], "GraphContext must require depth only"
+    assert "startNodeId" in graph_context["properties"], "GraphContext must support human start node id"
+    assert "start" not in graph_context["properties"], "GraphContext.start is obsolete"
+    assert "graphRef" not in graph_context["properties"], "GraphContext must not require a graph file reference"
     assert "gates" in recipe["properties"], "Recipe must define gates"
     assert "review" in recipe["properties"], "Recipe must define review"
     trigger = schema["$defs"]["GraphTrigger"]
@@ -241,7 +246,9 @@ def check_examples():
     assert graph_triggered_recipe["recipe"]["trigger"]["event"] == "node.attributeChanged"
     assert graph_triggered_recipe["recipe"]["trigger"]["subject"]["nodeType"] == "*"
     assert graph_triggered_recipe["recipe"]["trigger"]["subject"]["attribute"]["name"] == "status"
-    assert graph_triggered_recipe["recipe"]["graphContext"]["start"] == "trigger.subject"
+    assert graph_triggered_recipe["recipe"]["graphContext"]["depth"] == 2
+    assert "start" not in graph_triggered_recipe["recipe"]["graphContext"]
+    assert "graphRef" not in graph_triggered_recipe["recipe"]["graphContext"]
     assert graph_triggered_recipe["recipe"]["contextFormat"]["primary"] == "gcf"
     assert "DataProduct" in graph_triggered_recipe["recipe"]["groundingTo"]["nodeTypes"]
     assert "dependsOn" in graph_triggered_recipe["recipe"]["groundingTo"]["edgeTypes"]

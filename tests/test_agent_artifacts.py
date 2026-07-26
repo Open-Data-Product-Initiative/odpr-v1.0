@@ -122,6 +122,11 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertIn("contextFormat", recipe["properties"])
         self.assertIn("trigger", recipe["properties"])
         self.assertIn("graphContext", recipe["properties"])
+        graph_context = schema["$defs"]["GraphContext"]
+        self.assertEqual(graph_context["required"], ["depth"])
+        self.assertIn("startNodeId", graph_context["properties"])
+        self.assertNotIn("start", graph_context["properties"])
+        self.assertNotIn("graphRef", graph_context["properties"])
         self.assertIn("gates", recipe["properties"])
         self.assertIn("review", recipe["properties"])
         step = schema["$defs"]["Step"]
@@ -268,10 +273,9 @@ class AgentArtifactsTest(unittest.TestCase):
             graph_triggered_recipe["recipe"]["trigger"]["subject"]["attribute"]["name"],
             "status",
         )
-        self.assertEqual(
-            graph_triggered_recipe["recipe"]["graphContext"]["start"],
-            "trigger.subject",
-        )
+        self.assertEqual(graph_triggered_recipe["recipe"]["graphContext"]["depth"], 2)
+        self.assertNotIn("start", graph_triggered_recipe["recipe"]["graphContext"])
+        self.assertNotIn("graphRef", graph_triggered_recipe["recipe"]["graphContext"])
         self.assertEqual(graph_triggered_recipe["recipe"]["contextFormat"]["primary"], "gcf")
         self.assertIn("DataProduct", graph_triggered_recipe["recipe"]["groundingTo"]["nodeTypes"])
         self.assertIn("dependsOn", graph_triggered_recipe["recipe"]["groundingTo"]["edgeTypes"])

@@ -81,7 +81,7 @@ recipe:
 | `contextFormat` | object | optional | Context serialization policy such as YAML, TOON, GCF, or automatic fallback. |
 | `execution` | object | optional | Workflow intent such as local, hosted, hybrid, or model-free runtime/provider class. |
 | `trigger` | object | optional | Graph change pattern that can make a graph-triggered recipe applicable. |
-| `graphContext` | object | optional | Minimal ODPG graph context needed after a graph trigger matches. |
+| `graphContext` | object | optional | Bounded graph context request. Human-initiated discovery can identify the starting graph node with opaque `startNodeId`; trigger-based flows use the matched trigger subject. |
 | `gates` | array | optional | Validation, quality, or review gates. |
 | `review` | object | optional | Human or agent review expectations. |
 | `environment` | string | optional | Environment label such as development, CI, staging, or production. |
@@ -95,7 +95,7 @@ standardized `discoveryType`.
 
 | Element | Type | Required | Description |
 |---|---|---|---|
-| `id` | string | required | Stable step identifier inside the recipe. |
+| `id` | string | required | Stable step instance identifier inside the recipe. In Agent Discovery steps, it does not need to duplicate `discoveryType`. |
 | `command` | string | optional | Operation the executor should run, such as `generate`, `validate`, `odpg.agent-context`, or `explain`. Use for executable workflow operations. Do not use on agent discovery steps that declare `discoveryType`. |
 | `discoveryType` | enum string | optional | Controlled agent discovery step type. Allowed values:<br>`find-affected-use-cases`<br>`explain-use-case-impact`<br>`find-affected-data-products`<br>`explain-data-product-impact`<br>`find-affected-objectives`<br>`explain-objective-impact`<br>`identify-gaps-and-risks`<br>`produce-findings-and-recommendations` |
 | `intent` | string | optional | Human-authored reason for the step and the result the step should support. |

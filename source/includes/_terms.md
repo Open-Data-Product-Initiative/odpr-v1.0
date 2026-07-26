@@ -41,7 +41,7 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | `exitWhen` | Human-authored stopping condition for bounded agent or LLM work inside one step. |
 | `groundingTo` | Recipe-level graph node and edge type boundary for grounding agent-assisted work. |
 | `trigger` | Optional Recipe field that declares which ODPG graph change can make the recipe applicable. |
-| `graphContext` | Optional Recipe field that requests minimal ODPG context after a trigger match. |
+| `graphContext` | Optional Recipe field that requests bounded graph context by starting node or trigger subject and depth. |
 | `execution.mode` | Runtime/provider class such as local, hosted, hybrid, or none; not SDK invocation mode. |
 | `runPolicy` | Runtime guidance such as timeout or retry expectations. |
 | `Extension property` | A local or implementation-specific field whose name begins with `x-`. |

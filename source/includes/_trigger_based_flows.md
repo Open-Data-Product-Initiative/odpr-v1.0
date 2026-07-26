@@ -40,8 +40,6 @@ recipe:
         name: status
         to: production
   graphContext:
-    graphRef: graphs/portfolio.odpg.yaml
-    start: trigger.subject
     depth: 2
   contextFormat:
     primary: gcf
@@ -116,8 +114,7 @@ declares the boundary where a graph change should make action applicable.
 | `recipe.trigger.subject.attribute.name` | string | explicit attribute name | Attribute that must change. Attribute names are not wildcards. |
 | `recipe.trigger.subject.attribute.to` | string | target value | Target attribute value that makes action applicable. |
 | `recipe.graphContext` | object | graph context request | Minimal ODPG context needed after a trigger matches. |
-| `recipe.graphContext.graphRef` | string | graph file or graph reference | ODPG graph source used to materialize context. |
-| `recipe.graphContext.start` | string | `trigger.subject`, graph reference | Starting point for context collection. |
+| `recipe.graphContext.startNodeId` | string | graph node id | Optional starting graph node id for human-initiated discovery. Trigger-based flows normally use the matched trigger subject instead. |
 | `recipe.graphContext.depth` | integer | positive integer | Default graph neighborhood depth requested after the trigger match. A graph-context step may override this with `step.depth`. |
 | `recipe.contextFormat` | object | context format policy | Preferred serialization format for retrieved graph context, with optional fallback formats. |
 | `recipe.steps` | array | ordered step objects | Ordered delivery, impact review, explanation, validation, or review operations that run after the trigger matches. |

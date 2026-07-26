@@ -37,8 +37,6 @@ recipe:
         name: status
         to: production
   graphContext:
-    graphRef: graphs/portfolio.odpg.yaml
-    start: trigger.subject
     depth: 2
   contextFormat:
     primary: gcf

@@ -146,8 +146,6 @@ def test_graph_trigger_accepts_node_attribute_change_for_any_node_type(validator
         },
     }
     document["recipe"]["graphContext"] = {
-        "graphRef": "graphs/portfolio.odpg.yaml",
-        "start": "trigger.subject",
         "depth": 2,
     }
     document["recipe"]["intent"] = "Explain why the changed graph node matters."
@@ -254,6 +252,36 @@ def test_step_discovery_type_rejects_command(validator):
 
 def test_step_requires_command_or_discovery_type(validator):
     document = recipe_with_step({"id": "empty-step"})
+
+    assert_invalid(validator, document)
+
+
+def test_graph_context_accepts_human_start_node_id(validator):
+    document = recipe_with_step(
+        {
+            "id": "discover",
+            "discoveryType": "find-affected-use-cases",
+        }
+    )
+    document["recipe"]["graphContext"] = {
+        "startNodeId": "nd_7f3a9c2e4b8d",
+        "depth": 2,
+    }
+
+    assert_valid(validator, document)
+
+
+def test_graph_context_rejects_obsolete_start_field(validator):
+    document = recipe_with_step(
+        {
+            "id": "discover",
+            "discoveryType": "find-affected-use-cases",
+        }
+    )
+    document["recipe"]["graphContext"] = {
+        "start": "condition:high-value-customer-inactivity",
+        "depth": 2,
+    }
 
     assert_invalid(validator, document)
 
