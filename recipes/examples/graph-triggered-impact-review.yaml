@@ -18,10 +18,16 @@ recipe:
     Use retrieved graph context only. Separate visible graph facts from missing
     context, and do not treat the impact review as business approval.
   groundingTo:
-    - data-product
-    - use-case
-    - objective
-    - owner
+    nodeTypes:
+      - DataProduct
+      - UseCase
+      - BusinessObjective
+      - Owner
+    edgeTypes:
+      - uses
+      - supports
+      - enables
+      - dependsOn
   trigger:
     source: odpg
     event: node.attributeChanged
@@ -44,7 +50,7 @@ recipe:
     runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
   steps:
     - id: explain-impact
-      command: generate
+      discoveryType: produce-findings-and-recommendations
       kind: graph
       input: generated/graph-context.gcf
       output: generated/graph-impact.md

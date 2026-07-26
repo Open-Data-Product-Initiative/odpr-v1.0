@@ -147,6 +147,13 @@ $defs:
       - catalog
       - graph
       - portfolio
+  GraphEdgeType:
+    type: string
+    enum:
+      - uses
+      - supports
+      - enables
+      - dependsOn
   GraphNodeType:
     type: string
     enum:
@@ -160,7 +167,41 @@ $defs:
       - API
       - Owner
       - System
+      - Agent
+      - Condition
       - "*"
+  GroundingTarget:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^x-": {}
+    properties:
+      nodeTypes:
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/$defs/GraphNodeType"
+      edgeTypes:
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/$defs/GraphEdgeType"
+    anyOf:
+      - required:
+          - nodeTypes
+      - required:
+          - edgeTypes
+  DiscoveryStepType:
+    type: string
+    enum:
+      - find-affected-use-cases
+      - explain-use-case-impact
+      - find-affected-data-products
+      - explain-data-product-impact
+      - find-affected-objectives
+      - explain-objective-impact
+      - identify-gaps-and-risks
+      - produce-findings-and-recommendations
   GraphTriggerAttributeValue:
     oneOf:
       - type: string
@@ -197,8 +238,7 @@ $defs:
       nodeType:
         $ref: "#/$defs/GraphNodeType"
       edgeType:
-        type: string
-        minLength: 1
+        $ref: "#/$defs/GraphEdgeType"
       fromNodeType:
         $ref: "#/$defs/GraphNodeType"
       toNodeType:
@@ -382,7 +422,6 @@ $defs:
       "^x-": {}
     required:
       - id
-      - command
     properties:
       id:
         type: string
@@ -390,6 +429,8 @@ $defs:
       command:
         type: string
         minLength: 1
+      discoveryType:
+        $ref: "#/$defs/DiscoveryStepType"
       intent:
         type: string
         minLength: 1
@@ -492,7 +533,19 @@ $defs:
       timeoutSeconds:
         type: integer
         minimum: 1
+    anyOf:
+      - required:
+          - command
+      - required:
+          - discoveryType
     allOf:
+      - if:
+          required:
+            - discoveryType
+        then:
+          not:
+            required:
+              - command
       - $ref: "#/$defs/GenerateStepRule"
       - $ref: "#/$defs/OdpcBuildStepRule"
       - $ref: "#/$defs/OdpgBuildStepRule"
@@ -1181,11 +1234,7 @@ $defs:
         type: string
         minLength: 1
       groundingTo:
-        type: array
-        minItems: 1
-        items:
-          type: string
-          minLength: 1
+        $ref: "#/$defs/GroundingTarget"
       contextFormat:
         $ref: "#/$defs/ContextFormatPolicy"
       trigger:

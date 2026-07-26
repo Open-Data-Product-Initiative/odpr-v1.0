@@ -116,5 +116,3 @@ recipeCatalog:
       runtimeRef: runtime-profiles/examples/production-quality.yaml#production-quality
       contextFormat: gcf
       requiresReview: true
-      commands:
-        - generate

@@ -253,6 +253,15 @@
         "portfolio"
       ]
     },
+    "GraphEdgeType": {
+      "type": "string",
+      "enum": [
+        "uses",
+        "supports",
+        "enables",
+        "dependsOn"
+      ]
+    },
     "GraphNodeType": {
       "type": "string",
       "enum": [
@@ -266,7 +275,57 @@
         "API",
         "Owner",
         "System",
+        "Agent",
+        "Condition",
         "*"
+      ]
+    },
+    "GroundingTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "properties": {
+        "nodeTypes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphNodeType"
+          }
+        },
+        "edgeTypes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphEdgeType"
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "nodeTypes"
+          ]
+        },
+        {
+          "required": [
+            "edgeTypes"
+          ]
+        }
+      ]
+    },
+    "DiscoveryStepType": {
+      "type": "string",
+      "enum": [
+        "find-affected-use-cases",
+        "explain-use-case-impact",
+        "find-affected-data-products",
+        "explain-data-product-impact",
+        "find-affected-objectives",
+        "explain-objective-impact",
+        "identify-gaps-and-risks",
+        "produce-findings-and-recommendations"
       ]
     },
     "GraphTriggerAttributeValue": {
@@ -331,8 +390,7 @@
           "$ref": "#/$defs/GraphNodeType"
         },
         "edgeType": {
-          "type": "string",
-          "minLength": 1
+          "$ref": "#/$defs/GraphEdgeType"
         },
         "fromNodeType": {
           "$ref": "#/$defs/GraphNodeType"
@@ -620,8 +678,7 @@
         "^x-": {}
       },
       "required": [
-        "id",
-        "command"
+        "id"
       ],
       "properties": {
         "id": {
@@ -631,6 +688,9 @@
         "command": {
           "type": "string",
           "minLength": 1
+        },
+        "discoveryType": {
+          "$ref": "#/$defs/DiscoveryStepType"
         },
         "intent": {
           "type": "string",
@@ -780,7 +840,33 @@
           "minimum": 1
         }
       },
+      "anyOf": [
+        {
+          "required": [
+            "command"
+          ]
+        },
+        {
+          "required": [
+            "discoveryType"
+          ]
+        }
+      ],
       "allOf": [
+        {
+          "if": {
+            "required": [
+              "discoveryType"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "command"
+              ]
+            }
+          }
+        },
         {
           "$ref": "#/$defs/GenerateStepRule"
         },
@@ -1832,12 +1918,7 @@
           "minLength": 1
         },
         "groundingTo": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
+          "$ref": "#/$defs/GroundingTarget"
         },
         "contextFormat": {
           "$ref": "#/$defs/ContextFormatPolicy"

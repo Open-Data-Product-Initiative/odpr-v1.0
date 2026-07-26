@@ -1,10 +1,10 @@
 # Data Product Recipe Specification (ODPR)
 
 ODPR is a lightweight, vendor-neutral, machine-readable standard for reusable
-data product delivery work. It has three primary composite flows: delivery
-flows, product handoff flows for one data product, and trigger-based flows
-driven by graph changes. Recipe, RuntimeProfile, and RecipeCatalog objects are
-supporting building blocks.
+data product delivery work. It has four primary composite flows: delivery
+flows, product handoff flows for one data product, agent discovery flows, and
+trigger-based flows driven by graph changes. Recipe, RuntimeProfile, and
+RecipeCatalog objects are supporting building blocks.
 
 Base URL:
 - https://opendataproducts.org/odpr-v1.0
@@ -18,17 +18,23 @@ Family-level toolkit:
 - ODP Agent SDK: https://opendataproducts.org/sdk/
 - The ODP Agent SDK supports ODPR and is the first reference implementation for
   validating and executing ODPR recipes.
-- ODPR recipes are reusable workflow units inside delivery and trigger-based
-  flows. They may also be used with other conforming SDKs, CI/CD systems, MCP
-  servers, or platform implementations.
+- ODPR recipes are reusable workflow units inside delivery, agent discovery,
+  and trigger-based flows. They may also be used with other conforming SDKs,
+  CI/CD systems, MCP servers, or platform implementations.
 - Use ODPR-specific schemas, examples, recipes.jsonl, and helper scripts
   together with the ODP Agent SDK when the task focuses on recipe documents.
 - When explaining or running a recipe, inspect command names, step parameters,
-  intent, instructions, groundingTo, declared outputs, gates, review policy,
-  environment, and runPolicy.
+  discoveryType, intent, instructions, groundingTo, declared outputs, gates,
+  review policy, environment, and runPolicy.
+- When a step declares `discoveryType`, treat it as the standardized discovery
+  purpose of the step. Agent discovery steps use `discoveryType` instead of
+  `command`.
 - When a step declares `iterationLimit` and `exitWhen`, treat them as bounded
   in-step agent or LLM refinement controls. `iterationLimit` is not retry
   policy; it is the maximum number of work passes inside the step.
+- When explaining agent discovery flows, treat them as bounded investigations
+  over declared context that produce grounded answers, findings, impact
+  explanations, or review recommendations.
 - When explaining graph-triggered recipes, inspect `recipe.trigger` and
   `recipe.graphContext`. Treat triggers as graph change patterns, not graph
   queries or bindings to one graph node id. Treat `recipe.graphContext.depth`
@@ -107,6 +113,9 @@ Knowledge base:
 Core ODPR concepts:
 - Delivery flow: repeatable delivery work such as portfolio building,
   validation, localization, publishing, and release review.
+- Agent discovery flow: bounded AI-agent investigation over declared context to
+  produce grounded answers, findings, impact explanations, or review
+  recommendations.
 - Recipe: supporting workflow unit used by delivery flows and trigger-based
   flows; represented with `kind: Recipe`.
 - DataProductRecipe: root Data Product Recipe handoff document for developers
@@ -130,8 +139,8 @@ Core ODPR concepts:
 - Instructions: human-authored guidance for how an agent or tool should work.
 - IterationLimit and ExitWhen: optional step-level controls that bound
   agent-assisted or LLM-backed work inside one step.
-- GroundingTo: recipe-level graph node types, artifact types, or context
-  categories that should ground agent-assisted work.
+- GroundingTo: recipe-level controlled graph node and edge types that should
+  ground agent-assisted work.
 - ContextFormat: preferred context serialization policy such as yaml, toon,
   gcf, or auto.
 - Gate: validation, review, or quality check that must pass before a workflow is
@@ -159,11 +168,11 @@ Recommended agent workflow:
    RuntimeProfile objects into raw secret stores.
 
 Modeling constraints:
-- ODPR defines three primary composite flows: delivery flows, product handoff
-  flows, and trigger-based flows. Recipe, RuntimeProfile, and RecipeCatalog documents
-  are supporting building blocks. ODPR does not define data products, ODPC
-  catalog object models, graphs, vocabularies, SDK internals, CI/CD engines, or
-  provider-specific APIs.
+- ODPR defines four primary composite flows: delivery flows, product handoff
+  flows, agent discovery flows, and trigger-based flows. Recipe,
+  RuntimeProfile, and RecipeCatalog documents are supporting building blocks.
+  ODPR does not define data products, ODPC catalog object models, graphs,
+  vocabularies, SDK internals, CI/CD engines, or provider-specific APIs.
 - Recipe documents use `kind: Recipe`. RuntimeProfile documents use `kind: RuntimeProfile`.
   Recipe catalog documents use `kind: RecipeCatalog`. Data Product Recipe
   documents use `kind: DataProductRecipe`.
