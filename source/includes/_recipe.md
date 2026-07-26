@@ -77,7 +77,7 @@ recipe:
 | `outputs` | array | optional | Named workflow outputs. |
 | `intent` | string | optional | Human-authored reason for the recipe and the result the workflow should support. |
 | `instructions` | string | optional | Human-authored guidance for how an agent or tool should work through the recipe. |
-| `groundingTo` | array | optional | Graph node types, artifact types, or context categories that should ground agent-assisted work. |
+| `groundingTo` | object | optional | Controlled graph node and edge types that should ground agent-assisted work. |
 | `contextFormat` | object | optional | Context serialization policy such as YAML, TOON, GCF, or automatic fallback. |
 | `execution` | object | optional | Workflow intent such as local, hosted, hybrid, or model-free runtime/provider class. |
 | `trigger` | object | optional | Graph change pattern that can make a graph-triggered recipe applicable. |
@@ -89,13 +89,15 @@ recipe:
 
 ### Step fields
 
-Recipe steps are ordered operations. Each step has a stable `id`, a `command`,
-and command-specific parameters written directly on the step.
+Recipe steps are ordered operations or standardized agent discovery tasks. Each
+step has a stable `id` and declares either a runnable `command` or a
+standardized `discoveryType`.
 
 | Element | Type | Required | Description |
 |---|---|---|---|
 | `id` | string | required | Stable step identifier inside the recipe. |
-| `command` | string | required | Operation the executor should run, such as `generate`, `validate`, `odpg.agent-context`, or `explain`. |
+| `command` | string | optional | Operation the executor should run, such as `generate`, `validate`, `odpg.agent-context`, or `explain`. Use for executable workflow operations. Do not use on agent discovery steps that declare `discoveryType`. |
+| `discoveryType` | enum string | optional | Controlled agent discovery step type. Allowed values:<br>`find-affected-use-cases`<br>`explain-use-case-impact`<br>`find-affected-data-products`<br>`explain-data-product-impact`<br>`find-affected-objectives`<br>`explain-objective-impact`<br>`identify-gaps-and-risks`<br>`produce-findings-and-recommendations` |
 | `intent` | string | optional | Human-authored reason for the step and the result the step should support. |
 | `instructions` | string | optional | Human-authored guidance for how an agent or tool should work through the step. |
 | `iterationLimit` | integer | optional | Maximum number of agent or LLM work passes allowed inside the step. |
@@ -183,14 +185,60 @@ to be performed or interpreted. It can be prompt-quality prose for LLM-backed or
 agent-assisted work, but it remains part of the portable recipe contract rather
 than a provider-specific prompt template.
 
-`groundingTo` is a recipe-level list of graph node types, artifact types, or
-context categories that should ground agent-assisted work. For graph-scoped
-recipes, it commonly lists the node types that may be used from retrieved graph
-context. If omitted, the full retrieved context may be used.
+`groundingTo` is a recipe-level graph grounding boundary for agent-assisted
+work. It declares which retrieved graph node types and edge types may ground the
+agent's answer, finding, impact explanation, or review recommendation. If
+omitted, the full retrieved context may be used.
+
+`groundingTo.nodeTypes` uses the same controlled values as graph trigger
+`subject.nodeType`:
+
+| Value | Meaning |
+|---|---|
+| `DataProduct` | Data product or product reference node. |
+| `BusinessObjective` | Objective, KPI, or business outcome node. |
+| `UseCase` | Use case node. |
+| `Signal` | Signal, metric, event, or indicator node. |
+| `Policy` | Policy, governance, privacy, consent, or compliance node. |
+| `DataContract` | Data contract node. |
+| `DataService` | Data service node. |
+| `API` | API or endpoint node. |
+| `Owner` | Owner, team, or accountable party node. |
+| `System` | System or platform node. |
+| `Agent` | Agent or AI-assisted worker node. |
+| `Condition` | Matched condition or declared investigation condition node. |
+| `*` | Any controlled graph node type. |
+
+`groundingTo.edgeTypes` uses controlled graph relationship values:
+
+| Value | Meaning |
+|---|---|
+| `uses` | Source node uses the target node. |
+| `supports` | Source node supports the target objective, use case, product, or context. |
+| `enables` | Source node enables the target node or outcome. |
+| `dependsOn` | Source node depends on the target node. |
+
+Agent discovery steps declare `discoveryType` so tools can recognize the
+purpose of the step without parsing free-form instructions. A step that declares
+`discoveryType` MUST NOT also declare `command`.
+
+Allowed `discoveryType` values are:
+
+| Value | Meaning |
+|---|---|
+| `find-affected-use-cases` | Find use cases affected by the condition, change, product, relationship, or previous finding. |
+| `explain-use-case-impact` | Explain how identified use cases are affected. |
+| `find-affected-data-products` | Find data products affected by the condition, change, use case, relationship, or previous finding. |
+| `explain-data-product-impact` | Explain how identified data products are affected. |
+| `find-affected-objectives` | Find business objectives or KPIs affected by the condition, change, product, use case, or previous finding. |
+| `explain-objective-impact` | Explain how identified objectives or KPIs are affected. |
+| `identify-gaps-and-risks` | Identify missing evidence, weak context, unresolved ownership, governance gaps, dependency risks, or conflicting relationships. |
+| `produce-findings-and-recommendations` | Produce final grounded findings and recommended human actions. |
 
 Step-level `intent` and `instructions` refine the recipe-level intent and
-instructions for that operation. They do not replace command parameters,
-inputs, outputs, gates, review policy, or runtime policy.
+instructions for that operation or discovery task. They do not replace
+discovery type, command parameters, inputs, outputs, gates, review policy, or
+runtime policy.
 
 Agent-assisted or LLM-backed steps MAY declare bounded in-step iteration with
 `iterationLimit` and `exitWhen`.

@@ -84,7 +84,7 @@ or outputs of the delivery work.
 | `recipe.scope` | string | `data-product`, `portfolio`, `graph`, `catalog`, `fragment`, `custom` | Artifact area affected by the delivery flow. |
 | `recipe.intent` | string | multiline text | Human-authored reason for the delivery flow and result the flow should support. |
 | `recipe.instructions` | string | multiline text | Human-authored guidance for how an agent or tool should perform or interpret the delivery flow. |
-| `recipe.groundingTo` | array | strings | Graph node types, artifact types, or context categories that should ground agent-assisted delivery work. |
+| `recipe.groundingTo` | object | node and edge type boundary | Controlled graph node and edge types that should ground agent-assisted delivery work. |
 | `recipe.contextFormat` | object | context format policy | Preferred serialization format for prompt, review, or handoff context. |
 | `recipe.execution.mode` | string | `local`, `hosted`, `hybrid`, `none` | Runtime expectation for the delivery flow. |
 | `recipe.execution.runtimeRef` | string | runtime reference | URI-reference to a RuntimeProfile document. A fragment selects the provider profile when needed. |

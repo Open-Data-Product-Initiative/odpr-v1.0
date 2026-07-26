@@ -39,7 +39,7 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.
 | `instructions` | Human-authored working guidance for an agent or tool executing a recipe or step. |
 | `iterationLimit` | Step-level maximum number of agent or LLM work passes allowed inside one step. |
 | `exitWhen` | Human-authored stopping condition for bounded agent or LLM work inside one step. |
-| `groundingTo` | Recipe-level list of graph node types, artifact types, or context categories that should ground agent-assisted work. |
+| `groundingTo` | Recipe-level graph node and edge type boundary for grounding agent-assisted work. |
 | `trigger` | Optional Recipe field that declares which ODPG graph change can make the recipe applicable. |
 | `graphContext` | Optional Recipe field that requests minimal ODPG context after a trigger match. |
 | `execution.mode` | Runtime/provider class such as local, hosted, hybrid, or none; not SDK invocation mode. |

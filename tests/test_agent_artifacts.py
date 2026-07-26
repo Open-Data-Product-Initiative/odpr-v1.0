@@ -142,6 +142,37 @@ class AgentArtifactsTest(unittest.TestCase):
         )
         node_type = schema["$defs"]["GraphNodeType"]
         self.assertIn("*", node_type["enum"])
+        self.assertIn("Agent", node_type["enum"])
+        self.assertIn("Condition", node_type["enum"])
+        self.assertEqual(schema["$defs"]["GraphEdgeType"]["enum"], ["uses", "supports", "enables", "dependsOn"])
+        grounding = schema["$defs"]["GroundingTarget"]
+        self.assertEqual(grounding["properties"]["nodeTypes"]["items"]["$ref"], "#/$defs/GraphNodeType")
+        self.assertEqual(grounding["properties"]["edgeTypes"]["items"]["$ref"], "#/$defs/GraphEdgeType")
+        step = schema["$defs"]["Step"]
+        self.assertEqual(step["required"], ["id"])
+        self.assertIn({"required": ["command"]}, step["anyOf"])
+        self.assertIn({"required": ["discoveryType"]}, step["anyOf"])
+        self.assertTrue(
+            any(
+                branch.get("if", {}).get("required") == ["discoveryType"]
+                and branch.get("then", {}).get("not", {}).get("required") == ["command"]
+                for branch in step["allOf"]
+            )
+        )
+        self.assertEqual(step["properties"]["discoveryType"]["$ref"], "#/$defs/DiscoveryStepType")
+        self.assertEqual(
+            schema["$defs"]["DiscoveryStepType"]["enum"],
+            [
+                "find-affected-use-cases",
+                "explain-use-case-impact",
+                "find-affected-data-products",
+                "explain-data-product-impact",
+                "find-affected-objectives",
+                "explain-objective-impact",
+                "identify-gaps-and-risks",
+                "produce-findings-and-recommendations",
+            ],
+        )
         attribute = schema["$defs"]["GraphTriggerAttribute"]
         self.assertNotIn("*", attribute["properties"]["name"].get("enum", []))
 
@@ -242,10 +273,13 @@ class AgentArtifactsTest(unittest.TestCase):
             "trigger.subject",
         )
         self.assertEqual(graph_triggered_recipe["recipe"]["contextFormat"]["primary"], "gcf")
-        self.assertIn("data-product", graph_triggered_recipe["recipe"]["groundingTo"])
+        self.assertIn("DataProduct", graph_triggered_recipe["recipe"]["groundingTo"]["nodeTypes"])
+        self.assertIn("dependsOn", graph_triggered_recipe["recipe"]["groundingTo"]["edgeTypes"])
         self.assertTrue(graph_triggered_recipe["recipe"]["intent"].strip())
         self.assertTrue(graph_triggered_recipe["recipe"]["instructions"].strip())
         graph_step = graph_triggered_recipe["recipe"]["steps"][0]
+        self.assertEqual(graph_step["discoveryType"], "produce-findings-and-recommendations")
+        self.assertNotIn("command", graph_step)
         self.assertEqual(graph_step["iterationLimit"], 3)
         self.assertTrue(graph_step["exitWhen"].strip())
 
@@ -296,7 +330,7 @@ class AgentArtifactsTest(unittest.TestCase):
         ]
 
         ids = {record["id"] for record in records}
-        self.assertEqual(ids, {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextFormatPolicy", "GraphTrigger", "Gate"})
+        self.assertEqual(ids, {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "AgentDiscoveryFlow", "Step", "ExecutionPolicy", "ContextFormatPolicy", "GraphTrigger", "Gate"})
 
         for record in records:
             self.assertTrue(record["definition"])
@@ -322,6 +356,7 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertNotIn("define data products, catalogs, graphs", llms_words)
         self.assertIn("define data products, ODPC catalog object models, graphs", llms_words)
         self.assertIn("Data Product Recipe handoff document", llms_words)
+        self.assertIn("agent discovery flows", llms_words)
         self.assertIn("Optional recipe references are provenance, not implementation dependencies", llms_words)
         self.assertIn("DataProductRecipe", llms_words)
         self.assertIn("Do not use `ProductRecipe`", llms_words)
@@ -330,8 +365,8 @@ class AgentArtifactsTest(unittest.TestCase):
         self.assertNotIn("operation against `generated/fragments/`", index)
         self.assertNotIn("operation against `generated/fragments/signal.yaml`", index)
         self.assertIn("data_product_recipe", index)
-        self.assertIn("three composite flow contracts", index)
-        self.assertIn("Read the three flow sections first", index)
+        self.assertIn("four composite flow contracts", index)
+        self.assertIn("Read the four flow sections first", index)
         self.assertIn("validates `generated/fragments/signal.yaml`", library)
 
 

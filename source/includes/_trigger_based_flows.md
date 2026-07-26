@@ -21,10 +21,16 @@ recipe:
     Use retrieved graph context only. Separate visible graph facts from missing
     context, and do not treat the traversal as business approval.
   groundingTo:
-    - data-product
-    - use-case
-    - objective
-    - owner
+    nodeTypes:
+      - DataProduct
+      - UseCase
+      - BusinessObjective
+      - Owner
+    edgeTypes:
+      - uses
+      - supports
+      - enables
+      - dependsOn
   trigger:
     source: odpg
     event: node.attributeChanged
@@ -44,7 +50,7 @@ recipe:
       - toon
   steps:
     - id: explain-impact
-      command: generate
+      discoveryType: produce-findings-and-recommendations
       kind: graph
       input: generated/graph-context.gcf
       output: generated/graph-impact.md
@@ -100,12 +106,13 @@ declares the boundary where a graph change should make action applicable.
 | `recipe.scope` | string | `data-product`, `portfolio`, `graph`, `catalog`, `fragment`, `custom` | Artifact or graph area affected by the trigger-based flow. |
 | `recipe.intent` | string | multiline text | Human-authored reason for the flow and result the review should support. |
 | `recipe.instructions` | string | multiline text | Human-authored guidance for how an agent or tool should perform or interpret the flow. |
-| `recipe.groundingTo` | array | strings | Graph node types, artifact types, or context categories that should ground agent-assisted work. |
+| `recipe.groundingTo` | object | node and edge type boundary | Controlled graph node and edge types that should ground agent-assisted work. |
 | `recipe.trigger` | object | graph trigger object | Graph change boundary that can make the flow applicable. |
 | `recipe.trigger.source` | string | `odpg` | Graph source observed by the runtime. |
 | `recipe.trigger.event` | string | `node.added`, `node.removed`, `node.attributeChanged`, `edge.added`, `edge.removed`, `edge.attributeChanged`, `graph.conditionMatched` | Graph change category that can activate the flow. |
 | `recipe.trigger.subject` | object | node or edge subject | Node, edge, endpoint, and attribute boundary that must match the observed graph change. |
 | `recipe.trigger.subject.nodeType` | string | controlled node type, `*` | Node type boundary for node triggers. `*` allows any controlled node type. |
+| `recipe.trigger.subject.edgeType` | string | controlled edge type | Relationship type boundary for edge triggers. |
 | `recipe.trigger.subject.attribute.name` | string | explicit attribute name | Attribute that must change. Attribute names are not wildcards. |
 | `recipe.trigger.subject.attribute.to` | string | target value | Target attribute value that makes action applicable. |
 | `recipe.graphContext` | object | graph context request | Minimal ODPG context needed after a trigger matches. |
@@ -132,7 +139,7 @@ A trigger-based flow SHOULD make these field groups visible:
 |---|---|
 | `trigger.source` | Graph source observed by the runtime. In v1 this is `odpg`. |
 | `trigger.event` | Graph change category, such as node added, edge removed, or attribute changed. |
-| `trigger.subject` | Node or edge boundary that must match, including node type, edge type, endpoint pattern, and explicit attribute condition when needed. |
+| `trigger.subject` | Node or edge boundary that must match, including controlled node type, controlled edge type, endpoint pattern, and explicit attribute condition when needed. |
 | `graphContext` | Minimal graph neighborhood or context artifact needed by the follow-up steps. |
 | `intent`, `instructions`, `groundingTo` | Human-authored purpose, working guidance, and grounding boundary for agent-assisted interpretation. |
 | `contextFormat` | Serialization policy for retrieved or generated context. |
@@ -158,8 +165,9 @@ graph query language.
 | `edge.attributeChanged` | A relationship attribute crosses a declared boundary. | `subject.edgeType` and `subject.attribute.name`; the attribute condition SHOULD name `from`, `to`, or both when relevant. |
 | `graph.conditionMatched` | A named graph condition becomes true and should make a flow applicable. | `condition.name`. |
 
-`subject.nodeType` MAY be a controlled node type or `*`. Attribute names are
-not wildcards; attribute-change triggers MUST name the attribute explicitly.
+`subject.nodeType` MAY be a controlled node type or `*`.
+`subject.edgeType` MUST use a controlled edge type. Attribute names are not
+wildcards; attribute-change triggers MUST name the attribute explicitly.
 
 ## Trigger patterns
 

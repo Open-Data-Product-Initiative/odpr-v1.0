@@ -34,7 +34,7 @@ EXPECTED_RUNTIME_PROFILE_EXAMPLES = [
     "internal-secure.yaml",
 ]
 
-EXPECTED_RECORD_IDS = {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "Step", "ExecutionPolicy", "ContextFormatPolicy", "GraphTrigger", "Gate"}
+EXPECTED_RECORD_IDS = {"Recipe", "RuntimeProfile", "RecipeCatalog", "DataProductRecipe", "AgentDiscoveryFlow", "Step", "ExecutionPolicy", "ContextFormatPolicy", "GraphTrigger", "Gate"}
 
 
 def load_yaml(path):
@@ -111,7 +111,8 @@ def assert_recipe_catalog_document(document):
         forbidden = {"steps", "status", "runId", "logs", "plannedWrites"}
         assert forbidden.isdisjoint(entry), f"recipeCatalog.recipes[{index}] contains runtime or full-step fields"
         assert entry["path"].endswith(".yaml"), f"recipeCatalog.recipes[{index}].path must point to YAML"
-        assert isinstance(entry["commands"], list), f"recipeCatalog.recipes[{index}].commands must be a list"
+        if "commands" in entry:
+            assert isinstance(entry["commands"], list), f"recipeCatalog.recipes[{index}].commands must be a list"
         if "groupRef" in entry:
             assert entry["groupRef"] in group_ids, f"recipeCatalog.recipes[{index}].groupRef must reference a declared group"
 
@@ -152,6 +153,36 @@ def check_schema():
     assert "intent" in recipe["properties"], "Recipe must define optional intent"
     assert "instructions" in recipe["properties"], "Recipe must define optional instructions"
     assert "groundingTo" in recipe["properties"], "Recipe must define optional grounding"
+    assert recipe["properties"]["groundingTo"]["$ref"] == "#/$defs/GroundingTarget", "groundingTo must use controlled graph grounding"
+    grounding = schema["$defs"]["GroundingTarget"]
+    assert grounding["properties"]["nodeTypes"]["items"]["$ref"] == "#/$defs/GraphNodeType", "groundingTo.nodeTypes must use GraphNodeType"
+    assert grounding["properties"]["edgeTypes"]["items"]["$ref"] == "#/$defs/GraphEdgeType", "groundingTo.edgeTypes must use GraphEdgeType"
+    assert schema["$defs"]["GraphEdgeType"]["enum"] == [
+        "uses",
+        "supports",
+        "enables",
+        "dependsOn",
+    ], "GraphEdgeType enum changed unexpectedly"
+    step = schema["$defs"]["Step"]
+    assert step["required"] == ["id"], "Step must require id only"
+    assert {"required": ["command"]} in step["anyOf"], "Step must allow executable command steps"
+    assert {"required": ["discoveryType"]} in step["anyOf"], "Step must allow command-free discovery steps"
+    assert any(
+        branch.get("if", {}).get("required") == ["discoveryType"]
+        and branch.get("then", {}).get("not", {}).get("required") == ["command"]
+        for branch in step["allOf"]
+    ), "Step.discoveryType must be mutually exclusive with command"
+    assert schema["$defs"]["Step"]["properties"]["discoveryType"]["$ref"] == "#/$defs/DiscoveryStepType", "Step.discoveryType must use controlled discovery type"
+    assert schema["$defs"]["DiscoveryStepType"]["enum"] == [
+        "find-affected-use-cases",
+        "explain-use-case-impact",
+        "find-affected-data-products",
+        "explain-data-product-impact",
+        "find-affected-objectives",
+        "explain-objective-impact",
+        "identify-gaps-and-risks",
+        "produce-findings-and-recommendations",
+    ], "DiscoveryStepType enum changed unexpectedly"
     assert "contextFormat" in recipe["properties"], "Recipe must define context format policy"
     assert "trigger" in recipe["properties"], "Recipe must define optional graph trigger"
     assert "graphContext" in recipe["properties"], "Recipe must define optional graph context"
@@ -212,10 +243,13 @@ def check_examples():
     assert graph_triggered_recipe["recipe"]["trigger"]["subject"]["attribute"]["name"] == "status"
     assert graph_triggered_recipe["recipe"]["graphContext"]["start"] == "trigger.subject"
     assert graph_triggered_recipe["recipe"]["contextFormat"]["primary"] == "gcf"
-    assert "data-product" in graph_triggered_recipe["recipe"]["groundingTo"]
+    assert "DataProduct" in graph_triggered_recipe["recipe"]["groundingTo"]["nodeTypes"]
+    assert "dependsOn" in graph_triggered_recipe["recipe"]["groundingTo"]["edgeTypes"]
     assert graph_triggered_recipe["recipe"]["intent"].strip()
     assert graph_triggered_recipe["recipe"]["instructions"].strip()
     graph_step = graph_triggered_recipe["recipe"]["steps"][0]
+    assert graph_step["discoveryType"] == "produce-findings-and-recommendations"
+    assert "command" not in graph_step
     assert graph_step["iterationLimit"] == 3
     assert graph_step["exitWhen"].strip()
     assert_data_product_recipe_document(load_yaml(EXAMPLES_DIR / "data-product-recipe.yaml"))
@@ -279,6 +313,7 @@ def check_recipes_and_llms():
         "/schema/odpr.yaml",
         "/schema/odpr.json",
         "scripts/build_recipe_catalog.py",
+        "agent discovery flows",
     ]:
         assert fragment in llms, f"llms.txt missing {fragment}"
 

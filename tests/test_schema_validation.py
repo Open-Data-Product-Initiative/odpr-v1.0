@@ -127,7 +127,6 @@ def test_graph_trigger_accepts_node_attribute_change_for_any_node_type(validator
     document = recipe_with_step(
         {
             "id": "explain-impact",
-            "command": "generate",
             "kind": "graph",
             "input": "generated/graph-context.gcf",
             "output": "generated/graph-impact.md",
@@ -153,8 +152,12 @@ def test_graph_trigger_accepts_node_attribute_change_for_any_node_type(validator
     }
     document["recipe"]["intent"] = "Explain why the changed graph node matters."
     document["recipe"]["instructions"] = "Use retrieved graph context only."
-    document["recipe"]["groundingTo"] = ["data-product", "use-case", "objective", "owner"]
+    document["recipe"]["groundingTo"] = {
+        "nodeTypes": ["DataProduct", "UseCase", "BusinessObjective", "Owner"],
+        "edgeTypes": ["uses", "supports", "enables", "dependsOn"],
+    }
     document["recipe"]["contextFormat"] = {"primary": "gcf", "fallback": ["yaml", "toon"]}
+    document["recipe"]["steps"][0]["discoveryType"] = "produce-findings-and-recommendations"
     document["recipe"]["steps"][0]["intent"] = "Explain visible graph impact."
     document["recipe"]["steps"][0]["instructions"] = "Separate visible facts from missing context."
     document["recipe"]["steps"][0]["iterationLimit"] = 3
@@ -163,6 +166,96 @@ def test_graph_trigger_accepts_node_attribute_change_for_any_node_type(validator
     )
 
     assert_valid(validator, document)
+
+
+@pytest.mark.parametrize(
+    "node_type",
+    ["DataProduct", "BusinessObjective", "UseCase", "Signal", "Policy", "DataContract", "DataService", "API", "Owner", "System", "Agent", "Condition", "*"],
+)
+def test_recipe_grounding_to_accepts_controlled_node_types(validator, node_type):
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
+    document["recipe"]["groundingTo"] = {"nodeTypes": [node_type]}
+
+    assert_valid(validator, document)
+
+
+@pytest.mark.parametrize("edge_type", ["uses", "supports", "enables", "dependsOn"])
+def test_recipe_grounding_to_accepts_controlled_edge_types(validator, edge_type):
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
+    document["recipe"]["groundingTo"] = {"edgeTypes": [edge_type]}
+
+    assert_valid(validator, document)
+
+
+def test_recipe_grounding_to_rejects_unknown_node_types(validator):
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
+    document["recipe"]["groundingTo"] = {"nodeTypes": ["CustomerSegment"]}
+
+    assert_invalid(validator, document)
+
+
+def test_recipe_grounding_to_rejects_unknown_edge_types(validator):
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
+    document["recipe"]["groundingTo"] = {"edgeTypes": ["influences"]}
+
+    assert_invalid(validator, document)
+
+
+@pytest.mark.parametrize(
+    "discovery_type",
+    [
+        "find-affected-use-cases",
+        "explain-use-case-impact",
+        "find-affected-data-products",
+        "explain-data-product-impact",
+        "find-affected-objectives",
+        "explain-objective-impact",
+        "identify-gaps-and-risks",
+        "produce-findings-and-recommendations",
+    ],
+)
+def test_step_discovery_type_accepts_controlled_values(validator, discovery_type):
+    document = recipe_with_step(
+        {
+            "id": "discover",
+            "document": "generated/context.gcf",
+            "discoveryType": discovery_type,
+        }
+    )
+
+    assert_valid(validator, document)
+
+
+def test_step_discovery_type_rejects_unknown_values(validator):
+    document = recipe_with_step(
+        {
+            "id": "discover",
+            "command": "explain",
+            "document": "generated/context.gcf",
+            "discoveryType": "find-random-things",
+        }
+    )
+
+    assert_invalid(validator, document)
+
+
+def test_step_discovery_type_rejects_command(validator):
+    document = recipe_with_step(
+        {
+            "id": "discover",
+            "command": "explain",
+            "document": "generated/context.gcf",
+            "discoveryType": "produce-findings-and-recommendations",
+        }
+    )
+
+    assert_invalid(validator, document)
+
+
+def test_step_requires_command_or_discovery_type(validator):
+    document = recipe_with_step({"id": "empty-step"})
+
+    assert_invalid(validator, document)
 
 
 def test_recipe_rejects_legacy_context_format_field(validator):
@@ -223,6 +316,19 @@ def test_graph_trigger_accepts_edge_removal_with_endpoint_patterns(validator):
     }
 
     assert_valid(validator, document)
+
+
+def test_graph_trigger_rejects_unknown_edge_type(validator):
+    document = recipe_with_step({"id": "explain", "command": "explain", "document": "README.md"})
+    document["recipe"]["trigger"] = {
+        "source": "odpg",
+        "event": "edge.added",
+        "subject": {
+            "edgeType": "influences",
+        },
+    }
+
+    assert_invalid(validator, document)
 
 
 def test_graph_condition_trigger_requires_condition_name(validator):
