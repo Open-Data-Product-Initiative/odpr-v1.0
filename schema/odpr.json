@@ -585,22 +585,10 @@
         "^x-": {}
       },
       "required": [
-        "graphRef",
-        "start"
+        "depth"
       ],
       "properties": {
-        "graphRef": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/RelativePath"
-            },
-            {
-              "type": "string",
-              "pattern": "^https?://.+"
-            }
-          ]
-        },
-        "start": {
+        "startNodeId": {
           "type": "string",
           "minLength": 1
         },

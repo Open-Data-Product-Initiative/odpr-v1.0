@@ -38,8 +38,8 @@ Family-level toolkit:
 - When explaining graph-triggered recipes, inspect `recipe.trigger` and
   `recipe.graphContext`. Treat triggers as graph change patterns, not graph
   queries or bindings to one graph node id. Treat `recipe.graphContext.depth`
-  as the default graph traversal depth; a graph-context step may override it
-  with `step.depth`.
+  as the default graph traversal depth. Human-initiated discovery may use
+  `recipe.graphContext.startNodeId` to identify the starting graph node.
 - Do not model SDK invocation mode, dry-run responses, run manifests, logs,
   provider readiness, planned writes, write-scope checks, or run ids as ODPR
   root objects.

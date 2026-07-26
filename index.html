@@ -2306,8 +2306,7 @@ build commands, local test commands, and repository-specific tool rules.</p>
       <span class="pi">-</span> <span class="s">enables</span>
       <span class="pi">-</span> <span class="s">dependsOn</span>
   <span class="na">graphContext</span><span class="pi">:</span>
-    <span class="na">graphRef</span><span class="pi">:</span> <span class="s">graphs/banking-portfolio.odpg.yaml</span>
-    <span class="na">start</span><span class="pi">:</span> <span class="s">condition:high-value-customer-inactivity</span>
+    <span class="na">startNodeId</span><span class="pi">:</span> <span class="s">nd_7f3a9c2e4b8d</span>
     <span class="na">depth</span><span class="pi">:</span> <span class="m">2</span>
   <span class="na">contextFormat</span><span class="pi">:</span>
     <span class="na">primary</span><span class="pi">:</span> <span class="s">gcf</span>
@@ -2315,23 +2314,33 @@ build commands, local test commands, and repository-specific tool rules.</p>
       <span class="pi">-</span> <span class="s">yaml</span>
       <span class="pi">-</span> <span class="s">toon</span>
   <span class="na">steps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">find-affected-use-cases</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">step-1</span>
       <span class="na">discoveryType</span><span class="pi">:</span> <span class="s">find-affected-use-cases</span>
-      <span class="na">graph</span><span class="pi">:</span> <span class="s">graphs/banking-portfolio.odpg.yaml</span>
-      <span class="na">start</span><span class="pi">:</span> <span class="s">condition:high-value-customer-inactivity</span>
-      <span class="na">depth</span><span class="pi">:</span> <span class="m">3</span>
-      <span class="na">output</span><span class="pi">:</span> <span class="s">generated/discovery/high-value-customer-inactivity.gcf</span>
+      <span class="na">output</span><span class="pi">:</span> <span class="s">generated/discovery/affected-use-cases.md</span>
       <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
-        <span class="s">Establish the graph context for the matched inactivity condition.</span>
+        <span class="s">Find use cases affected by the matched inactivity condition.</span>
       <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
-        <span class="s">Retrieve the connected neighborhood around the condition and preserve</span>
-        <span class="s">visible context that explains why the condition matters.</span>
-    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">produce-findings-and-recommendations</span>
+        <span class="s">Starting from the graph node identified by `graphContext.startNodeId`,</span>
+        <span class="s">inspect the bounded graph context that fits `groundingTo` and</span>
+        <span class="s">`graphContext.depth`. Preserve visible evidence that explains why the</span>
+        <span class="s">condition matters.</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">step-2</span>
+      <span class="na">discoveryType</span><span class="pi">:</span> <span class="s">identify-gaps-and-risks</span>
+      <span class="na">output</span><span class="pi">:</span> <span class="s">generated/discovery/gaps-and-risks.md</span>
+      <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Identify missing graph evidence, unresolved ownership, and dependency</span>
+        <span class="s">risks that affect the review.</span>
+      <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">Review the evidence found by previous discovery steps and the bounded</span>
+        <span class="s">graph context. Identify gaps, risks, and missing context that a human</span>
+        <span class="s">reviewer must resolve before accepting the findings.</span>
+    <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">step-3</span>
       <span class="na">discoveryType</span><span class="pi">:</span> <span class="s">produce-findings-and-recommendations</span>
       <span class="na">output</span><span class="pi">:</span> <span class="s">generated/discovery/high-value-customer-inactivity-answer.md</span>
       <span class="na">intent</span><span class="pi">:</span> <span class="pi">|</span>
-        <span class="s">Produce grounded findings and recommended human actions by synthesizing</span>
-        <span class="s">the evidence collected by previous discovery steps in this recipe.</span>
+        <span class="s">Produce the final grounded summary and recommended human actions by</span>
+        <span class="s">synthesizing the evidence collected by previous discovery steps in this</span>
+        <span class="s">recipe.</span>
       <span class="na">instructions</span><span class="pi">:</span> <span class="pi">|</span>
         <span class="s">Review the outputs and evidence produced by earlier discovery steps in</span>
         <span class="s">this recipe. Explain affected use cases, evidence products, owner</span>
@@ -2345,14 +2354,13 @@ build commands, local test commands, and repository-specific tool rules.</p>
         <span class="s">materially new grounding.</span>
   <span class="na">review</span><span class="pi">:</span>
     <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">mode</span><span class="pi">:</span> <span class="s">both</span>
 </code></pre></div>
 <p>Agent discovery flows declare how an AI agent investigates bounded data product,
 catalog, graph, or portfolio context to produce grounded answers, findings,
 impact explanations, or review recommendations.</p>
 
-<p>The workflow path remains deterministic: the recipe declares the graph context,
-inputs, ordered steps, outputs, gates, and review expectations. The agent gets
+<p>The workflow path remains deterministic: the recipe declares the graph context
+boundary, ordered steps, outputs, gates, and review expectations. The agent gets
 controlled freedom inside agent-assisted steps through human-authored <code>intent</code>,
 <code>instructions</code>, <code>groundingTo</code>, <code>iterationLimit</code>, and <code>exitWhen</code>.</p>
 
@@ -2457,7 +2465,7 @@ portable investigation contract, not an agent runtime.</p>
 <td><code>recipe.graphContext</code></td>
 <td>object</td>
 <td>graph context request</td>
-<td>Bounded ODPG context used by graph-scoped discovery flows.</td>
+<td>Bounded graph context request for graph-scoped discovery flows. For human-initiated discovery, <code>startNodeId</code> is the opaque id of the starting graph node selected before the run, and <code>depth</code> limits neighborhood expansion.</td>
 </tr>
 <tr>
 <td><code>recipe.contextFormat</code></td>
@@ -2470,6 +2478,12 @@ portable investigation contract, not an agent runtime.</p>
 <td>array</td>
 <td>ordered step objects</td>
 <td>Ordered retrieval, inspection, explanation, validation, or review tasks.</td>
+</tr>
+<tr>
+<td><code>step.id</code></td>
+<td>string</td>
+<td>stable local identifier</td>
+<td>Stable identifier for this step instance inside the recipe. It does not need to duplicate <code>discoveryType</code>.</td>
 </tr>
 <tr>
 <td><code>step.discoveryType</code></td>
@@ -2544,7 +2558,7 @@ workflow.</p>
 </tr>
 <tr>
 <td>Retrieval path</td>
-<td>Deterministic steps that collect or materialize bounded context.</td>
+<td>Deterministic steps that inspect or materialize bounded context from the declared starting node and graph limits.</td>
 </tr>
 <tr>
 <td>Agent instructions</td>
@@ -2653,8 +2667,6 @@ and produces a grounded result.</p>
         <span class="na">name</span><span class="pi">:</span> <span class="s">status</span>
         <span class="na">to</span><span class="pi">:</span> <span class="s">production</span>
   <span class="na">graphContext</span><span class="pi">:</span>
-    <span class="na">graphRef</span><span class="pi">:</span> <span class="s">graphs/portfolio.odpg.yaml</span>
-    <span class="na">start</span><span class="pi">:</span> <span class="s">trigger.subject</span>
     <span class="na">depth</span><span class="pi">:</span> <span class="m">2</span>
   <span class="na">contextFormat</span><span class="pi">:</span>
     <span class="na">primary</span><span class="pi">:</span> <span class="s">gcf</span>
@@ -2843,16 +2855,10 @@ declares the boundary where a graph change should make action applicable.</p>
 <td>Minimal ODPG context needed after a trigger matches.</td>
 </tr>
 <tr>
-<td><code>recipe.graphContext.graphRef</code></td>
+<td><code>recipe.graphContext.startNodeId</code></td>
 <td>string</td>
-<td>graph file or graph reference</td>
-<td>ODPG graph source used to materialize context.</td>
-</tr>
-<tr>
-<td><code>recipe.graphContext.start</code></td>
-<td>string</td>
-<td><code>trigger.subject</code>, graph reference</td>
-<td>Starting point for context collection.</td>
+<td>graph node id</td>
+<td>Optional starting graph node id for human-initiated discovery. Trigger-based flows normally use the matched trigger subject instead.</td>
 </tr>
 <tr>
 <td><code>recipe.graphContext.depth</code></td>
@@ -3287,7 +3293,7 @@ and automation systems how a data product workflow should run.</p>
 <td><code>graphContext</code></td>
 <td>object</td>
 <td>optional</td>
-<td>Minimal ODPG graph context needed after a graph trigger matches.</td>
+<td>Bounded graph context request. Human-initiated discovery can identify the starting graph node with opaque <code>startNodeId</code>; trigger-based flows use the matched trigger subject.</td>
 </tr>
 <tr>
 <td><code>gates</code></td>
@@ -3331,7 +3337,7 @@ standardized <code>discoveryType</code>.</p>
 <td><code>id</code></td>
 <td>string</td>
 <td>required</td>
-<td>Stable step identifier inside the recipe.</td>
+<td>Stable step instance identifier inside the recipe. In Agent Discovery steps, it does not need to duplicate <code>discoveryType</code>.</td>
 </tr>
 <tr>
 <td><code>command</code></td>
@@ -4791,7 +4797,7 @@ Use recipe and step intent to understand why the work exists and what result the
 Use step discoveryType as the standardized discovery purpose for agent discovery steps. Agent discovery steps use discoveryType instead of command.
 Use instructions for how the agent or tool should work, and groundingTo for the controlled graph node and edge types that should ground agent-assisted work.
 Use step iterationLimit and exitWhen to bound in-step agent or LLM refinement when they are declared.
-Use recipe.trigger and recipe.graphContext for graph-triggered recipes; treat triggers as graph change patterns, not graph queries or bindings to one graph node id.
+Use recipe.trigger and recipe.graphContext for graph-aware recipes. Human-initiated discovery may use graphContext.startNodeId; graph-triggered recipes use the matched trigger subject.
 -->
 <h2 id='agent-capabilities-enabled-by-odpr'>Agent capabilities enabled by ODPR</h2>
 <p>Agents can use ODPR to:</p>
@@ -5080,7 +5086,7 @@ shared vocabulary term a concrete recipe meaning or modeling constraint.</p>
 </tr>
 <tr>
 <td><code>graphContext</code></td>
-<td>Optional Recipe field that requests minimal ODPG context after a trigger match.</td>
+<td>Optional Recipe field that requests bounded graph context by starting node or trigger subject and depth.</td>
 </tr>
 <tr>
 <td><code>execution.mode</code></td>
